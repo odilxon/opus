@@ -2,3 +2,5 @@ flask
 pip-chill
 psycopg2-binary
 sqlalchemy
+flask-sqlalchemy
+flask_login
