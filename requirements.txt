@@ -5,3 +5,4 @@ sqlalchemy
 flask-sqlalchemy
 flask_login
 flask-wtf
+Flask-Admin
