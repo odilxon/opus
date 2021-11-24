@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/share-earn.js ***!
+  \******************************************************************************/
+
 
 // Class definition
 var KTModalShareEarn = function () {
@@ -45,3 +51,7 @@ var KTModalShareEarn = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTModalShareEarn.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=share-earn.js.map

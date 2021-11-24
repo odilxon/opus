@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*****************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/dragdrop.js ***!
+  \*****************************************************************/
+
 
 // Class definition
 var KTJSTreeDragDrop = function() {
@@ -79,3 +85,7 @@ var KTJSTreeDragDrop = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeDragDrop.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=dragdrop.js.map

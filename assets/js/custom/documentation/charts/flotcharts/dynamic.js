@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/flotcharts/dynamic.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTFlotDemoDynamic = function () {
@@ -88,3 +94,7 @@ var KTFlotDemoDynamic = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFlotDemoDynamic.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=dynamic.js.map

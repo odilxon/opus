@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jkanban/color.js ***!
+  \***************************************************************/
+
 
 // Class definition
 var KTJKanbanDemoColor = function() {
@@ -64,3 +70,7 @@ var KTJKanbanDemoColor = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJKanbanDemoColor.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=color.js.map

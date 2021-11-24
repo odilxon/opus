@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/forms/recaptcha.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTFormsGoogleRecaptchaDemos = function () {
@@ -29,3 +35,7 @@ var KTFormsGoogleRecaptchaDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsGoogleRecaptchaDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=recaptcha.js.map

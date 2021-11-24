@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!****************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/new-card.js ***!
+  \****************************************************************************/
+
 
 // Class definition
 var KTModalNewCard = function () {
@@ -211,3 +217,6 @@ var KTModalNewCard = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTModalNewCard.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=new-card.js.map

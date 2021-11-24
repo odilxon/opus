@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/customers/view/add-payment.js ***!
+  \********************************************************************************************/
+
 
 // Class definition
 var KTModalAddPayment = function () {
@@ -205,3 +211,6 @@ var KTModalAddPayment = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTModalAddPayment.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=add-payment.js.map

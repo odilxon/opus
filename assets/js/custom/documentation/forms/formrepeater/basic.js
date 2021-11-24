@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ../src/js/custom/documentation/forms/formrepeater/basic.js ***!
+  \******************************************************************/
+
 
 // Class definition
 var KTFormRepeaterBasic = function () {
@@ -33,3 +39,7 @@ var KTFormRepeaterBasic = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormRepeaterBasic.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

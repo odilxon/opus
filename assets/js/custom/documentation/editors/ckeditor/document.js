@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/editors/ckeditor/document.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTFormsCKEditorDocument = function () {
@@ -28,3 +34,7 @@ var KTFormsCKEditorDocument = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsCKEditorDocument.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=document.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/vis-timeline/interaction.js ***!
+  \**************************************************************************/
+
 
 // Class definition
 var KTVisTimelineInteraction = function () {
@@ -64,3 +70,7 @@ var KTVisTimelineInteraction = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTVisTimelineInteraction.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=interaction.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/pages/profile/connections.js ***!
+  \**************************************************************************************/
+
 
 // Class definition
 var KTProfileConnections = function () {
@@ -47,3 +53,6 @@ var KTProfileConnections = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTProfileConnections.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=connections.js.map

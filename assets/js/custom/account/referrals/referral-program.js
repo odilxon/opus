@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/referrals/referral-program.js ***!
+  \***********************************************************************************************/
+
 
 // Class definition
 var KTAccountReferralsReferralProgram = function () {
@@ -41,3 +47,7 @@ var KTAccountReferralsReferralProgram = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountReferralsReferralProgram.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=referral-program.js.map

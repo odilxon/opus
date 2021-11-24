@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!****************************************************************!*\
+  !*** ../src/js/custom/documentation/general/datatables/api.js ***!
+  \****************************************************************/
+
 
 // Class definition
 var KTDatatablesApi = function () {
@@ -55,3 +61,7 @@ var KTDatatablesApi = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTDatatablesApi.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=api.js.map

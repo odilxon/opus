@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/customicons.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTJSTreeCustomIcons = function() {
@@ -46,3 +52,7 @@ var KTJSTreeCustomIcons = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeCustomIcons.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=customicons.js.map

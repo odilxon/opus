@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/forms/flatpickr.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTFormsFlatpickrDemos = function() {
@@ -101,3 +107,6 @@ var KTFormsFlatpickrDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsFlatpickrDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=flatpickr.js.map

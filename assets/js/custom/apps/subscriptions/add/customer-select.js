@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/subscriptions/add/customer-select.js ***!
+  \***************************************************************************************************/
+
 
 // Class definition
 var KTModalCustomerSelect = function() {
@@ -83,3 +89,6 @@ var KTModalCustomerSelect = function() {
 KTUtil.onDOMContentLoaded(function () {
     KTModalCustomerSelect.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=customer-select.js.map

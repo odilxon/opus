@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/google-charts/column.js ***!
+  \*********************************************************************/
+
 
 // Class definition
 var KTGoogleChartColumnDemo = function () {
@@ -93,3 +99,7 @@ var KTGoogleChartColumnDemo = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGoogleChartColumnDemo.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=column.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/selectable-dates.js ***!
+  \*******************************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarSelectDemos = function () {
@@ -162,3 +168,7 @@ var KTGeneralFullCalendarSelectDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralFullCalendarSelectDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=selectable-dates.js.map

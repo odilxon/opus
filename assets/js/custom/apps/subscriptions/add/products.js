@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/subscriptions/add/products.js ***!
+  \********************************************************************************************/
+
 
 var KTSubscriptionsProducts = function () {
     // Shared variables
@@ -155,3 +161,7 @@ var KTSubscriptionsProducts = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTSubscriptionsProducts.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=products.js.map

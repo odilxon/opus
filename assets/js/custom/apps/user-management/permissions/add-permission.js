@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/permissions/add-permission.js ***!
+  \************************************************************************************************************/
+
 
 // Class definition
 var KTUsersAddPermission = function () {
@@ -164,3 +170,6 @@ var KTUsersAddPermission = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersAddPermission.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=add-permission.js.map

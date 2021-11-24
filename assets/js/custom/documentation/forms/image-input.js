@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************!*\
+  !*** ../src/js/custom/documentation/forms/image-input.js ***!
+  \***********************************************************/
+
 
 // Class definition
 var KTGeneralImageInputDemos = function() {
@@ -19,3 +25,7 @@ var KTGeneralImageInputDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralImageInputDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=image-input.js.map

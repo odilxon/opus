@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************!*\
+  !*** ../src/js/custom/documentation/general/scroll.js ***!
+  \********************************************************/
+
 
 // Class definition
 var KTGeneralScrollDemos = function() {
@@ -19,3 +25,7 @@ var KTGeneralScrollDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralScrollDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=scroll.js.map

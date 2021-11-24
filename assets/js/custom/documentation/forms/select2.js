@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************!*\
+  !*** ../src/js/custom/documentation/forms/select2.js ***!
+  \*******************************************************/
+
 
 // Class definition
 var KTFormsSelect2Demo = function () {
@@ -72,3 +78,7 @@ var KTFormsSelect2Demo = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsSelect2Demo.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=select2.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/datatables/server-side.js ***!
+  \************************************************************************/
+
 
 // Class definition
 var KTDatatablesServerSide = function () {
@@ -10,6 +16,7 @@ var KTDatatablesServerSide = function () {
     // Private functions
     var initDatatable = function () {
         dt = $("#kt_datatable_example_1").DataTable({
+            responsive: true,
             searchDelay: 500,
             processing: true,
             serverSide: true,
@@ -353,3 +360,6 @@ var KTDatatablesServerSide = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTDatatablesServerSide.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=server-side.js.map

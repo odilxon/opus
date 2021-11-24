@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/google-charts/line.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTGoogleChartLineDemo = function () {
@@ -59,3 +65,7 @@ var KTGoogleChartLineDemo = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGoogleChartLineDemo.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=line.js.map

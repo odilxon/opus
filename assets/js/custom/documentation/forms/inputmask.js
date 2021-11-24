@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/forms/inputmask.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTFormsInputmaskDemos = function() {
@@ -72,3 +78,7 @@ var KTFormsInputmaskDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsInputmaskDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=inputmask.js.map

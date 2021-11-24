@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/contextual.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTJSTreeContextual = function() {
@@ -79,3 +85,7 @@ var KTJSTreeContextual = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeContextual.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=contextual.js.map

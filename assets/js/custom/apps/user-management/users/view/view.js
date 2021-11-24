@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/users/view/view.js ***!
+  \*************************************************************************************************/
+
 
 // Class definition
 var KTUsersViewMain = function () {
@@ -232,3 +238,6 @@ var KTUsersViewMain = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersViewMain.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=view.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/timezone.js ***!
+  \***********************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarTimezoneDemos = function () {
@@ -189,3 +195,7 @@ var KTGeneralFullCalendarTimezoneDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralFullCalendarTimezoneDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=timezone.js.map

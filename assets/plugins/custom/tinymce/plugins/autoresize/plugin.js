@@ -4,7 +4,7 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  *
- * Version: 5.4.1 (2020-07-08)
+ * Version: 5.9.2 (2021-09-08)
  */
 (function () {
     'use strict';
@@ -23,11 +23,16 @@
       };
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var hasOwnProperty = Object.hasOwnProperty;
+    var has = function (obj, key) {
+      return hasOwnProperty.call(obj, key);
+    };
+
+    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
     var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Delay');
+    var global = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
     var fireResizeEditor = function (editor) {
       return editor.fire('ResizeEditor');
@@ -53,7 +58,7 @@
       return editor.plugins.fullscreen && editor.plugins.fullscreen.isFullscreen();
     };
     var wait = function (editor, oldSize, times, interval, callback) {
-      global$2.setEditorTimeout(editor, function () {
+      global.setEditorTimeout(editor, function () {
         resize(editor, oldSize);
         if (times--) {
           wait(editor, oldSize, times, interval, callback);
@@ -76,7 +81,6 @@
       return isNaN(value) ? 0 : value;
     };
     var resize = function (editor, oldSize) {
-      var deltaSize, resizeHeight, contentHeight;
       var dom = editor.dom;
       var doc = editor.getDoc();
       if (!doc) {
@@ -88,10 +92,10 @@
       }
       var docEle = doc.documentElement;
       var resizeBottomMargin = getAutoResizeBottomMargin(editor);
-      resizeHeight = getAutoResizeMinHeight(editor);
+      var resizeHeight = getAutoResizeMinHeight(editor);
       var marginTop = parseCssValueToInt(dom, docEle, 'margin-top', true);
       var marginBottom = parseCssValueToInt(dom, docEle, 'margin-bottom', true);
-      contentHeight = docEle.offsetHeight + marginTop + marginBottom + resizeBottomMargin;
+      var contentHeight = docEle.offsetHeight + marginTop + marginBottom + resizeBottomMargin;
       if (contentHeight < 0) {
         contentHeight = 0;
       }
@@ -109,7 +113,7 @@
         toggleScrolling(editor, false);
       }
       if (resizeHeight !== oldSize.get()) {
-        deltaSize = resizeHeight - oldSize.get();
+        var deltaSize = resizeHeight - oldSize.get();
         dom.setStyle(editor.getContainer(), 'height', resizeHeight + 'px');
         oldSize.set(resizeHeight);
         fireResizeEditor(editor);
@@ -155,8 +159,8 @@
     };
 
     function Plugin () {
-      global.add('autoresize', function (editor) {
-        if (!editor.settings.hasOwnProperty('resize')) {
+      global$2.add('autoresize', function (editor) {
+        if (!has(editor.settings, 'resize')) {
           editor.settings.resize = false;
         }
         if (!editor.inline) {

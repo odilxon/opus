@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ../src/js/custom/documentation/general/datatables/basic.js ***!
+  \******************************************************************/
+
 
 // Class definition
 var KTDatatablesBasic = function () {
@@ -45,3 +51,6 @@ var KTDatatablesBasic = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTDatatablesBasic.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

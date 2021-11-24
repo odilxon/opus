@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/authentication/sign-up/coming-soon.js ***!
+  \***********************************************************************************************/
+
 
 // Class Definition
 var KTSignupComingSoon = function() {
@@ -96,8 +102,7 @@ var KTSignupComingSoon = function() {
 
     var initCounter = function() {
         // Set the date we're counting down to
-        var currentTime = new Date(); 
-        var countDownDate = new Date(currentTime.getTime() + 1000 * 60 * 60 * 24 * 15 + 1000 * 60 * 60 * 10 + 1000 * 60 * 15).getTime();
+        var countDownDate = new Date("Aug 30, 2021 15:37:25").getTime();
 
         var count = function() {
             // Get todays date and time
@@ -147,3 +152,7 @@ var KTSignupComingSoon = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTSignupComingSoon.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=coming-soon.js.map

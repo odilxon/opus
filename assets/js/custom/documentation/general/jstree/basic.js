@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/basic.js ***!
+  \**************************************************************/
+
 
 // Class definition
 var KTJSTreeBasic = function() {
@@ -34,3 +40,7 @@ var KTJSTreeBasic = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeBasic.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

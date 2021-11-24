@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/authentication/password-reset/password-reset.js ***!
+  \*********************************************************************************************************/
+
 
 // Class Definition
 var KTPasswordResetGeneral = function() {
@@ -103,3 +109,7 @@ var KTPasswordResetGeneral = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTPasswordResetGeneral.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=password-reset.js.map

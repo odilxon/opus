@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************!*\
+  !*** ../src/js/custom/documentation/forms/nouislider.js ***!
+  \**********************************************************/
+
 
 // Class definition
 var KTFormsNouisliderDemos = function() {
@@ -119,3 +125,6 @@ var KTFormsNouisliderDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsNouisliderDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=nouislider.js.map

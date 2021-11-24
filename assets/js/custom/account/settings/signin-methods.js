@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/settings/signin-methods.js ***!
+  \********************************************************************************************/
+
 
 // Class definition
 var KTAccountSettingsSigninMethods = function () {
@@ -210,3 +216,7 @@ var KTAccountSettingsSigninMethods = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountSettingsSigninMethods.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=signin-methods.js.map

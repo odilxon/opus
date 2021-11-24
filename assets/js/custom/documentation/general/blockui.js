@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/general/blockui.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTGeneralBlockUI = function() {
@@ -107,3 +113,7 @@ var KTGeneralBlockUI = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralBlockUI.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=blockui.js.map

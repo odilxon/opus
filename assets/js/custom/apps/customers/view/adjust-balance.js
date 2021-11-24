@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/customers/view/adjust-balance.js ***!
+  \***********************************************************************************************/
+
 
 // Class definition
 var KTModalAdjustBalance = function () {
@@ -239,3 +245,6 @@ var KTModalAdjustBalance = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTModalAdjustBalance.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=adjust-balance.js.map

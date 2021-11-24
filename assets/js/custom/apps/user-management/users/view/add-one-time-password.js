@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/users/view/add-one-time-password.js ***!
+  \******************************************************************************************************************/
+
 
 // Class definition
 var KTUsersAddOneTimePassword = function () {
@@ -171,3 +177,6 @@ var KTUsersAddOneTimePassword = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersAddOneTimePassword.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=add-one-time-password.js.map

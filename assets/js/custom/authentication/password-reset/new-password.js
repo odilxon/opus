@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/authentication/password-reset/new-password.js ***!
+  \*******************************************************************************************************/
+
 
 // Class Definition
 var KTPasswordResetNewPassword = function() {
@@ -149,3 +155,7 @@ var KTPasswordResetNewPassword = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTPasswordResetNewPassword.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=new-password.js.map

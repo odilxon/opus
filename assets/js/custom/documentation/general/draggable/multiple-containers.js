@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/draggable/multiple-containers.js ***!
+  \*******************************************************************************/
+
 
 // Class definition
 var KTDraggableMultiple = function() {
@@ -33,3 +39,7 @@ var KTDraggableMultiple = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTDraggableMultiple.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=multiple-containers.js.map

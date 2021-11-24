@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/forms/bootstrap-maxlength.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTFormsMaxlengthDemos = function () {
@@ -95,3 +101,7 @@ var KTFormsMaxlengthDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsMaxlengthDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=bootstrap-maxlength.js.map

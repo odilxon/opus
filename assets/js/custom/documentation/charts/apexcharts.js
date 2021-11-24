@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************!*\
+  !*** ../src/js/custom/documentation/charts/apexcharts.js ***!
+  \***********************************************************/
+
 
 // Class definition
 var KTGeneralApexCharts = function () {
@@ -841,3 +847,7 @@ var KTGeneralApexCharts = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralApexCharts.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=apexcharts.js.map

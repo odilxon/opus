@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*****************************************************************!*\
+  !*** ../src/js/custom/documentation/editors/ckeditor/inline.js ***!
+  \*****************************************************************/
+
 
 // Class definition
 var KTFormsCKEditorInline = function () {
@@ -26,3 +32,7 @@ var KTFormsCKEditorInline = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsCKEditorInline.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=inline.js.map

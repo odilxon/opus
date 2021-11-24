@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/google-charts/pie.js ***!
+  \******************************************************************/
+
 
 // Class definition
 var KTGoogleChartPieDemo = function () {
@@ -50,3 +56,7 @@ var KTGoogleChartPieDemo = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGoogleChartPieDemo.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=pie.js.map

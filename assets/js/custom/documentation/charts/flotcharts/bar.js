@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/flotcharts/bar.js ***!
+  \***************************************************************/
+
 
 // Class definition
 var KTFlotDemoBar = function () {
@@ -54,3 +60,7 @@ var KTFlotDemoBar = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFlotDemoBar.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=bar.js.map

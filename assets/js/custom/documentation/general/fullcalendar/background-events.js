@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/background-events.js ***!
+  \********************************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarEventsDemos = function() {
@@ -91,3 +97,6 @@ var KTGeneralFullCalendarEventsDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
 	KTGeneralFullCalendarEventsDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=background-events.js.map

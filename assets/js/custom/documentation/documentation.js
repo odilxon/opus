@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************!*\
+  !*** ../src/js/custom/documentation/documentation.js ***!
+  \*******************************************************/
+
 
 var KTLayoutDocumentation = function() {
     var _init = function(element) {
@@ -53,3 +59,6 @@ var KTLayoutDocumentation = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTLayoutDocumentation.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=documentation.js.map

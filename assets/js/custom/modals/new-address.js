@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/new-address.js ***!
+  \*******************************************************************************/
+
 
 // Class definition
 var KTModalNewAddress = function () {
@@ -209,3 +215,6 @@ var KTModalNewAddress = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTModalNewAddress.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=new-address.js.map

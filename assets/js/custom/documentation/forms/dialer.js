@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************!*\
+  !*** ../src/js/custom/documentation/forms/dialer.js ***!
+  \******************************************************/
+
 
 // Class definition
 var KTFormsDialerDemos = function() {
@@ -29,3 +35,7 @@ var KTFormsDialerDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsDialerDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=dialer.js.map

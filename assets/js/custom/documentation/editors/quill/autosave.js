@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!****************************************************************!*\
+  !*** ../src/js/custom/documentation/editors/quill/autosave.js ***!
+  \****************************************************************/
+
 
 // Class definition
 var KTFormsQuillAutosave = function () {
@@ -58,3 +64,7 @@ var KTFormsQuillAutosave = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormsQuillAutosave.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=autosave.js.map

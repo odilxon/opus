@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************!*\
+  !*** ../src/js/custom/documentation/general/typed.js ***!
+  \*******************************************************/
+
 
 // Class definition
 var KTGeneralTypedJsDemos = function() {
@@ -22,3 +28,7 @@ var KTGeneralTypedJsDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralTypedJsDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=typed.js.map

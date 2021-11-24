@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/select-location.js ***!
+  \***********************************************************************************/
+
 
 // Class definition
 var KTModalSelectLocation = function () {
@@ -115,3 +121,7 @@ var KTModalSelectLocation = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTModalSelectLocation.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=select-location.js.map

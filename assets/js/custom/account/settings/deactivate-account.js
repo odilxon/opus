@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/settings/deactivate-account.js ***!
+  \************************************************************************************************/
+
 
 // Class definition
 var KTAccountSettingsDeactivateAccount = function () {
@@ -109,3 +115,7 @@ var KTAccountSettingsDeactivateAccount = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountSettingsDeactivateAccount.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=deactivate-account.js.map

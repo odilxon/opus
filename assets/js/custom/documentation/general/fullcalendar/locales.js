@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/locales.js ***!
+  \**********************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarLocalesDemos = function () {
@@ -115,3 +121,7 @@ var KTGeneralFullCalendarLocalesDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralFullCalendarLocalesDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=locales.js.map

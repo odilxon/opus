@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/basic.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarBasicDemos = function () {
@@ -169,3 +175,7 @@ var KTGeneralFullCalendarBasicDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralFullCalendarBasicDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

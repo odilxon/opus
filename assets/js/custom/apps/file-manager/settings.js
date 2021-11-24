@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/file-manager/settings.js ***!
+  \***************************************************************************************/
+
 
 // Class definition
 var KTAppFileManagerSettings = function () {
@@ -53,3 +59,7 @@ var KTAppFileManagerSettings = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTAppFileManagerSettings.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=settings.js.map

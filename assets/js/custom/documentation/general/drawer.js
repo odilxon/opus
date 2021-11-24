@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************!*\
+  !*** ../src/js/custom/documentation/general/drawer.js ***!
+  \********************************************************/
+
 
 // Class definition
 var KTGeneralDrawerDemos = function() {
@@ -18,3 +24,7 @@ var KTGeneralDrawerDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralDrawerDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=drawer.js.map

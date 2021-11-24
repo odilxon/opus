@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/pages/search/horizontal.js ***!
+  \************************************************************************************/
+
  
 // Class definition
 var KTSearchHorizontal = function () {
@@ -38,3 +44,7 @@ var KTSearchHorizontal = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTSearchHorizontal.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=horizontal.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*************************************************************!*\
+  !*** ../src/js/custom/documentation/editors/quill/basic.js ***!
+  \*************************************************************/
+
 
 // Class definition
 var KTFormsQuillBasic = function() {
@@ -31,3 +37,7 @@ var KTFormsQuillBasic = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsQuillBasic.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

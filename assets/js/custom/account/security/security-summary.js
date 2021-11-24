@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/security/security-summary.js ***!
+  \**********************************************************************************************/
+
 
 // Class definition
 var KTAccountSecuritySummary = function () {
@@ -151,3 +157,7 @@ var KTAccountSecuritySummary = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountSecuritySummary.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=security-summary.js.map

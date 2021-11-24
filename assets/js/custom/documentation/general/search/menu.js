@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*************************************************************!*\
+  !*** ../src/js/custom/documentation/general/search/menu.js ***!
+  \*************************************************************/
+
 
 // Class definition
 var KTGeneralSearchMenuDemos = function() {
@@ -133,3 +139,6 @@ var KTGeneralSearchMenuDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralSearchMenuDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=menu.js.map

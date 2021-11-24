@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/api-keys/api-keys.js ***!
+  \**************************************************************************************/
+
 
 // Class definition
 var KTAccountAPIKeys = function () {
@@ -66,3 +72,7 @@ var KTAccountAPIKeys = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountAPIKeys.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=api-keys.js.map

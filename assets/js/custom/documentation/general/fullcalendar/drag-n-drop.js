@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************************!*\
+  !*** ../src/js/custom/documentation/general/fullcalendar/drag-n-drop.js ***!
+  \**************************************************************************/
+
 
 // Class definition
 var KTGeneralFullCalendarDragDemos = function () {
@@ -50,3 +56,7 @@ var KTGeneralFullCalendarDragDemos = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralFullCalendarDragDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=drag-n-drop.js.map

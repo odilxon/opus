@@ -1,4 +1,10 @@
-'use strict';
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/general/cropper.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTCropperDemo = function () {
@@ -122,3 +128,7 @@ var KTCropperDemo = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTCropperDemo.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=cropper.js.map

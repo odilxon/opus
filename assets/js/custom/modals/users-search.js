@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/users-search.js ***!
+  \********************************************************************************/
+
 
 // Class definition
 var KTModalUserSearch = function() {
@@ -75,3 +81,6 @@ var KTModalUserSearch = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTModalUserSearch.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=users-search.js.map

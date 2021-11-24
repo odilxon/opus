@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/pages/company/pricing.js ***!
+  \**********************************************************************************/
+
 
 // Class definition
 var KTGeneralPricing = function () {
@@ -55,3 +61,7 @@ var KTGeneralPricing = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralPricing.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=pricing.js.map

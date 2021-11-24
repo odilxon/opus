@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/users/view/add-auth-app.js ***!
+  \*********************************************************************************************************/
+
 
 // Class definition
 var KTUsersAddAuthApp = function () {
@@ -79,3 +85,6 @@ var KTUsersAddAuthApp = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersAddAuthApp.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=add-auth-app.js.map

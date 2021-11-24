@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************!*\
+  !*** ../src/js/custom/documentation/base/indicator.js ***!
+  \********************************************************/
+
 
 // Class definition
 var KTBaseIndicatorDemos = function() {
@@ -66,3 +72,6 @@ var KTBaseIndicatorDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTBaseIndicatorDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=indicator.js.map

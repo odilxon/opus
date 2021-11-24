@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/flotcharts/tracking.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTFlotDemoTracking = function () {
@@ -103,3 +109,7 @@ var KTFlotDemoTracking = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFlotDemoTracking.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=tracking.js.map

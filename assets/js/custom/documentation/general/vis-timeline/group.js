@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/vis-timeline/group.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTVisTimelineGroup = function () {
@@ -99,3 +105,7 @@ var KTVisTimelineGroup = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTVisTimelineGroup.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=group.js.map

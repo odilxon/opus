@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jkanban/restricted.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTJKanbanDemoRestricted = function() {
@@ -85,3 +91,7 @@ var KTJKanbanDemoRestricted = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJKanbanDemoRestricted.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=restricted.js.map

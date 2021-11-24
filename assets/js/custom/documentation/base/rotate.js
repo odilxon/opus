@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*****************************************************!*\
+  !*** ../src/js/custom/documentation/base/rotate.js ***!
+  \*****************************************************/
+
 
 // Class definition
 var KTBaseRotateDemos = function() {
@@ -48,3 +54,6 @@ var KTBaseRotateDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTBaseRotateDemos.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=rotate.js.map

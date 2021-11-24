@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************!*\
+  !*** ../src/js/custom/documentation/general/toastr.js ***!
+  \********************************************************/
+
 
 // Class definition
 var KTGeneralToastr = function() {
@@ -161,3 +167,7 @@ var KTGeneralToastr = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralToastr.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=toastr.js.map

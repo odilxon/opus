@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/forms/formvalidation/basic.js ***!
+  \********************************************************************/
+
 
 // Class definition
 var KTFormValidationDemoBasic = function () {
@@ -534,3 +540,7 @@ var KTFormValidationDemoBasic = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFormValidationDemoBasic.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=basic.js.map

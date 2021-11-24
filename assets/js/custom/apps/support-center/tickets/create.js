@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/support-center/tickets/create.js ***!
+  \***********************************************************************************************/
+
 
 // Class definition
 var KTModalNewTicket = function () {
@@ -217,3 +223,6 @@ var KTModalNewTicket = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTModalNewTicket.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=create.js.map

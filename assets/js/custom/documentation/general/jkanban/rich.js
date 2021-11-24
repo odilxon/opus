@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jkanban/rich.js ***!
+  \**************************************************************/
+
 
 // Class definition
 var KTJKanbanDemoRich = function() {
@@ -245,3 +251,7 @@ var KTJKanbanDemoRich = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJKanbanDemoRich.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=rich.js.map

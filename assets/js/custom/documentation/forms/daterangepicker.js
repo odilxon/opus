@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************!*\
+  !*** ../src/js/custom/documentation/forms/daterangepicker.js ***!
+  \***************************************************************/
+
 
 // Class definition
 var KTFormsDaterangepickerDemos = function() {
@@ -75,3 +81,7 @@ var KTFormsDaterangepickerDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsDaterangepickerDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=daterangepicker.js.map

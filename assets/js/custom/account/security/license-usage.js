@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/security/license-usage.js ***!
+  \*******************************************************************************************/
+
 
 // Class definition
 var KTAccountSecurityLicenseUsage = function () {
@@ -66,3 +72,7 @@ var KTAccountSecurityLicenseUsage = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountSecurityLicenseUsage.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=license-usage.js.map

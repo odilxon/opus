@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/chat/chat.js ***!
+  \***************************************************************************/
+
 
 // Class definition
 var KTAppChat = function () {
@@ -70,3 +76,7 @@ KTUtil.onDOMContentLoaded(function () {
 	// Init drawer chat messenger
 	KTAppChat.init(document.querySelector('#kt_drawer_chat_messenger'));
 });
+
+/******/ })()
+;
+//# sourceMappingURL=chat.js.map

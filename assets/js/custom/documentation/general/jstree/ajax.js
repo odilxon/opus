@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/ajax.js ***!
+  \*************************************************************/
+
 
 // Class definition
 var KTJSTreeAjax = function() {
@@ -49,3 +55,7 @@ var KTJSTreeAjax = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeAjax.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=ajax.js.map

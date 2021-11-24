@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/users/view/update-email.js ***!
+  \*********************************************************************************************************/
+
 
 // Class definition
 var KTUsersUpdateEmail = function () {
@@ -164,3 +170,6 @@ var KTUsersUpdateEmail = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersUpdateEmail.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=update-email.js.map

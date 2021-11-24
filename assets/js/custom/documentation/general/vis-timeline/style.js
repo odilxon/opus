@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/vis-timeline/style.js ***!
+  \********************************************************************/
+
 
 
 // Class definition
@@ -87,3 +93,7 @@ var KTVisTimelineStyle = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTVisTimelineStyle.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=style.js.map

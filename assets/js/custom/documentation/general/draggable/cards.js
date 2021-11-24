@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*****************************************************************!*\
+  !*** ../src/js/custom/documentation/general/draggable/cards.js ***!
+  \*****************************************************************/
+
 
 // Class definition
 var KTDraggableCards = function() {
@@ -33,3 +39,7 @@ var KTDraggableCards = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTDraggableCards.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=cards.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/draggable/restricted.js ***!
+  \**********************************************************************/
+
 
 // Class definition
 var KTDraggableRestricted = function () {
@@ -81,3 +87,7 @@ var KTDraggableRestricted = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTDraggableRestricted.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=restricted.js.map

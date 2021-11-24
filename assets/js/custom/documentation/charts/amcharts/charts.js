@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/documentation/charts/amcharts/charts.js ***!
+  \*************************************************************************************************/
+
 
 // Class definition
 var KTGeneralAmCharts = function () {
@@ -1397,3 +1403,7 @@ var KTGeneralAmCharts = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralAmCharts.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=charts.js.map

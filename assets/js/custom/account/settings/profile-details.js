@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/account/settings/profile-details.js ***!
+  \*********************************************************************************************/
+
 
 // Class definition
 var KTAccountSettingsProfileDetails = function () {
@@ -148,3 +154,7 @@ var KTAccountSettingsProfileDetails = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTAccountSettingsProfileDetails.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=profile-details.js.map

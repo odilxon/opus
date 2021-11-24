@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/layout-builder/layout-builder.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTLayoutBuilder = function() {
@@ -173,3 +179,6 @@ var KTLayoutBuilder = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTLayoutBuilder.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=layout-builder.js.map

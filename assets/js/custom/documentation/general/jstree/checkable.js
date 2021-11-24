@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ../src/js/custom/documentation/general/jstree/checkable.js ***!
+  \******************************************************************/
+
 
 // Class definition
 var KTJSTreeCheckable = function() {
@@ -64,3 +70,7 @@ var KTJSTreeCheckable = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTJSTreeCheckable.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=checkable.js.map

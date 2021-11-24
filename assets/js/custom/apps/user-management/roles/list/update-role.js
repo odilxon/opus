@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/roles/list/update-role.js ***!
+  \********************************************************************************************************/
+
 
 // Class definition
 var KTUsersUpdatePermissions = function () {
@@ -181,3 +187,6 @@ var KTUsersUpdatePermissions = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersUpdatePermissions.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=update-role.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************!*\
+  !*** ../src/js/custom/documentation/general/draggable/swappable.js ***!
+  \*********************************************************************/
+
 
 // Class definition
 var KTDraggableSwappable = function() {
@@ -33,3 +39,7 @@ var KTDraggableSwappable = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTDraggableSwappable.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=swappable.js.map

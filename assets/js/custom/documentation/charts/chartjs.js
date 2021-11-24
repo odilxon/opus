@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************!*\
+  !*** ../src/js/custom/documentation/charts/chartjs.js ***!
+  \********************************************************/
+
 
 // Class definition
 var KTGeneralChartJS = function () {
@@ -331,3 +337,7 @@ var KTGeneralChartJS = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTGeneralChartJS.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=chartjs.js.map

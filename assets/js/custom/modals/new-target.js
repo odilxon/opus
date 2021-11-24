@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!******************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/new-target.js ***!
+  \******************************************************************************/
+
 
 // Class definition
 var KTModalNewTarget = function () {
@@ -209,3 +215,6 @@ var KTModalNewTarget = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTModalNewTarget.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=new-target.js.map

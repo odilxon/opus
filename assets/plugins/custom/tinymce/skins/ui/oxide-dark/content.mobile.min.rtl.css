@@ -7,20 +7,26 @@
 .tinymce-mobile-unfocused-selections .tinymce-mobile-unfocused-selection {
   background-color: green;
   display: inline-block;
-  opacity: .5;
-  position: absolute; }
+  opacity: 0.5;
+  position: absolute;
+}
 
 body {
-  -webkit-text-size-adjust: none; }
+  -webkit-text-size-adjust: none;
+}
 
 body img {
-  max-width: 96vw; }
+  max-width: 96vw;
+}
 
 body table img {
-  max-width: 95%; }
+  max-width: 95%;
+}
 
 body {
-  font-family: sans-serif; }
+  font-family: sans-serif;
+}
 
 table {
-  border-collapse: collapse; }
+  border-collapse: collapse;
+}

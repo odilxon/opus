@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!************************************************!*\
+  !*** ../src/js/custom/documentation/search.js ***!
+  \************************************************/
+
 
 // Class definition
 var KTDocsSearch = function() {
@@ -90,3 +96,6 @@ var KTDocsSearch = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTDocsSearch.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=search.js.map

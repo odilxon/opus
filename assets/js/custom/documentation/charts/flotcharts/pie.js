@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/flotcharts/pie.js ***!
+  \***************************************************************/
+
 
 // Class definition
 var KTFlotDemoPie = function () {
@@ -32,3 +38,7 @@ var KTFlotDemoPie = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFlotDemoPie.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=pie.js.map

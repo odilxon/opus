@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/two-factor-authentication.js ***!
+  \*********************************************************************************************/
+
 
 // Class definition
 var KTModalTwoFactorAuthentication = function () {
@@ -264,3 +270,7 @@ var KTModalTwoFactorAuthentication = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTModalTwoFactorAuthentication.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=two-factor-authentication.js.map

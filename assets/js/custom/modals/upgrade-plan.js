@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/upgrade-plan.js ***!
+  \********************************************************************************/
+
 
 // Class definition
 var KTModalUpgradePlan = function () {
@@ -63,3 +69,7 @@ var KTModalUpgradePlan = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTModalUpgradePlan.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=upgrade-plan.js.map

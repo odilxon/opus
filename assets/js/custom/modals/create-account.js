@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/create-account.js ***!
+  \**********************************************************************************/
+
 
 // Class definition
 var KTCreateAccount = function () {
@@ -361,3 +367,6 @@ var KTCreateAccount = function () {
 KTUtil.onDOMContentLoaded(function() {
     KTCreateAccount.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=create-account.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!**********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/modals/create-api-key.js ***!
+  \**********************************************************************************/
+
 
 // Class definition
 var KTModalCreateApiKey = function () {
@@ -181,3 +187,6 @@ var KTModalCreateApiKey = function () {
 KTUtil.onDOMContentLoaded(function () {
 	KTModalCreateApiKey.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=create-api-key.js.map

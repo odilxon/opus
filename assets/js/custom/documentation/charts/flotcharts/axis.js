@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!****************************************************************!*\
+  !*** ../src/js/custom/documentation/charts/flotcharts/axis.js ***!
+  \****************************************************************/
+
 
 // Class definition
 var KTFlotDemoAxis = function () {
@@ -177,3 +183,7 @@ var KTFlotDemoAxis = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTFlotDemoAxis.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=axis.js.map

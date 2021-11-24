@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/authentication/sign-up/general.js ***!
+  \*******************************************************************************************/
+
 
 // Class definition
 var KTSignupGeneral = function() {
@@ -175,3 +181,7 @@ var KTSignupGeneral = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTSignupGeneral.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=general.js.map

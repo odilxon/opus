@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/invoices/create.js ***!
+  \*********************************************************************************/
+
 
 // Class definition
 var KTAppInvoicesCreate = function () {
@@ -109,3 +115,7 @@ var KTAppInvoicesCreate = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTAppInvoicesCreate.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=create.js.map

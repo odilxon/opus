@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*******************************************************************!*\
+  !*** ../src/js/custom/documentation/forms/multiselectsplitter.js ***!
+  \*******************************************************************/
+
 
 // Class definition
 var KTFormsMultiselectsplitterDemos = function() {
@@ -63,3 +69,7 @@ var KTFormsMultiselectsplitterDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTFormsMultiselectsplitterDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=multiselectsplitter.js.map

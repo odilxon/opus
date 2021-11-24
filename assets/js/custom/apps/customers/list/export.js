@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!***************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/customers/list/export.js ***!
+  \***************************************************************************************/
+
 
 // Class definition
 var KTCustomersExport = function () {
@@ -238,3 +244,6 @@ var KTCustomersExport = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTCustomersExport.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=export.js.map

@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*********************************************************!*\
+  !*** ../src/js/custom/documentation/general/stepper.js ***!
+  \*********************************************************/
+
 
 // Class definition
 var KTGeneralStepperDemos = function() {
@@ -66,3 +72,7 @@ var KTGeneralStepperDemos = function() {
 KTUtil.onDOMContentLoaded(function() {
     KTGeneralStepperDemos.init();
 });
+
+/******/ })()
+;
+//# sourceMappingURL=stepper.js.map

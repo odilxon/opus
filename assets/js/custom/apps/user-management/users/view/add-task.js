@@ -1,4 +1,10 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+/*!*****************************************************************************************************!*\
+  !*** ../../../themes/metronic/html/demo1/src/js/custom/apps/user-management/users/view/add-task.js ***!
+  \*****************************************************************************************************/
+
 
 // Class definition
 var KTUsersAddTask = function () {
@@ -322,3 +328,6 @@ var KTUsersAddTask = function () {
 KTUtil.onDOMContentLoaded(function () {
     KTUsersAddTask.init();
 });
+/******/ })()
+;
+//# sourceMappingURL=add-task.js.map
