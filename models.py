@@ -10,7 +10,8 @@ from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://antiagro:antiagro@127.0.0.1:5432/opus"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'magnum-opus'
 
