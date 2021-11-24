@@ -4,6 +4,9 @@ from flask_login import UserMixin,LoginManager, login_manager, login_required, c
 from sqlalchemy import Date
 from sqlalchemy.orm import backref, relationship, selectinload
 from sqlalchemy.sql.elements import False_
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 
@@ -20,10 +23,24 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(500))
     role = db.Column(db.String(100), nullable=True)
+    password = db.Column(db.String(500))
     tasks = db.relationship("Task", backref='user')
     tasks = db.relationship("Task_History", backref='user')
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+    def Get_UserType(self):
+        if self.role == 'admin':
+            return 'Маъмурият'
+        else:
+            return 'Фойдаланувчи'
+    def getFullName(self):
+        name = ""
+        if self.name is not None:
+            name = str(self.name)
+        return name
 
 class Task(db.Model):
     __tablename__ = 'task'
@@ -57,3 +74,8 @@ class Attachment(db.Model):
     type = db.Column(db.Integer, nullable=False)
     type_id = db.Column(db.Integer, nullable=False)
     path = db.Column(db.String, nullable=False)
+
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+
+admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin.add_view(ModelView(User, db.session))

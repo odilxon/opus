@@ -1,0 +1,506 @@
+{% extends "base.html" %}
+
+
+<!--Content area here-->
+{% block content %}
+
+
+
+
+<div class="d-flex flex-column-fluid">
+    <div class="container-fluid">
+        <div class="row mt-10">
+            <div class="col-sm-6">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title"> Шакллантирилган ахоли сони</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar-people">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title"> Бириктирилган фермер хўжалиги ва қишлоқ хўжалиги корхонаси сони</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar-linked">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-10" style="display: none;">
+            <div class="col-sm-6">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title"> Ажратилган ер майдони</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar-area">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title"> Махсулот хажми</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="bar-weight">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-10">
+
+            <div class="col-sm-6">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title">Харита</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="uzb-map">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card card-custom" id="pie-book-card" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title"> Рўйхатга олинган дафтарлар сони</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="pie-book">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card card-custom" id="pie-contract-card" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title"> Маҳсулотни харид қилувчи корхона билан тузилган шартномалар сони</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="pie-contract">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+        <div class="row mt-5" style="justify-content: center;">
+            <h1 id="province_name" style="display: none;"></h1>
+        </div>
+        <div class="row mt-10">
+
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %} {% block js %}
+<script src="https://code.highcharts.com/maps/highmaps.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/countries/uz/uz-all.js"></script>
+<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+<script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+<script src="https://code.highcharts.com/mapdata/custom/world.js"></script>
+
+
+<script>
+    var origin_url = window.location.origin;
+
+    function Generate_Data(id) {
+        $("#pie-book-card").hide();
+        $("#pie-book").empty();
+        $("#pie-contract-card").hide();
+        $("#pie-contract").empty();
+        $.ajax({
+            url: origin_url + "/api/dashboard/province/" + id,
+            type: 'GET',
+            success: function(data) {
+                book_vals = [data['young_book'], data['iron_book'], data['female_book'], data['empty_book']];
+                book_labels = ['"Ёшлар" дафтари', '"Темир" дафтари', '"Аёллар" дафтари', 'Ишсиз аҳоли'];
+
+                contract_vals = [data['customer_T'], data['customer_F']];
+                contract_labels = ['Ўз эҳтиёжи учун', 'Корхона сони'];
+
+                var options = {
+                    series: book_vals,
+                    chart: {
+
+                        type: 'pie',
+                    },
+                    labels: book_labels,
+                    responsive: [{
+                        options: {
+
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#pie-book"), options);
+                chart.render();
+                $("#pie-book-card").show();
+
+
+                var options = {
+                    series: contract_vals,
+                    chart: {
+
+                        type: 'pie',
+                    },
+                    labels: contract_labels,
+                    responsive: [{
+                        options: {
+
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }]
+                };
+
+                var chart2 = new ApexCharts(document.querySelector("#pie-contract"), options);
+                chart2.render();
+                $("#pie-contract-card").show();
+                $("#province_name").show();
+            }
+        })
+
+    }
+    $(document).ready(function() {
+        $.ajax({
+            url: origin_url + '/api/dashboard/province/people',
+            type: 'GET',
+            success: function(data) {
+                var options = {
+                    series: [{
+                            name: 'Шакллантирилган ахоли сони',
+                            data: data['people']
+                        }
+
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 10,
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val) {
+                            return val + " та";
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
+
+                    xaxis: {
+                        categories: data['labels']
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        labels: {
+                            show: false,
+                            formatter: function(val) {
+                                return val + " та";
+                            }
+                        }
+
+                    },
+
+                };
+
+                var options2 = {
+                    series: [{
+                            name: 'Бириктирилган фермер хўжалиги ва қишлоқ хўжалиги корхонаси сони',
+                            data: data['linked']
+                        }
+
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 10,
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function(val) {
+                            return val + " та";
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
+
+                    xaxis: {
+                        categories: data['labels']
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        labels: {
+                            show: false,
+                            formatter: function(val) {
+                                return val + " та";
+                            }
+                        }
+
+                    },
+
+                };
+                var chart = new ApexCharts(document.querySelector("#bar-people"), options);
+                chart.render();
+                var chart22 = new ApexCharts(document.querySelector("#bar-linked"), options2);
+                chart22.render();
+
+            }
+        })
+        $.ajax({
+            url: origin_url + '/api/dashboard/province/area',
+            type: 'GET',
+            success: function(data) {
+                var options = {
+                    series: [{
+                            name: 'Ажратилган ер майдони',
+                            data: data['area']
+                        }
+
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 10,
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function(val) {
+                            return val + " сотих";
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
+
+                    xaxis: {
+                        categories: data['labels']
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        labels: {
+                            show: false,
+                            formatter: function(val) {
+                                return val + " сотих";
+                            }
+                        }
+
+                    },
+
+                };
+
+                var options2 = {
+                    series: [{
+                            name: 'Махсулот хажми',
+                            data: data['weight']
+                        }
+
+                    ],
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 10,
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function(val) {
+                            return val + " тонна";
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
+
+                    xaxis: {
+                        categories: data['labels']
+
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        labels: {
+                            show: false,
+                            formatter: function(val) {
+                                return val + " тонна";
+                            }
+                        }
+
+                    },
+
+                };
+                var chart = new ApexCharts(document.querySelector("#bar-area"), options);
+                chart.render();
+                var chart22 = new ApexCharts(document.querySelector("#bar-weight"), options2);
+                chart22.render();
+
+            }
+        })
+
+        $.ajax({
+            url: origin_url + '/api/dashboard/province/map',
+            type: 'GET',
+            success: function(data) {
+                Highcharts.mapChart('uzb-map', {
+                    chart: {
+                        map: 'countries/uz/uz-all'
+                    },
+
+                    title: {
+                        text: 'Ўзбекистон республикаси'
+                    },
+
+
+
+                    mapNavigation: {
+                        enabled: true,
+                        buttonOptions: {
+                            verticalAlign: 'bottom'
+                        }
+                    },
+
+                    colorAxis: {
+                        min: 0
+                    },
+                    plotOptions: {
+                        series: {
+                            point: {
+                                events: {
+                                    click: function() {
+                                        Generate_Data(this.id);
+                                        $("#province_name").html(this.uzb);
+                                        console.log(this.uzb);
+
+
+                                    },
+                                    unselect: function() {
+                                        console.log("I am working");
+
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            return '<b> ' + this.point.uzb + ' </b> <br> Шакиллантирилган ахоли сони: <b> ' + this.point.value +
+                                ' та </b><br>Бириктирилган фермер хўжаликлар сони :  <b>' +
+                                this.point.linked + " та </b>";
+                        }
+                    },
+                    series: [{
+                        data: data,
+                        mapData: Highcharts.maps['countries/uz/uz-all'],
+                        joinBy: ['hc-key', 'code'],
+                        name: 'Random data',
+                        states: {
+                            hover: {
+                                color: '#BADA55'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.uzb}'
+                        },
+                        tooltip: {
+                            useHTML: true,
+
+                        },
+                        animation: true
+                    }]
+                });
+            }
+        })
+
+    });
+
+    // Create the chart
+</script>
+
+{% endblock %}

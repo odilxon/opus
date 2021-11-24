@@ -4,3 +4,4 @@ psycopg2-binary
 sqlalchemy
 flask-sqlalchemy
 flask_login
+flask-wtf
