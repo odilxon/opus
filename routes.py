@@ -38,3 +38,9 @@ def login_page():
 def logout():
     logout_user()
     return redirect(url_for("login_page"))
+
+
+@app.route("/settings")
+@login_required
+def settings():
+    return render_template('pages/settings.html')
