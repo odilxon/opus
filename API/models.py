@@ -1,6 +1,6 @@
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin,LoginManager, login_manager, login_required, current_user, login_user, logout_user
+
 from sqlalchemy import Date
 from sqlalchemy.orm import backref, relationship, selectinload
 from sqlalchemy.sql.elements import False_
@@ -9,22 +9,22 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://antiagro:antiagro@127.0.0.1:5432/opus"
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://antiagro:antiagro@127.0.0.1:5432/opus"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'magnum-opus'
 
 db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login_page'
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True)
     role = db.Column(db.String(100), nullable=True)
+    image = db.Column(db.String(500), nullable=False)
+    department = db.Column(db.String(500), nullable=False)
+    rank = db.Column(db.String(500), nullable=False)
     password = db.Column(db.String(500))
     tasks = db.relationship("Task", backref='user')
     tasks = db.relationship("Task_History", backref='user')
@@ -32,16 +32,14 @@ class User(UserMixin, db.Model):
         self.password = generate_password_hash(password)
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    def Get_UserType(self):
-        if self.role == 'admin':
-            return 'Маъмурият'
-        else:
-            return 'Фойдаланувчи'
-    def getFullName(self):
-        name = ""
-        if self.name is not None:
-            name = str(self.name)
-        return name
+    def format(self):
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "email" : self.email,
+            "role" : self.role
+        }
+   
 
 class Task(db.Model):
     __tablename__ = 'task'

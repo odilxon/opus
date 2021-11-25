@@ -1,4 +1,4 @@
-from routes import *
+from api import *
 from werkzeug.exceptions import HTTPException
 
 # @app.errorhandler(404)
@@ -24,10 +24,5 @@ from werkzeug.exceptions import HTTPException
 #     print("Exception called")
 #     return render_template('/pages/error/500.html'), 500
 
-
-@app.before_request
-def before_req():
-    url = request.url
-    if current_user.is_authenticated:
-        if current_user.role != 'admin' and 'user' in url:
-            abort(404)
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0')
