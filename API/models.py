@@ -9,10 +9,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
-#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://antiagro:antiagro@127.0.0.1:5432/opus"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'magnum-opus'
+app.config.from_object('config')
 
 db = SQLAlchemy(app)
 
@@ -37,7 +34,10 @@ class User(db.Model):
             "id" : self.id,
             "name" : self.name,
             "email" : self.email,
-            "role" : self.role
+            "role" : self.role,
+            "image" : self.image,
+            "department" : self.department,
+            "rank" : self.rank,
         }
    
 
@@ -51,6 +51,15 @@ class Task(db.Model):
     status = db.Column(db.Integer, nullable=False)
     task_metas = db.relationship("Task_Meta", backref='task')
     task_metas = db.relationship("Task_History", backref='task')
+    def format(self):
+        return {
+            "id" : self.id,
+            "start_date" : self.start_date,
+            "end_date" : self.end_date,
+            "desc" : self.desc,
+            "status" : self.status,
+            "owner_id" : self.owner_id,
+        }
 
 class Task_Meta(db.Model):
     __tablename__ = 'task_meta'
@@ -58,6 +67,12 @@ class Task_Meta(db.Model):
     key = db.Column(db.String, nullable=False)
     value = db.Column(db.String, nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+    def format(self):
+        return {
+            "id" : self.id,
+            "key" : self.key,
+            "value" : self.value
+        }
 
 class Task_History(db.Model):
     __tablename__ = 'task_history'
@@ -74,7 +89,6 @@ class Attachment(db.Model):
     type_id = db.Column(db.Integer, nullable=False)
     path = db.Column(db.String, nullable=False)
 
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin = Admin(app, name='microblog', template_mode='bootstrap4')
 admin.add_view(ModelView(User, db.session))

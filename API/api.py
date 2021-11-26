@@ -1,6 +1,6 @@
 from core import *
 from datetime import datetime, timedelta
-
+from sqlalchemy import or_,and_
 
 @app.route("/login",methods=['POST'])
 def login_a():
@@ -33,6 +33,8 @@ def userdata(c):
     department
     rank
     '''
+    if request.method in ['OPTIONS', 'GET']:
+        return c.format(),200    
     if request.method=='POST':
         u = User.query.get(c.id)
         u.name = request.form.get('name')
@@ -50,7 +52,6 @@ def userdata(c):
 @app.route("/newpass", methods=['POST'])
 @token_required
 def newpass(c):
-    print(request.form)
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
     u = User.query.get(c.id)
@@ -61,3 +62,17 @@ def newpass(c):
         return jsonify({"msg": "Success"}), 200
     else:
         return jsonify({"msg": "Incorrect password"}),405
+@app.route("/user/tasks", methods=['GET'])
+@token_required
+def user_tasks(c):
+    
+    tasks = db.session.query(Task)\
+        .join(Task_Meta, Task_Meta.task_id == Task.id)\
+        .filter(or_(Task.owner_id == c.id, and_(Task_Meta.key == 'user_id',Task_Meta.value == str(c.id))))\
+        .all()
+    ret_data = []
+    for task in tasks:
+        T = task.format()
+        T['attributes'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id).all()]
+        ret_data.append(T)
+    return jsonify(ret_data)

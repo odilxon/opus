@@ -35,4 +35,5 @@ def token_required(f):
 def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = '*'
     return response
