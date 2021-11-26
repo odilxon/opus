@@ -1,0 +1,31 @@
+.calendar {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  .fc-button {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important ;
+  }
+
+  label {
+    font-weight: 500;
+  }
+}
+.modal-dialog {
+  .modal-content {
+    input {
+      font-size: 14px !important;
+      border: none !important;
+      background-color: #e8f0fe !important;
+      font-weight: 500 !important;
+      &:focus,
+      &:hover {
+        background-color: #e8f0fe !important;
+      }
+    }
+  }
+}
