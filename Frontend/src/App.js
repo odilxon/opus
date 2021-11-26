@@ -5,10 +5,14 @@ import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Calendar from './components/pages/Calendar';
+import Header from './components/Header';
+import { Container } from 'react-bootstrap';
 function App() {
   return (
     <>
       <BrowserRouter>
+        <Header />
+
         <Routes>
           <Route path="/" element={<LogIn />} />
           <Route path="/home" element={<Home />} />

@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LoginUrl } from '../../service';
 import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
+import { LoginUrl } from '../../service';
 
 const LogIn = () => {
   const [email, setEmail] = useState('');
@@ -41,14 +41,14 @@ const LogIn = () => {
 
     await axios({
       method: 'post',
-      // url: LoginUrl,
-      url: 'https://jsonplaceholder.typicode.com/posts',
+      url: LoginUrl,
+      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: bodyFormData,
       // data: { email: email, password: password },
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => {
-        const tokeen = response.data.id;
+        const tokeen = response.data.token;
         dispatch(LogInUser(tokeen));
         localStorage.setItem('userToken', tokeen);
         setEmail('');

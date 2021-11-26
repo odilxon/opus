@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { GetUserInfoUrl } from '../../service';
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Calendar = () => {
       evenetName: name,
       start_time: startTime,
       end_time: end,
-      root: localStorage.getItem('userToken'),
+      token: localStorage.getItem('userToken'),
     };
 
     if (!name || !end || !startTime) {
@@ -77,10 +78,24 @@ const Calendar = () => {
     dispatch(HandleClickDateUser(dateClickInfo.dateStr));
   };
 
+  const getUserInfo = async () => {
+    await axios
+      .post(GetUserInfoUrl, {
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
-
       return toast.warning("Ro'yhatdan o'tmagansiz!", {
         position: 'bottom-right',
         autoClose: 5000,
@@ -92,6 +107,11 @@ const Calendar = () => {
       });
     }
   }, [navigate]);
+
+  useEffect(() => {
+    getUserInfo();
+  });
+
   return (
     <div className="calendar">
       <div className="container shadow-sm rounded my-md-3   bg-white">
