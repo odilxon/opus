@@ -4,7 +4,7 @@ alchemydumps-backup/
 __pycache__/
 *.py[cod]
 *$py.class
-
+static/
 
 # C extensions
 *.so
