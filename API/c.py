@@ -11,6 +11,6 @@ def admins():
     u.set_password('admin')
     db.session.add(u)
     db.session.commit()
-
+Drop_DB()
 Create_DB()
 admins()

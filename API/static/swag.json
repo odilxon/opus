@@ -1,292 +1,283 @@
 {
     "swagger": "2.0",
     "info": {
-      "description": "E IJROclone",
-      "version": "1",
-      "title": "Opus"
+        "description": "E IJROclone",
+        "version": "1",
+        "title": "Opus"
     },
-    "host": "virtserver.swaggerhub.com",
-    "basePath": "/odilxon/Opus/1",
+    "host": "192.168.42.200:5000",
+    "basePath": "/",
     "schemes": [
-      "https",
-      "http"
+        "https",
+        "http"
     ],
     "paths": {
-      "/login": {
-        "post": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Login User",
-          "operationId": "loginuser",
-          "consumes": [
-            "application/x-www-form-urlencoded"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "email",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "password",
-              "in": "formData",
-              "required": true,
-              "type": "string"
+        "/login": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Login User",
+                "operationId": "loginuser",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "schema": {
-                "$ref": "#/definitions/Token"
-              }
-            },
-            "404": {
-              "description": "Error",
-              "schema": {
-                "$ref": "#/definitions/Error"
-              }
-            }
-          }
-        }
-      },
-      "/user": {
-        "get": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Return user info",
-          "operationId": "selectuserinfo",
-          "consumes": [
-            "application/json",
-            "application/xml"
-          ],
-          "produces": [
-            "application/json",
-            "application/xml"
-          ],
-          "parameters": [],
-          "security": [
-            {
-              "Token": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Returns User info",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
         },
-        "post": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Updating user info",
-          "operationId": "updatinguserinfo",
-          "consumes": [
-            "application/x-www-form-urlencoded"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "email",
-              "in": "formData",
-              "required": true,
-              "type": "string"
+        "/user": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return user info",
+                "operationId": "selectuserinfo",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returns User info",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
             },
-            {
-              "name": "name",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "img",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "department",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "role",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "rank",
-              "in": "formData",
-              "required": true,
-              "type": "string"
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Updating user info",
+                "operationId": "updatinguserinfo",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "department",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rank",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
             }
-          ],
-          "security": [
-            {
-              "Token": []
+        },
+        "/newpass": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Change Password",
+                "operationId": "changepass",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "current_password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "schema": {
-                "$ref": "#/definitions/User"
-              }
-            },
-            "404": {
-              "description": "Error",
-              "schema": {
-                "$ref": "#/definitions/Error"
-              }
-            }
-          }
         }
-      },
-      "/newpass": {
-        "post": {
-          "tags": [
-            "user"
-          ],
-          "summary": "Change Password",
-          "operationId": "changepass",
-          "consumes": [
-            "application/x-www-form-urlencoded"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "old_password",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "new_password",
-              "in": "formData",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "security": [
-            {
-              "Token": []
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Success",
-              "schema": {
-                "$ref": "#/definitions/Success"
-              }
-            },
-            "404": {
-              "description": "Error",
-              "schema": {
-                "$ref": "#/definitions/Error"
-              }
-            }
-          }
-        }
-      }
     },
     "securityDefinitions": {
-      "Token": {
-        "type": "apiKey",
-        "name": "x-access-tokens",
-        "in": "header"
-      }
+        "Token": {
+            "type": "apiKey",
+            "name": "x-access-token",
+            "in": "header"
+        }
     },
     "definitions": {
-      "User": {
-        "type": "object",
-        "required": [
-          "department",
-          "email",
-          "id",
-          "img",
-          "name",
-          "password"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "example": "Odilxon Muxtorxojaev"
-          },
-          "email": {
-            "type": "string",
-            "example": "admin@admin.uz"
-          },
-          "password": {
-            "type": "string",
-            "example": "dsfsdfsdfsd"
-          },
-          "img": {
-            "type": "string",
-            "example": "/fsdfsdfdsfsd/sds/sd.ass"
-          },
-          "department": {
-            "type": "string",
-            "example": "Urugchilik"
-          },
-          "rank": {
-            "type": "string",
-            "example": "Boshliq"
-          }
+        "User": {
+            "type": "object",
+            "required": [
+                "department",
+                "email",
+                "id",
+                "image",
+                "name",
+                "password"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Odilxon Muxtorxojaev"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "admin@admin.uz"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "dsfsdfsdfsd"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "/fsdfsdfdsfsd/sds/sd.ass"
+                },
+                "department": {
+                    "type": "string",
+                    "example": "Urugchilik"
+                },
+                "rank": {
+                    "type": "string",
+                    "example": "Boshliq"
+                }
+            },
+            "xml": {
+                "name": "Branch"
+            }
         },
-        "xml": {
-          "name": "Branch"
+        "Error": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "Success": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "Token": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "token": {
+                    "type": "string",
+                    "example": "dasdas654d65a4ew6ds4c8ds789ed7f98e7w987fsa6d4few89"
+                }
+            }
         }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": false
-          }
-        }
-      },
-      "Success": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "Token": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "token": {
-            "type": "string",
-            "example": "dasdas654d65a4ew6ds4c8ds789ed7f98e7w987fsa6d4few89"
-          }
-        }
-      }
     }
-  }
+}

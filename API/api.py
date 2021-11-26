@@ -36,6 +36,11 @@ def userdata(c):
     if request.method=='POST':
         u = User.query.get(c.id)
         u.name = request.form.get('name')
+        u.email = request.form.get('email')
+        u.role = request.form.get('role')
+        u.image = request.form.get('image')
+        u.department = request.form.get('department')
+        u.rank = request.form.get('rank')
 
         db.session.commit()
         return u.format(),201
@@ -45,10 +50,13 @@ def userdata(c):
 @app.route("/newpass", methods=['POST'])
 @token_required
 def newpass(c):
+    print(request.form)
     current_password = request.form.get('current_password')
     new_password = request.form.get('new_password')
-    if c.check_password(current_password):
-        c.password = c.set_password(new_password)
+    u = User.query.get(c.id)
+    if u.check_password(current_password):
+        u.set_password(new_password)
+
         db.session.commit()
         return jsonify({"msg": "Success"}), 200
     else:
