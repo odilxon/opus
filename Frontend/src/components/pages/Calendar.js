@@ -93,6 +93,7 @@ const Calendar = () => {
         console.log('Err:', err);
       });
   };
+
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
