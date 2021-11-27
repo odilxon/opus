@@ -5,11 +5,11 @@
         "version": "1",
         "title": "Opus"
     },
-    "host": "192.168.42.200:5000",
+    "host": "26.66.162.169:5000",
     "basePath": "/",
     "schemes": [
-        "https",
-        "http"
+        "http",
+        "https"
     ],
     "paths": {
         "/login": {
