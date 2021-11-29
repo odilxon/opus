@@ -40,15 +40,15 @@ const LogIn = () => {
 
     await axios({
       method: 'post',
-      // url: LoginUrl,
-      url: 'https://jsonplaceholder.typicode.com/posts',
+      url: LoginUrl,
+      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: bodyFormData,
       // data: { email: email, password: password },
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => {
-        // const tokeen = response.data.token;
-        const tokeen = response.data.id;
+        const tokeen = response.data.token;
+        // const tokeen = response.data.id;
         dispatch(LogInUser(tokeen));
         localStorage.setItem('userToken', tokeen);
         setEmail('');
@@ -56,15 +56,6 @@ const LogIn = () => {
       })
       .catch((err) => {
         console.log('Err:', err);
-        // return toast.error("Noto'g'ri", {
-        //   position: 'bottom-right',
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        // });
       });
 
     if (localStorage.getItem('userToken')) {

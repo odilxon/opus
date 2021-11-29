@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { GetUserInfoUrl } from '../../service';
+import TasksList from '../TasksList';
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,6 +18,10 @@ const Calendar = () => {
   const [name, setName] = useState('');
   const [startTime, setStartTime] = useState('');
   const [end, setEndTime] = useState('');
+
+  const userInfo = useSelector((state) => state);
+  const { userAction } = userInfo;
+  console.log(userAction.clickDate);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -77,8 +82,39 @@ const Calendar = () => {
 
   const data = useSelector((state) => state);
   console.log(data);
-  const handleDateClick = (dateClickInfo: any) => {
+
+  const handleDateClick = async (dateClickInfo: any) => {
     dispatch(HandleClickDateUser(dateClickInfo.dateStr));
+
+    await axios({
+      method: 'get',
+      url: 'http://26.175.162.142:5000/user/tasks',
+      // url: GetUserInfoUrl,
+      params: {
+        // date: dateClickInfo.dateStr,
+        date: dateClickInfo.dateStr,
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        const { data } = response;
+        // const dataLocal = {
+        //   department: data.department,
+        //   email: data.email,
+        //   id: data.id,
+        //   image: data.image,
+        //   name: data.name,
+        //   rank: data.rank,
+        //   role: data.role,
+        // };
+        // localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
   };
 
   useEffect(() => {
@@ -96,12 +132,9 @@ const Calendar = () => {
     }
   }, [navigate]);
 
-  // useEffect(() => {
-  //   getUserInfo();
-  // }, []);
-
   return (
     <div className="calendar">
+      <TasksList />
       <div className="container shadow-sm rounded my-md-3   bg-white">
         <div className="d-flex justify-content-between align-items-center">
           <h1 className="h3 px-3 pt-3">Calendar</h1>

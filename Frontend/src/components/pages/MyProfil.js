@@ -4,11 +4,11 @@ import { AiOutlineMail } from 'react-icons/ai';
 import { TiArrowUpOutline, TiArrowDownOutline } from 'react-icons/ti';
 import AccountImg from '../../assets/images/account.jpg';
 import { MdOutlineModeEdit, MdOutlineClose } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetUserInfoUrl } from '../../service';
+import { GetUserInfoUrl, LoginUrl, PostPhotoUrl } from '../../service';
 const MyProfil = () => {
   const [name, setName] = useState('');
   const [fullName, setFullName] = useState('');
@@ -20,9 +20,48 @@ const MyProfil = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state);
 
+  // onChange={(e) => setPictureUser(e.target.files[0])}
+
+  const ChangeImage = async (e) => {
+    const file = e.target.files[0];
+    var bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    await axios({
+      method: 'post',
+      // url: 'http://26.175.162.142:5000/user',
+      url: GetUserInfoUrl,
+      data: bodyFormData,
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        const { data } = response;
+        const dataLocal = {
+          department: data.department,
+          email: data.email,
+          id: data.id,
+          image: data.image,
+          name: data.name,
+          rank: data.rank,
+          role: data.role,
+        };
+        localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+
+    // const storageRef = storage().ref();
+    // const fileRef = storageRef.child(file.name);
+    // await fileRef.put(file);
+    // setRasm(await fileRef.getDownloadURL());
+  };
+
   const submitEdit = async (e) => {
     e.preventDefault();
-
+    console.log(picteruUser);
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('fullName', fullName);
@@ -44,8 +83,8 @@ const MyProfil = () => {
 
     await axios({
       method: 'post',
-      // url: LoginUrl,
-      url: 'https://jsonplaceholder.typicode.com/posts',
+      url: LoginUrl,
+      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: bodyFormData,
       // data: { email: email, password: password },
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -84,21 +123,29 @@ const MyProfil = () => {
   };
 
   const getUserInfo = async () => {
-    await axios
-      .post(GetUserInfoUrl, {
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
-        },
-      })
-
+    await axios({
+      method: 'get',
+      url: GetUserInfoUrl,
+      // url: 'https://jsonplaceholder.typicode.com/posts',
+      // data: { email: email, password: password },
+      headers: {
+        // 'x-access-token': localStorage.getItem('userToken'),
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
       .then((response) => {
-        console.log(response);
-
-        const data = {
-          name: 'name',
-          firsName: 'name',
-          id: 'name',
+        const { data } = response;
+        console.log(data);
+        const dataLocal = {
+          department: data.department,
+          email: data.email,
+          id: data.id,
+          image: data.image,
+          name: data.name,
+          rank: data.rank,
+          role: data.role,
         };
+        localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -228,6 +275,7 @@ const MyProfil = () => {
                         data-bs-placement="top"
                         title="edit Image"
                         htmlFor="pic"
+                        onChange={ChangeImage}
                       >
                         <MdOutlineModeEdit />
                         <input
@@ -235,8 +283,6 @@ const MyProfil = () => {
                           type="file"
                           name="avatar"
                           accept=".png, .jpg, .jpeg"
-                          value={picteruUser}
-                          onChange={(e) => setPictureUser(e.target.value)}
                         />
                       </label>
                       <div
@@ -325,7 +371,9 @@ const MyProfil = () => {
               <p className="text-muted">asadbekazamov@gmail.com</p>
             </div>
             <div className="col-md-6 col-lg-4 text-end">
-              <button className="btn btn-account">change Password</button>
+              <Link to="/changePassword" className="btn btn-account">
+                change Password
+              </Link>
             </div>
           </div>
         </div>

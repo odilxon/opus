@@ -37,7 +37,9 @@ const Header = () => {
   }, [navigate]);
   return (
     <>
-      {path !== '/' && localStorage.getItem('userToken') ? (
+      {path !== '/' &&
+      localStorage.getItem('userToken') &&
+      path !== '/changePassword' ? (
         <nav className="navbar my-0 py-0">
           <div className="container-fluid py-2 d-md-flex align-items-center bg-white">
             <button

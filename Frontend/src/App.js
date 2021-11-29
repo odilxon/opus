@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Calendar from './components/pages/Calendar';
 import Header from './components/Header';
 import MyProfil from './components/pages/MyProfil';
+import ChangePassword from './components/pages/ChangePassword';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/myAccount" element={<MyProfil />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
         </Routes>
 
         <ToastContainer

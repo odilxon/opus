@@ -163,11 +163,17 @@
       background-color: #e8f0fe !important;
     }
   }
-  button.btn-account {
+  .btn-account {
+    display: inline-block;
     background-color: #e8f0fe !important;
     font-weight: 500;
     text-transform: capitalize;
     color: #6c757d !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #d9e0ed !important;
+    }
   }
   .line {
     border: 1px dotted #c8c9ca;
