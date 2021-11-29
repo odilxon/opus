@@ -6,17 +6,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Calendar from './components/pages/Calendar';
 import Header from './components/Header';
-import { Container } from 'react-bootstrap';
+import MyProfil from './components/pages/MyProfil';
+
 function App() {
   return (
     <>
       <BrowserRouter>
         <Header />
-
         <Routes>
           <Route path="/" element={<LogIn />} />
           <Route path="/home" element={<Home />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/myAccount" element={<MyProfil />} />
         </Routes>
 
         <ToastContainer
