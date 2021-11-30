@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import AccountImg from '../assets/images/account.jpg';
 
 const Header = () => {
   const [click, setClick] = useState(false);
@@ -19,6 +20,7 @@ const Header = () => {
     localStorage.clear();
     navigate('/');
   };
+  let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
@@ -66,7 +68,7 @@ const Header = () => {
             </button>
             <div className="logo">
               <img
-                src="	https://preview.keenthemes.com/metronic8/demo1/assets/media/logos/logo-2.svg"
+                src="https://preview.keenthemes.com/metronic8/demo1/assets/media/logos/logo-2.svg"
                 alt="random"
                 className="img-fluid"
               />
@@ -109,13 +111,20 @@ const Header = () => {
                   className="person d-flex align-items-center mx-1 mx-lg-3"
                 >
                   <img
-                    src="	https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/150-26.jpg"
+                    src={
+                      infLocalS.image.slice(
+                        infLocalS.image.length - 10,
+                        infLocalS.image.length
+                      ) !== 'data.image'
+                        ? infLocalS.image
+                        : AccountImg
+                    }
                     alt="person"
                     className="header-account-pic"
                   />
 
                   <ul
-                    className={` ${
+                    className={`${
                       clickHero ? 'open' : null
                     } list-unstyled option shadow-sm rounded `}
                   >
@@ -124,7 +133,14 @@ const Header = () => {
                         <div className="row p-3 pb-2">
                           <div className="col-3 d-flex align-items-center justify-content-evenly ">
                             <img
-                              src="	https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/150-26.jpg"
+                              src={
+                                infLocalS.image.slice(
+                                  infLocalS.image.length - 10,
+                                  infLocalS.image.length
+                                ) !== 'data.image'
+                                  ? infLocalS.image
+                                  : AccountImg
+                              }
                               alt="person"
                               className="header-account-pic"
                             />

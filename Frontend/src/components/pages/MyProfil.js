@@ -8,11 +8,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetUserInfoUrl, LoginUrl, PostPhotoUrl } from '../../service';
+import {
+  GetUserInfoUrl,
+  globalURL,
+  LoginUrl,
+  PostPhotoUrl,
+} from '../../service';
+
 const MyProfil = () => {
   const [name, setName] = useState('');
   const [fullName, setFullName] = useState('');
-  const [picteruUser, setPictureUser] = useState('');
+  // const [picteruUser, setPictureUser] = useState('');
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
 
@@ -20,15 +26,12 @@ const MyProfil = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state);
 
-  // onChange={(e) => setPictureUser(e.target.files[0])}
-
   const ChangeImage = async (e) => {
     const file = e.target.files[0];
     var bodyFormData = new FormData();
     bodyFormData.append('image', file);
     await axios({
       method: 'post',
-      // url: 'http://26.175.162.142:5000/user',
       url: GetUserInfoUrl,
       data: bodyFormData,
       headers: {
@@ -42,32 +45,25 @@ const MyProfil = () => {
           department: data.department,
           email: data.email,
           id: data.id,
-          image: data.image,
+          image: `${globalURL}/data.image`,
           name: data.name,
           rank: data.rank,
           role: data.role,
         };
-        localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
+
+        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
       });
-
-    // const storageRef = storage().ref();
-    // const fileRef = storageRef.child(file.name);
-    // await fileRef.put(file);
-    // setRasm(await fileRef.getDownloadURL());
   };
 
   const submitEdit = async (e) => {
     e.preventDefault();
-    console.log(picteruUser);
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('fullName', fullName);
     bodyFormData.append('tel', tel);
-    bodyFormData.append('pic', picteruUser);
-    console.log(picteruUser);
 
     if (!name || !fullName || !tel) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
@@ -84,17 +80,26 @@ const MyProfil = () => {
     await axios({
       method: 'post',
       url: LoginUrl,
-      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: bodyFormData,
-      // data: { email: email, password: password },
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => {
+        const { data } = response;
         console.log(response.data);
         setName('');
         setFullName('');
         setTel('');
 
+        const dataLocal = {
+          department: data.department,
+          email: data.email,
+          id: data.id,
+          image: `${globalURL}/data.image`,
+          name: data.name,
+          rank: data.rank,
+          role: data.role,
+        };
+        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         setEditProfil(false);
 
         return toast.success('Amal bajarildi', {
@@ -126,10 +131,7 @@ const MyProfil = () => {
     await axios({
       method: 'get',
       url: GetUserInfoUrl,
-      // url: 'https://jsonplaceholder.typicode.com/posts',
-      // data: { email: email, password: password },
       headers: {
-        // 'x-access-token': localStorage.getItem('userToken'),
         'x-access-token': localStorage.getItem('userToken'),
       },
     })
@@ -140,18 +142,26 @@ const MyProfil = () => {
           department: data.department,
           email: data.email,
           id: data.id,
-          image: data.image,
+          image: `${globalURL}/data.image`,
           name: data.name,
           rank: data.rank,
           role: data.role,
         };
-        localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
+        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
       });
   };
 
+  // console.log(JSON.parse(localStorage.getItem('userInfos')));
+  let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
+
+  // useEffect(() => {
+  //   if (!localStorage.getItem('userToken') || !userlStorage) {
+  //     navigate('/');
+  //   }
+  // }, [navigate, userlStorage]);
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
@@ -161,20 +171,29 @@ const MyProfil = () => {
   useEffect(() => {
     getUserInfo();
   }, []);
+
   return (
     <div className="container">
       <div className="userProfil bg-white rounded shadow-sm p-3 my-3">
         <div className="row">
           <div className="userInfo col-md-3">
             <img
-              src="https://preview.keenthemes.com/metronic8/demo1/assets/media/avatars/150-26.jpg"
+              src={
+                infLocalS.image.slice(
+                  infLocalS.image.length - 10,
+                  infLocalS.image.length
+                ) !== 'data.image'
+                  ? infLocalS.image
+                  : AccountImg
+              }
               alt="random"
               className="img-fluid rounded"
             />
           </div>
           <div className="infos col-md-9">
             <h1 className="h2">
-              Max Smith
+              {/* {userlStorage.name} */}
+              {infLocalS.name}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24px"
@@ -242,7 +261,7 @@ const MyProfil = () => {
         <div className="card_header px-5 pt-2 pb-1">
           <div className="row align-items-center justify-content-between">
             <div className="col-md-6 col-lg-4">
-              <h2 className="h3 ">Profile Details</h2>
+              <h2 className="h3">Profile Details</h2>
             </div>
             <div className="col-md-6 col-lg-4 text-end">
               <button
@@ -372,7 +391,7 @@ const MyProfil = () => {
             </div>
             <div className="col-md-6 col-lg-4 text-end">
               <Link to="/changePassword" className="btn btn-account">
-                change Password
+                Change Password
               </Link>
             </div>
           </div>

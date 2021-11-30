@@ -3,7 +3,11 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddEvent, HandleClickDateUser } from '../../redux/actions/UserAction';
+import {
+  AddEvent,
+  HandleClickDate,
+  HandleClickDateUser,
+} from '../../redux/actions/UserAction';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -20,11 +24,11 @@ const Calendar = () => {
   const [end, setEndTime] = useState('');
 
   const userInfo = useSelector((state) => state);
-  const { userAction } = userInfo;
-  console.log(userAction.clickDate);
+  // console.log(userAction.clickDate);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const addEvent = async (e) => {
     e.preventDefault();
 
@@ -32,7 +36,6 @@ const Calendar = () => {
       evenetName: name,
       start_time: startTime,
       end_time: end,
-      token: localStorage.getItem('userToken'),
     };
 
     if (!name || !end || !startTime) {
@@ -52,7 +55,9 @@ const Calendar = () => {
       // url: LoginUrl,
       url: 'https://jsonplaceholder.typicode.com/posts',
       data: dataEvent,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
     })
       .then((response) => {
         console.log(response);
@@ -80,12 +85,9 @@ const Calendar = () => {
     setShow(false);
   };
 
-  const data = useSelector((state) => state);
-  console.log(data);
-
-  const handleDateClick = async (dateClickInfo: any) => {
-    dispatch(HandleClickDateUser(dateClickInfo.dateStr));
-
+  const handleDateClick = async (dateClickInfo) => {
+    // console.log(dateClickInfo.dateStr.slice(0, 7));
+    dispatch(HandleClickDate(dateClickInfo.dateStr));
     await axios({
       method: 'get',
       url: 'http://26.175.162.142:5000/user/tasks',
@@ -99,8 +101,9 @@ const Calendar = () => {
       },
     })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         const { data } = response;
+        dispatch(HandleClickDateUser(data));
         // const dataLocal = {
         //   department: data.department,
         //   email: data.email,
@@ -115,6 +118,8 @@ const Calendar = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
+
+    navigate('/tasks');
   };
 
   useEffect(() => {
@@ -134,7 +139,6 @@ const Calendar = () => {
 
   return (
     <div className="calendar">
-      <TasksList />
       <div className="container shadow-sm rounded my-md-3   bg-white">
         <div className="d-flex justify-content-between align-items-center">
           <h1 className="h3 px-3 pt-3">Calendar</h1>
@@ -159,6 +163,43 @@ const Calendar = () => {
             initialView="dayGridMonth"
             selectable="true"
             dateClick={handleDateClick}
+            events={[
+              {
+                title: 'event 1',
+                date: '2021-11-21',
+                backgroundColor: '#f8d7da',
+                textColor: '#842029',
+                borderColor: '#f5c2c7',
+              },
+              {
+                title: 'event 1',
+                date: '2021-11-21',
+                backgroundColor: '#fff3cd',
+                textColor: '#664d03',
+                borderColor: '#ffecb5',
+              },
+              {
+                title: 'event 1',
+                date: '2021-11-21',
+                backgroundColor: '#cff4fc',
+                textColor: '#055160',
+                borderColor: '#b6effb',
+              },
+              {
+                title: 'event 2',
+                date: '2021-11-11',
+                backgroundColor: '#fff3cd',
+                textColor: '#664d03',
+                borderColor: '#ffecb5',
+              },
+              {
+                title: 'event 3',
+                date: '2021-11-18',
+                backgroundColor: '#cff4fc',
+                textColor: '#055160',
+                borderColor: '#b6effb',
+              },
+            ]}
             // themeSystem="bootstrap"
           />
         </div>

@@ -12,6 +12,12 @@ export const HandleClickDateUser = (date) => {
     payload: date,
   };
 };
+export const HandleClickDate = (date) => {
+  return {
+    type: ActionTypes.USER_CLICKED_DATE,
+    payload: date,
+  };
+};
 export const AddEvent = (data) => {
   return {
     type: ActionTypes.USER_ADD_EVENT,

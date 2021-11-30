@@ -21,10 +21,6 @@ const LogIn = () => {
     var bodyFormData = new FormData();
     bodyFormData.append('email', email);
     bodyFormData.append('password', password);
-    //    .post('http://26.175.162.142:5000/login')
-    //    .catch((e) => console.log('err', e));
-    //  dispatch(aunthUser(response));
-    //  console.log(response);
 
     if (!email || !password) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
@@ -41,14 +37,11 @@ const LogIn = () => {
     await axios({
       method: 'post',
       url: LoginUrl,
-      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: bodyFormData,
-      // data: { email: email, password: password },
       headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((response) => {
         const tokeen = response.data.token;
-        // const tokeen = response.data.id;
         dispatch(LogInUser(tokeen));
         localStorage.setItem('userToken', tokeen);
         setEmail('');
