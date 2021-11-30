@@ -5,7 +5,7 @@
         "version": "1",
         "title": "Opus"
     },
-    "host": "26.66.162.169:5000",
+    "host": "26.175.162.142:5000",
     "basePath": "/",
     "schemes": [
         "http",
@@ -145,6 +145,64 @@
                         "description": "Error",
                         "schema": {
                             "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/tasks": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return task info",
+                "operationId": "selectusertaskinfo",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returns Task info",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/c_data": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return task count",
+                "operationId": "selectusertaskcount",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returns Task count",
+                        "schema": {
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }

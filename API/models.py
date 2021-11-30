@@ -23,8 +23,8 @@ class User(db.Model):
     department = db.Column(db.String(500), nullable=True)
     rank = db.Column(db.String(500), nullable=True)
     password = db.Column(db.String(500))
-    tasks = db.relationship("Task", backref='user')
     tasks = db.relationship("Task_History", backref='user')
+    owner_ids = db.relationship("Task", backref='user')
     def set_password(self, password):
         self.password = generate_password_hash(password)
     def check_password(self, password):
@@ -45,17 +45,17 @@ class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    end_table = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_table = db.Column(db.Date, nullable=False)
     desc = db.Column(db.String, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     task_metas = db.relationship("Task_Meta", backref='task')
-    task_metas = db.relationship("Task_History", backref='task')
+    task_histories = db.relationship("Task_History", backref='task')
     def format(self):
         return {
             "id" : self.id,
-            "start_date" : self.start_date,
-            "end_date" : self.end_date,
+            "start_date" : str(self.start_date),
+            "end_date" : str(self.end_table),
             "desc" : self.desc,
             "status" : self.status,
             "owner_id" : self.owner_id,
@@ -92,3 +92,6 @@ class Attachment(db.Model):
 
 admin = Admin(app, name='microblog', template_mode='bootstrap4')
 admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Task, db.session))
+admin.add_view(ModelView(Task_Meta, db.session))
+admin.add_view(ModelView(Task_History, db.session))

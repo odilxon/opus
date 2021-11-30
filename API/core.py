@@ -37,3 +37,7 @@ def after_request(response):
     header['Access-Control-Allow-Origin'] = '*'
     header['Access-Control-Allow-Headers'] = '*'
     return response
+
+@app.route('/uploads/<path:path>')
+def send_uploads(path):
+    return send_from_directory('uploads', path)
