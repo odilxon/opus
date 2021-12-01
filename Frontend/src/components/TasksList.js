@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { CdataUrl } from '../service';
 
 const TasksList = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const TasksList = () => {
   //   // bodyFormData.append('image', file);
   //   await axios({
   //     method: 'get',
-  //     url: 'http://26.175.162.142:5000/user/tasks',
+  //     url: CdataUrl,
   //     // url: GetUserInfoUrl,
   //     params: {
   //       date: userAction.clickDate,
@@ -47,6 +48,11 @@ const TasksList = () => {
   //   tableData();
   // }, []);
 
+  useEffect(() => {
+    if (!localStorage.getItem('userToken')) {
+      navigate('/');
+    }
+  }, [navigate]);
   return (
     <div className="container">
       <div className="bg-white shadow-sm my-md-2 p-4 rounded">
@@ -65,24 +71,17 @@ const TasksList = () => {
               <tr>
                 <th scope="col">№</th>
                 <th scope="col">Description</th>
+                <th scope="col">files</th>
                 <th scope="col">Start Date</th>
                 <th scope="col">End Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">history</th>
+                <th scope="col">+</th>
               </tr>
             </thead>
             <tbody>
               {userAction.clickDate.map((e, index) => (
-                <tr
-                  key={index}
-                  className={
-                    e.status === 1
-                      ? 'table-danger'
-                      : e.status === 2
-                      ? 'table-warning'
-                      : e.status === 3
-                      ? 'table-info'
-                      : null
-                  }
-                >
+                <tr key={index}>
                   <th scope="row">{index + 1}</th>
                   <td>{e.desc}</td>
                   <td>{e.start_date}</td>

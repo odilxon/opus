@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import AccountImg from '../assets/images/account.jpg';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [click, setClick] = useState(false);
@@ -13,14 +14,15 @@ const Header = () => {
   let location = useLocation();
   let path = location.pathname;
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  // const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state);
+  const { userAction } = userInfo;
   const signOut = () => {
     localStorage.clear();
     navigate('/');
   };
-  let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
+  // let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
@@ -112,11 +114,8 @@ const Header = () => {
                 >
                   <img
                     src={
-                      infLocalS.image.slice(
-                        infLocalS.image.length - 10,
-                        infLocalS.image.length
-                      ) !== 'data.image'
-                        ? infLocalS.image
+                      userAction.userInfos.image !== 'no'
+                        ? userAction.userInfos.image
                         : AccountImg
                     }
                     alt="person"
@@ -134,11 +133,8 @@ const Header = () => {
                           <div className="col-3 d-flex align-items-center justify-content-evenly ">
                             <img
                               src={
-                                infLocalS.image.slice(
-                                  infLocalS.image.length - 10,
-                                  infLocalS.image.length
-                                ) !== 'data.image'
-                                  ? infLocalS.image
+                                userAction.userInfos.image !== 'no'
+                                  ? userAction.userInfos.image
                                   : AccountImg
                               }
                               alt="person"
@@ -146,9 +142,11 @@ const Header = () => {
                             />
                           </div>
                           <div className="col-9">
-                            <p className="h5 mb-0">Lorem, ipsum.</p>
+                            <p className="h5 mb-0">
+                              {userAction.userInfos.name}
+                            </p>
                             <p className="text-muted mb-0">
-                              asadbekazamov@gmail.uz
+                              {userAction.userInfos.email}
                             </p>
                           </div>
                         </div>

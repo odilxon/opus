@@ -24,3 +24,15 @@ export const AddEvent = (data) => {
     payload: data,
   };
 };
+export const UserInfosLogIn = (data) => {
+  return {
+    type: ActionTypes.USER_INFOS,
+    payload: data,
+  };
+};
+export const CalendarInfos = (data) => {
+  return {
+    type: ActionTypes.CALENDAR_INFOS,
+    payload: data,
+  };
+};

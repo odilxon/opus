@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogInUser } from '../../redux/actions/UserAction';
@@ -13,8 +13,8 @@ const LogIn = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state);
-  const { user } = userInfo;
+  // const userInfo = useSelector((state) => state);
+  // const { user } = userInfo;
 
   const fetchUser = async (e) => {
     e.preventDefault();
@@ -79,8 +79,18 @@ const LogIn = () => {
   useEffect(() => {
     if (localStorage.getItem('userToken')) {
       navigate('/myAccount');
+      return toast.success('Tabriklaymiz, Amal bajarildi', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }, [navigate]);
+
   return (
     <div className="LogIn">
       <div className="container">

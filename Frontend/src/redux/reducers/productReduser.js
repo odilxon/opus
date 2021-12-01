@@ -5,6 +5,8 @@ const initialState = {
   clickDate: '',
   clickedDate: '',
   addEvent: {},
+  userInfos: {},
+  calendarInfos: [],
   loading: true,
 };
 
@@ -17,6 +19,15 @@ export const aunthUser = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+// export const UserINFOS = (state = initialState, { type, payload }) => {
+//   switch (type) {
+//     case ActionTypes.USER_INFOS:
+//       // return { ...state, userToken: payload, loading: false };
+//       return { ...state, userInfos: payload };
+//     default:
+//       return state;
+//   }
+// };
 export const clickDateUser = (state = initialState, { type, payload }) => {
   switch (type) {
     case ActionTypes.USER_CLICK_DATE:
@@ -25,6 +36,11 @@ export const clickDateUser = (state = initialState, { type, payload }) => {
       return { ...state, clickedDate: payload };
     case ActionTypes.USER_ADD_EVENT:
       return { ...state, addEvent: payload };
+    case ActionTypes.USER_INFOS:
+      // return { ...state, userToken: payload, loading: false };
+      return { ...state, userInfos: payload };
+    case ActionTypes.CALENDAR_INFOS:
+      return { ...state, calendarInfos: payload };
     default:
       return state;
   }

@@ -7,13 +7,9 @@ import { MdOutlineModeEdit, MdOutlineClose } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { GetUserInfoUrl, globalURL, LoginUrl } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  GetUserInfoUrl,
-  globalURL,
-  LoginUrl,
-  PostPhotoUrl,
-} from '../../service';
+import { UserInfosLogIn } from '../../redux/actions/UserAction';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -22,9 +18,11 @@ const MyProfil = () => {
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state);
+  const { userAction } = userInfo;
+  console.log(userAction);
 
   const ChangeImage = async (e) => {
     const file = e.target.files[0];
@@ -45,13 +43,14 @@ const MyProfil = () => {
           department: data.department,
           email: data.email,
           id: data.id,
-          image: `${globalURL}/data.image`,
+          image: `${data.image ? globalURL + data.image : 'no'}`,
           name: data.name,
           rank: data.rank,
           role: data.role,
         };
 
-        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        dispatch(UserInfosLogIn(dataLocal));
+        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -94,12 +93,14 @@ const MyProfil = () => {
           department: data.department,
           email: data.email,
           id: data.id,
-          image: `${globalURL}/data.image`,
+          image: `${data.image ? globalURL + data.image : 'no'}`,
           name: data.name,
           rank: data.rank,
           role: data.role,
         };
-        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        dispatch(UserInfosLogIn(dataLocal));
+
         setEditProfil(false);
 
         return toast.success('Amal bajarildi', {
@@ -142,12 +143,52 @@ const MyProfil = () => {
           department: data.department,
           email: data.email,
           id: data.id,
-          image: `${globalURL}/data.image`,
+          image: `${data.image ? globalURL + data.image : 'no'}`,
           name: data.name,
           rank: data.rank,
           role: data.role,
         };
-        localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        dispatch(UserInfosLogIn(dataLocal));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
+  const backHandle = () => {
+    setName('');
+    setFullName('');
+    setTel('');
+    setEditProfil(false);
+  };
+
+  const removePic = async () => {
+    var bodyFormData = new FormData();
+    bodyFormData.append('image', null);
+    await axios({
+      method: 'post',
+      url: GetUserInfoUrl,
+      data: bodyFormData,
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        const { data } = response;
+        const dataLocal = {
+          department: data.department,
+          email: data.email,
+          id: data.id,
+          image: `${data.image ? globalURL + data.image : 'no'}`,
+          name: data.name,
+          rank: data.rank,
+          role: data.role,
+        };
+
+        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        dispatch(UserInfosLogIn(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -162,15 +203,21 @@ const MyProfil = () => {
   //     navigate('/');
   //   }
   // }, [navigate, userlStorage]);
+  // useEffect(() => {
+  //   if (!localStorage.getItem('userToken')) {
+  //     navigate('/');
+  //   }
+  // }, [navigate]);
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
     }
   }, [navigate]);
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
 
   return (
     <div className="container">
@@ -179,11 +226,8 @@ const MyProfil = () => {
           <div className="userInfo col-md-3">
             <img
               src={
-                infLocalS.image.slice(
-                  infLocalS.image.length - 10,
-                  infLocalS.image.length
-                ) !== 'data.image'
-                  ? infLocalS.image
+                userAction.userInfos.image !== 'no'
+                  ? userAction.userInfos.image
                   : AccountImg
               }
               alt="random"
@@ -193,7 +237,7 @@ const MyProfil = () => {
           <div className="infos col-md-9">
             <h1 className="h2">
               {/* {userlStorage.name} */}
-              {infLocalS.name}
+              {userAction.userInfos.name}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24px"
@@ -212,15 +256,27 @@ const MyProfil = () => {
               </svg>
             </h1>
             <p className="text-muted">
-              <span>
-                <MdAccountCircle /> Developer
-              </span>
-              <span>
-                <MdAccountCircle /> Developer
-              </span>
-              <span>
-                <AiOutlineMail /> Developer
-              </span>
+              {userAction.userInfos.department ? (
+                <span>
+                  <MdAccountCircle /> {userAction.userInfos.department}
+                </span>
+              ) : null}
+              {userAction.userInfos.role ? (
+                <span>
+                  <MdAccountCircle /> {userAction.userInfos.role}
+                </span>
+              ) : null}
+              {userAction.userInfos.rank ? (
+                <span>
+                  <MdAccountCircle /> {userAction.userInfos.rank}
+                </span>
+              ) : null}
+
+              {userAction.userInfos.email ? (
+                <span>
+                  <AiOutlineMail /> {userAction.userInfos.email}
+                </span>
+              ) : null}
             </p>
             <div className="row">
               <div className="col-md-4 col-lg-3">
@@ -286,7 +342,14 @@ const MyProfil = () => {
                   <div className="col-lg-8 image-input">
                     <div
                       className="image-wrapper"
-                      style={{ backgroundImage: `url(${AccountImg})` }}
+                      style={{
+                        backgroundImage: `url(${
+                          userAction.userInfos.image !== 'no'
+                            ? userAction.userInfos.image
+                            : AccountImg
+                        }
+                        )`,
+                      }}
                     >
                       <label
                         className="edit-icon icon-pic shadow"
@@ -309,6 +372,7 @@ const MyProfil = () => {
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         title="Remove Image"
+                        onClick={removePic}
                       >
                         <MdOutlineClose />
                       </div>
@@ -370,7 +434,11 @@ const MyProfil = () => {
 
                 <div className="row my-3 mt-lg-4 align-items-center justify-content-end">
                   <div className="col-md-4 text-end">
-                    <button type="reset" className="btn btn-account me-2">
+                    <button
+                      onClick={backHandle}
+                      type="reset"
+                      className="btn btn-account me-2"
+                    >
                       Discard
                     </button>
                     <button className="btn btn-primary">Save changes</button>
@@ -387,7 +455,7 @@ const MyProfil = () => {
           <div className="row my-3 mt-lg-4 align-items-center justify-content-between">
             <div className="col-6 col-lg-5">
               <h3 className="h4">Passwpord</h3>
-              <p className="text-muted">asadbekazamov@gmail.com</p>
+              <p className="text-muted"> {userAction.userInfos.email}</p>
             </div>
             <div className="col-md-6 col-lg-4 text-end">
               <Link to="/changePassword" className="btn btn-account">

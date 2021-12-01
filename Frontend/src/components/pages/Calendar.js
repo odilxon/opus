@@ -5,6 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   AddEvent,
+  CalendarInfos,
   HandleClickDate,
   HandleClickDateUser,
 } from '../../redux/actions/UserAction';
@@ -13,19 +14,32 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import { GetUserInfoUrl } from '../../service';
-import TasksList from '../TasksList';
+import { CdataUrl, GetUserDateClickUrl } from '../../service';
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state);
+  const { userAction } = userInfo;
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [startTime, setStartTime] = useState('');
   const [end, setEndTime] = useState('');
+  const elements = [];
 
-  const userInfo = useSelector((state) => state);
-  // console.log(userAction.clickDate);
+  // statusts.map((e) => {
+  //   const infos = {
+  //     bajarilmoqda: e.Bajarilmoqda,
+  //     bajarilmagan: e.Bajarilmagan,
+  //     bajarildi: e.Bajarildi,
+  //     sana: e.Sana,
+  //   };
+  //   setStatusData(infos);
+  // });
 
+  const dataRed = useSelector((state) => state);
+  const calInf = dataRed.userAction.calendarInfos;
+  // console.log();
+  // console.log(calInf);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -88,10 +102,11 @@ const Calendar = () => {
   const handleDateClick = async (dateClickInfo) => {
     // console.log(dateClickInfo.dateStr.slice(0, 7));
     dispatch(HandleClickDate(dateClickInfo.dateStr));
+    navigate('/tasks');
     await axios({
       method: 'get',
-      url: 'http://26.175.162.142:5000/user/tasks',
-      // url: GetUserInfoUrl,
+      // url: 'http://26.175.162.142:5000/user/tasks',
+      url: GetUserDateClickUrl,
       params: {
         // date: dateClickInfo.dateStr,
         date: dateClickInfo.dateStr,
@@ -118,24 +133,148 @@ const Calendar = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
-
-    navigate('/tasks');
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem('userToken')) {
-      navigate('/');
-      return toast.error("Noto'g'ri amal", {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+  const getCount = async () => {
+    await axios({
+      method: 'get',
+      url: CdataUrl,
+      // url: GetUserInfoUrl,
+      // params: {
+      //   date: userAction.clickDate,
+      // },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        // console.log(response.data);
+        const arr = [];
+        // const obj = {};
+        const { data } = response;
+        Object.keys(data).map((e) => arr.push(data[e]));
+        // Object.keys(data).map((e) => dispatch(CalendarInfos(arr)));
+        dispatch(CalendarInfos(arr));
+        // setStatuts(data);
+        // console.log(data);
+        // const dataLocal = {
+        //   department: data.department,
+        //   email: data.email,
+        //   id: data.id,
+        //   image: data.image,
+        //   name: data.name,
+        //   rank: data.rank,
+        //   role: data.role,
+        // };
+        // localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+  // console.log(calInf[0].Bajarildi);
+  // console.log(calInf);
+
+  calInf.map((e) => {
+    // elements.push(e.Sana);
+    // const bajarildi = {
+    //   title: `Bajarildi   ${calInf[0].Bajarildi}`,
+    //   date: calInf[e].Sana,
+    // };
+    // const bajarilmoqda = {
+    //   title: `Bajarilmoqda   ${calInf[e].Bajarilmoqda}`,
+    //   date: calInf[e].Sana,
+    // };
+    // const bajarilmagan = {
+    //   title: `Bajarilmoqda   ${calInf[e].Bajarilmagan}`,
+    //   date: calInf[e].Sana,
+    // };
+    // --
+    if (e.Bajarildi > 0) {
+      elements.push({
+        title: `Bajarildi: ${e.Bajarildi} ta`,
+        date: e.Sana,
+        backgroundColor: '#cff4fc',
+        textColor: '#055160',
+        borderColor: '#b6effb',
       });
     }
-  }, [navigate]);
+    if (e.Bajarilmoqda > 0) {
+      elements.push({
+        title: `Bajarilmoqda: ${e.Bajarilmoqda} ta`,
+        date: e.Sana,
+        backgroundColor: '#fff3cd',
+        textColor: '#664d03',
+        borderColor: '#ffecb5',
+      });
+    }
+    if (e.Bajarilmagan) {
+      elements.push({
+        title: `Bajarilmoqda: ${e.Bajarilmagan} ta`,
+        date: e.Sana,
+        backgroundColor: '#f8d7da',
+        textColor: '#842029',
+        borderColor: '#f5c2c7',
+      });
+    }
+    // ----
+    // if (calInf[e].Bajarildi > 0) {
+    //   elements.push({
+    //     title: `Bajarildi   ${calInf[e].Bajarildi}`,
+    //     date: calInf[e].Sana,
+    //   });
+    // }
+    // if (calInf[e].Bajarilmagan > 0) {
+    //   elements.push({
+    //     title: `Bajarilmoqda   ${calInf[e].Bajarilmoqda}`,
+    //     date: calInf[e].Sana,
+    //   });
+    // }
+    // if (calInf[e].Bajarilmagan) {
+    //   elements.push({
+    //     title: `Bajarilmoqda   ${calInf[e].Bajarilmagan}`,
+    //     date: calInf[e].Sana,
+    //   });
+    // }
+  });
+
+  // if (statusts) {
+  //   Object.keys(statusts).forEach((e) => {
+  //     const infos = {
+  //       bajarilmoqda: statusts[e].Bajarilmoqda,
+  //       bajarilmagan: statusts[e].Bajarilmagan,
+  //       bajarildi: statusts[e].Bajarildi,
+  //       sana: statusts[e].Sana,
+  //     };
+  //     setStatusData([...statusData, infos]);
+  //   });
+  // }
+  // useEffect(() => {
+  //   if (!localStorage.getItem('userToken')) {
+  //     navigate('/');
+  //     return toast.error("Noto'g'ri amal", {
+  //       position: 'bottom-right',
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //   }
+  // }, [navigate]);
+
+  // console.log(statusts);
+  // if (statusts.length > 2) {
+  //   Object.keys(statusts).map((key) =>
+  //     setStatutsData([...setStatutsData, statusts[key].Sana])
+  //   );
+  // }
+  // console.log(statustsData);
+
+  useEffect(() => {
+    getCount();
+  }, []);
 
   return (
     <div className="calendar">
@@ -163,43 +302,44 @@ const Calendar = () => {
             initialView="dayGridMonth"
             selectable="true"
             dateClick={handleDateClick}
-            events={[
-              {
-                title: 'event 1',
-                date: '2021-11-21',
-                backgroundColor: '#f8d7da',
-                textColor: '#842029',
-                borderColor: '#f5c2c7',
-              },
-              {
-                title: 'event 1',
-                date: '2021-11-21',
-                backgroundColor: '#fff3cd',
-                textColor: '#664d03',
-                borderColor: '#ffecb5',
-              },
-              {
-                title: 'event 1',
-                date: '2021-11-21',
-                backgroundColor: '#cff4fc',
-                textColor: '#055160',
-                borderColor: '#b6effb',
-              },
-              {
-                title: 'event 2',
-                date: '2021-11-11',
-                backgroundColor: '#fff3cd',
-                textColor: '#664d03',
-                borderColor: '#ffecb5',
-              },
-              {
-                title: 'event 3',
-                date: '2021-11-18',
-                backgroundColor: '#cff4fc',
-                textColor: '#055160',
-                borderColor: '#b6effb',
-              },
-            ]}
+            events={elements}
+            // events={[
+            //   {
+            //     title: 'event 1',
+            //     date: '2021-11-21',
+            //     backgroundColor: '#f8d7da',
+            //     textColor: '#842029',
+            //     borderColor: '#f5c2c7',
+            //   },
+            //   {
+            //     title: 'event 1',
+            //     date: '2021-11-21',
+            //     backgroundColor: '#fff3cd',
+            //     textColor: '#664d03',
+            //     borderColor: '#ffecb5',
+            //   },
+            //   {
+            //     title: 'event 1',
+            //     date: '2021-11-21',
+            //     backgroundColor: '#cff4fc',
+            //     textColor: '#055160',
+            //     borderColor: '#b6effb',
+            //   },
+            //   {
+            //     title: 'event 2',
+            //     date: '2021-11-11',
+            //     backgroundColor: '#fff3cd',
+            //     textColor: '#664d03',
+            //     borderColor: '#ffecb5',
+            //   },
+            //   {
+            //     title: 'event 3',
+            //     date: '2021-11-18',
+            //     backgroundColor: '#cff4fc',
+            //     textColor: '#055160',
+            //     borderColor: '#b6effb',
+            //   },
+            // ]}
             // themeSystem="bootstrap"
           />
         </div>
