@@ -5,7 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 static/
-
+API/config.py
 # C extensions
 *.so
 
