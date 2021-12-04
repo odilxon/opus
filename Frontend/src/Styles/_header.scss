@@ -76,7 +76,7 @@ nav {
 
     .option {
       z-index: 2;
-      position: fixed;
+      position: absolute;
       inset: 0px 0px auto auto;
       margin: 0px;
       transform: translate(-30px, 80px) scale(0);

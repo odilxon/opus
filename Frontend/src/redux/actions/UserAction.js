@@ -36,3 +36,9 @@ export const CalendarInfos = (data) => {
     payload: data,
   };
 };
+export const HandleHistory = (data) => {
+  return {
+    type: ActionTypes.HANDLE_HISTORYS,
+    payload: data,
+  };
+};

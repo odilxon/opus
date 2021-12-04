@@ -75,6 +75,15 @@
         height: 125px !important;
         width: 125px !important;
         position: relative;
+        img {
+          max-width: 100%;
+          height: 125px !important;
+          width: 125px !important;
+          object-fit: cover;
+          object-position: center;
+          max-height: 100%;
+          border-radius: 0.4rem;
+        }
       }
       .icon-pic {
         border: 0;

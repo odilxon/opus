@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -14,12 +15,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import { CdataUrl, GetUserDateClickUrl } from '../../service';
+import { CdataUrl, GetUserDateClickUrl, TaskAddUrl } from '../../service';
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state);
-  const { userAction } = userInfo;
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -66,8 +65,8 @@ const Calendar = () => {
 
     await axios({
       method: 'post',
-      // url: LoginUrl,
-      url: 'https://jsonplaceholder.typicode.com/posts',
+      url: TaskAddUrl,
+      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: dataEvent,
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
@@ -102,6 +101,7 @@ const Calendar = () => {
   const handleDateClick = async (dateClickInfo) => {
     // console.log(dateClickInfo.dateStr.slice(0, 7));
     dispatch(HandleClickDate(dateClickInfo.dateStr));
+    localStorage.setItem('ckickedDate', dateClickInfo.dateStr);
     navigate('/tasks');
     await axios({
       method: 'get',
@@ -135,6 +135,7 @@ const Calendar = () => {
       });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getCount = async () => {
     await axios({
       method: 'get',
@@ -291,7 +292,7 @@ const Calendar = () => {
           </div>
         </div>
         <hr />
-        <div className="p-md-3">
+        <div className="p-md-3 calendar-wrapper">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             headerToolbar={{
@@ -303,44 +304,6 @@ const Calendar = () => {
             selectable="true"
             dateClick={handleDateClick}
             events={elements}
-            // events={[
-            //   {
-            //     title: 'event 1',
-            //     date: '2021-11-21',
-            //     backgroundColor: '#f8d7da',
-            //     textColor: '#842029',
-            //     borderColor: '#f5c2c7',
-            //   },
-            //   {
-            //     title: 'event 1',
-            //     date: '2021-11-21',
-            //     backgroundColor: '#fff3cd',
-            //     textColor: '#664d03',
-            //     borderColor: '#ffecb5',
-            //   },
-            //   {
-            //     title: 'event 1',
-            //     date: '2021-11-21',
-            //     backgroundColor: '#cff4fc',
-            //     textColor: '#055160',
-            //     borderColor: '#b6effb',
-            //   },
-            //   {
-            //     title: 'event 2',
-            //     date: '2021-11-11',
-            //     backgroundColor: '#fff3cd',
-            //     textColor: '#664d03',
-            //     borderColor: '#ffecb5',
-            //   },
-            //   {
-            //     title: 'event 3',
-            //     date: '2021-11-18',
-            //     backgroundColor: '#cff4fc',
-            //     textColor: '#055160',
-            //     borderColor: '#b6effb',
-            //   },
-            // ]}
-            // themeSystem="bootstrap"
           />
         </div>
       </div>

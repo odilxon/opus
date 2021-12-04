@@ -3,4 +3,7 @@ export const LoginUrl = `${globalURL}login`;
 export const GetUserInfoUrl = `${globalURL}user`;
 export const GetUserDateClickUrl = `${globalURL}user/tasks`;
 export const CdataUrl = `${globalURL}user/c_data`;
+export const NewPassUrl = `${globalURL}newpass`;
+export const ADDEventUrl = `${globalURL}user/task/add_event`;
+export const TaskAddUrl = `${globalURL}user/task/add`;
 // export const PostPhotoUrl = `${globalURL}/`;

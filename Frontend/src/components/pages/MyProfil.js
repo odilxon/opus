@@ -22,7 +22,8 @@ const MyProfil = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state);
   const { userAction } = userInfo;
-  console.log(userAction);
+
+  // console.log(userAction);
 
   const ChangeImage = async (e) => {
     const file = e.target.files[0];
@@ -138,7 +139,7 @@ const MyProfil = () => {
     })
       .then((response) => {
         const { data } = response;
-        console.log(data);
+        // console.log(data);
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -196,7 +197,6 @@ const MyProfil = () => {
   };
 
   // console.log(JSON.parse(localStorage.getItem('userInfos')));
-  let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
 
   // useEffect(() => {
   //   if (!localStorage.getItem('userToken') || !userlStorage) {
@@ -236,7 +236,6 @@ const MyProfil = () => {
           </div>
           <div className="infos col-md-9">
             <h1 className="h2">
-              {/* {userlStorage.name} */}
               {userAction.userInfos.name}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -347,10 +346,17 @@ const MyProfil = () => {
                           userAction.userInfos.image !== 'no'
                             ? userAction.userInfos.image
                             : AccountImg
-                        }
-                        )`,
+                        })`,
                       }}
                     >
+                      <img
+                        src={
+                          userAction.userInfos.image !== 'no'
+                            ? userAction.userInfos.image
+                            : AccountImg
+                        }
+                        alt="Account"
+                      />
                       <label
                         className="edit-icon icon-pic shadow"
                         data-bs-toggle="tooltip"
@@ -367,7 +373,7 @@ const MyProfil = () => {
                           accept=".png, .jpg, .jpeg"
                         />
                       </label>
-                      <div
+                      {/* <div
                         className="close-icon icon-pic shadow"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
@@ -375,7 +381,7 @@ const MyProfil = () => {
                         onClick={removePic}
                       >
                         <MdOutlineClose />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 

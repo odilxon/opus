@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-// import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { LogInUser } from '../../redux/actions/UserAction';
+// import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
+import { NewPassUrl } from '../../service';
 // import { LoginUrl } from '../../service';
 
 const ChangePassword = () => {
@@ -13,13 +14,19 @@ const ChangePassword = () => {
   const [showpass, setShowpass] = useState(false);
 
   // const dispatch = useDispatch();
-  // const navigate = useNavigate();
   // const userInfo = useSelector((state) => state);
 
-  let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state);
 
-  const editPassword = (e) => {
+  const { userAction } = userInfo;
+  console.log(userInfo);
+
+  const editPassword = async (e) => {
     e.preventDefault();
+    var bodyFormData = new FormData();
+    bodyFormData.append('current_password', currentPassword);
+    bodyFormData.append('new_password', password);
 
     if (!currentPassword || !password) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
@@ -43,6 +50,42 @@ const ChangePassword = () => {
         progress: undefined,
       });
     }
+
+    await axios({
+      method: 'post',
+      url: NewPassUrl,
+      data: bodyFormData,
+      headers: { 'x-access-token': localStorage.getItem('userToken') },
+    })
+      .then((response) => {
+        console.log(response);
+        setCurrentPassword('');
+        setPassword('');
+
+        navigate('/myAccount');
+        return toast.success('Amal bajarildi', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+
+        return toast.error("Noto'g'ri", {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
   };
 
   // useEffect(() => {
@@ -66,7 +109,7 @@ const ChangePassword = () => {
                 type="email"
                 name="email"
                 placeholder="Placeholder"
-                value={infLocalS.email}
+                value={userAction.userInfos.email}
                 aria-label="Disabled input"
                 disabled={true}
                 readOnly
@@ -114,8 +157,8 @@ const ChangePassword = () => {
                   type="checkbox"
                   checked={showpass}
                   onChange={() => setShowpass(!showpass)}
-                />{' '}
-                Show password
+                />
+                {'   '} Show password
               </label>
               <div className="fv-plugins-message-container invalid-feedback"></div>
             </div>
