@@ -8,7 +8,7 @@ import Header from './components/Header';
 import MyProfil from './components/pages/MyProfil';
 import ChangePassword from './components/pages/ChangePassword';
 import TasksList from './components/TasksList';
-
+import './i18next';
 function App() {
   return (
     <>

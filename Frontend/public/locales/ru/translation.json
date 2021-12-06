@@ -1,0 +1,22 @@
+{
+  "LogIn": {
+    "join": "Ro'yhatdan o'tish",
+    "signin": "Kirish",
+    "text": "Lorem Ipsum is simply dummy text"
+  },
+  "Header": {
+    "search": "Sayt bo'ylab qidiruv",
+    "home": "Bosh sahifa",
+    "message": "Xabarlar",
+    "im": "Men",
+    "signOut": "Chiqish"
+  },
+  "calendar": "Yuklanmoqda...",
+  "task": {
+    "kg": "Yuk kilogrammini kiriting",
+    "kv": "Yuk hajmini kiriting",
+    "narx": "Yuk narxini kiriting",
+    "ok": "Hisoblash",
+    "natija": "Natija: "
+  }
+}

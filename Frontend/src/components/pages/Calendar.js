@@ -25,20 +25,9 @@ const Calendar = () => {
   const [end, setEndTime] = useState('');
   const elements = [];
 
-  // statusts.map((e) => {
-  //   const infos = {
-  //     bajarilmoqda: e.Bajarilmoqda,
-  //     bajarilmagan: e.Bajarilmagan,
-  //     bajarildi: e.Bajarildi,
-  //     sana: e.Sana,
-  //   };
-  //   setStatusData(infos);
-  // });
-
   const dataRed = useSelector((state) => state);
   const calInf = dataRed.userAction.calendarInfos;
-  // console.log();
-  // console.log(calInf);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -66,7 +55,6 @@ const Calendar = () => {
     await axios({
       method: 'post',
       url: TaskAddUrl,
-      // url: 'https://jsonplaceholder.typicode.com/posts',
       data: dataEvent,
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
@@ -99,16 +87,13 @@ const Calendar = () => {
   };
 
   const handleDateClick = async (dateClickInfo) => {
-    // console.log(dateClickInfo.dateStr.slice(0, 7));
     dispatch(HandleClickDate(dateClickInfo.dateStr));
     localStorage.setItem('ckickedDate', dateClickInfo.dateStr);
     navigate('/tasks');
     await axios({
       method: 'get',
-      // url: 'http://26.175.162.142:5000/user/tasks',
       url: GetUserDateClickUrl,
       params: {
-        // date: dateClickInfo.dateStr,
         date: dateClickInfo.dateStr,
       },
       headers: {
@@ -116,19 +101,8 @@ const Calendar = () => {
       },
     })
       .then((response) => {
-        // console.log(response.data);
         const { data } = response;
         dispatch(HandleClickDateUser(data));
-        // const dataLocal = {
-        //   department: data.department,
-        //   email: data.email,
-        //   id: data.id,
-        //   image: data.image,
-        //   name: data.name,
-        //   rank: data.rank,
-        //   role: data.role,
-        // };
-        // localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -140,57 +114,23 @@ const Calendar = () => {
     await axios({
       method: 'get',
       url: CdataUrl,
-      // url: GetUserInfoUrl,
-      // params: {
-      //   date: userAction.clickDate,
-      // },
+
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
       },
     })
       .then((response) => {
-        // console.log(response.data);
         const arr = [];
-        // const obj = {};
         const { data } = response;
         Object.keys(data).map((e) => arr.push(data[e]));
-        // Object.keys(data).map((e) => dispatch(CalendarInfos(arr)));
         dispatch(CalendarInfos(arr));
-        // setStatuts(data);
-        // console.log(data);
-        // const dataLocal = {
-        //   department: data.department,
-        //   email: data.email,
-        //   id: data.id,
-        //   image: data.image,
-        //   name: data.name,
-        //   rank: data.rank,
-        //   role: data.role,
-        // };
-        // localStorage.setItem('UserInfos', JSON.stringify(dataLocal));
       })
       .catch((err) => {
         console.log('Err:', err);
       });
   };
-  // console.log(calInf[0].Bajarildi);
-  // console.log(calInf);
 
   calInf.map((e) => {
-    // elements.push(e.Sana);
-    // const bajarildi = {
-    //   title: `Bajarildi   ${calInf[0].Bajarildi}`,
-    //   date: calInf[e].Sana,
-    // };
-    // const bajarilmoqda = {
-    //   title: `Bajarilmoqda   ${calInf[e].Bajarilmoqda}`,
-    //   date: calInf[e].Sana,
-    // };
-    // const bajarilmagan = {
-    //   title: `Bajarilmoqda   ${calInf[e].Bajarilmagan}`,
-    //   date: calInf[e].Sana,
-    // };
-    // --
     if (e.Bajarildi > 0) {
       elements.push({
         title: `Bajarildi: ${e.Bajarildi} ta`,
@@ -218,60 +158,7 @@ const Calendar = () => {
         borderColor: '#f5c2c7',
       });
     }
-    // ----
-    // if (calInf[e].Bajarildi > 0) {
-    //   elements.push({
-    //     title: `Bajarildi   ${calInf[e].Bajarildi}`,
-    //     date: calInf[e].Sana,
-    //   });
-    // }
-    // if (calInf[e].Bajarilmagan > 0) {
-    //   elements.push({
-    //     title: `Bajarilmoqda   ${calInf[e].Bajarilmoqda}`,
-    //     date: calInf[e].Sana,
-    //   });
-    // }
-    // if (calInf[e].Bajarilmagan) {
-    //   elements.push({
-    //     title: `Bajarilmoqda   ${calInf[e].Bajarilmagan}`,
-    //     date: calInf[e].Sana,
-    //   });
-    // }
   });
-
-  // if (statusts) {
-  //   Object.keys(statusts).forEach((e) => {
-  //     const infos = {
-  //       bajarilmoqda: statusts[e].Bajarilmoqda,
-  //       bajarilmagan: statusts[e].Bajarilmagan,
-  //       bajarildi: statusts[e].Bajarildi,
-  //       sana: statusts[e].Sana,
-  //     };
-  //     setStatusData([...statusData, infos]);
-  //   });
-  // }
-  // useEffect(() => {
-  //   if (!localStorage.getItem('userToken')) {
-  //     navigate('/');
-  //     return toast.error("Noto'g'ri amal", {
-  //       position: 'bottom-right',
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //     });
-  //   }
-  // }, [navigate]);
-
-  // console.log(statusts);
-  // if (statusts.length > 2) {
-  //   Object.keys(statusts).map((key) =>
-  //     setStatutsData([...setStatutsData, statusts[key].Sana])
-  //   );
-  // }
-  // console.log(statustsData);
 
   useEffect(() => {
     getCount();

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -7,13 +7,14 @@ import { ADDEventUrl, globalURL, TaskAddUrl } from '../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { AddEvent, HandleHistory } from '../redux/actions/UserAction';
+import {
+  HandleClickDateUser,
+  HandleHistory,
+} from '../redux/actions/UserAction';
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 
 const TasksList = () => {
-  // const [name, setName] = useState('');
-  // const [startTime, setStartTime] = useState('');
   const [end, setEndTime] = useState('');
   const [show, setShow] = useState(false);
   const [nameAd, setNamead] = useState('');
@@ -23,15 +24,13 @@ const TasksList = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
+  const [fileIcon, setFileIcon] = useState('');
 
-  console.log(addFile);
+  // console.log(addFile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state);
   const { userAction } = userInfo;
-
-  console.log(userAction.clickDate);
-  // console.log(userAction.clickedDate);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -41,44 +40,30 @@ const TasksList = () => {
     setClickHist(true);
   };
 
-  // const timestamp = Date.now();
-
-  // console.log(
-  //   new Intl.DateTimeFormat('to', {
-  //     year: 'numeric',
-  //     month: '2-digit',
-  //     day: '2-digit',
-  //     hour: '2-digit',
-  //     minute: '2-digit',
-  //     second: '2-digit',
-  //   }).format(timestamp)
-  // );
-
   const addEvent = async (e) => {
     e.preventDefault();
+    var bodyFormData = new FormData();
 
-    const dataEvent = {
-      evenetName: nameAd,
-      start_time: userAction.clickedDate,
-      end_time: end,
-      file: addFile,
-    };
+    bodyFormData.append('desc', nameAd);
+    bodyFormData.append('start_date', userAction.clickedDate);
+    bodyFormData.append('end_date', end);
+    bodyFormData.append('file', addFile);
 
-    console.log(dataEvent);
     await axios({
       method: 'post',
+      params: {
+        date: localStorage.getItem('ckickedDate'),
+      },
       url: TaskAddUrl,
-      data: dataEvent,
+      data: bodyFormData,
       headers: { 'x-access-token': localStorage.getItem('userToken') },
     })
       .then((response) => {
-        console.log(response);
-        dispatch(AddEvent(dataEvent));
+        console.log(response.data);
+        dispatch(HandleClickDateUser(response.data));
         setNamead('');
         setEndTime('');
-        if (dataEvent) {
-          navigate('/tasks');
-        }
+        navigate('/tasks');
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -103,25 +88,26 @@ const TasksList = () => {
   const addDesc = async (e) => {
     e.preventDefault();
 
-    const dataEvent = {
-      tasc_id: taskId,
-      desc: descName,
-      // start_time: localStorage.getItem('ckickedDate'),
-      status: checkDesc,
-    };
-
-    console.log(dataEvent);
+    var bodyFormData = new FormData();
+    bodyFormData.append('task_id', taskId);
+    bodyFormData.append('desc', descName);
+    bodyFormData.append('status', checkDesc);
     await axios({
       method: 'post',
       url: ADDEventUrl,
-      data: dataEvent,
+      params: {
+        date: localStorage.getItem('ckickedDate'),
+      },
+      data: bodyFormData,
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
       },
     })
       .then((response) => {
         console.log(response);
+        dispatch(HandleClickDateUser(response.data));
         setDescName('');
+        setClickDesc(false);
         setClickDesc(false);
       })
       .catch((err) => {
@@ -136,8 +122,6 @@ const TasksList = () => {
           progress: undefined,
         });
       });
-
-    setClickDesc(false);
   };
 
   const converTime = (a) => {
@@ -188,7 +172,7 @@ const TasksList = () => {
               <h1 className="pt-2 pb-4">Tasklar ro'yhati</h1>
             </div>
 
-            {userAction.clickedDate ? (
+            {userAction.clickedDate.length > 0 ? (
               <>
                 <div className="col-md-4 text-end">
                   {userAction.clickedDate}
@@ -204,7 +188,7 @@ const TasksList = () => {
               </>
             ) : null}
           </div>
-          {userAction.clickDate ? (
+          {userAction.clickDate.length > 0 ? (
             <div className="table-responsive">
               <table className="table table-bordered">
                 <thead>
@@ -234,22 +218,71 @@ const TasksList = () => {
                               download
                             >
                               <span title={e.key}>
+                                {console.log(e.value.slice(e.value.length - 4))}
                                 <FileIcon
                                   extension={
-                                    e.value[e.value.length - 4] == '.'
+                                    e.value[e.value.length - 4] === '.'
                                       ? e.value.slice(e.value.length - 3)
-                                      : e.value[e.value.length - 5] == '.'
+                                      : e.value[e.value.length - 5] === '.'
                                       ? e.value.slice(e.value.length - 4)
                                       : 'file'
                                   }
-                                  {...(defaultStyles +
-                                    `.${
-                                      e.value[e.value.length - 4] == '.'
-                                        ? e.value.slice(e.value.length - 3)
-                                        : e.value[e.value.length - 5] == '.'
-                                        ? e.value.slice(e.value.length - 4)
-                                        : 'c'
-                                    }`)}
+                                  gradientColor={
+                                    e.value.slice(e.value.length - 3) ===
+                                      'doc' ||
+                                    e.value.slice(e.value.length - 3) === 'ocx'
+                                      ? '#2c5898'
+                                      : e.value.slice(e.value.length - 3) ===
+                                          'xls' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'xml' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'lsx'
+                                      ? 'green'
+                                      : e.value.slice(e.value.length - 3) ===
+                                        'pdf'
+                                      ? 'red'
+                                      : e.value.slice(e.value.length - 3) ===
+                                          'png' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'peg' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'jpg'
+                                      ? 'yellow'
+                                      : 'white'
+                                  }
+                                  labelColor={
+                                    e.value.slice(e.value.length - 3) ===
+                                      'doc' ||
+                                    e.value.slice(e.value.length - 3) === 'ocx'
+                                      ? '#2c5898'
+                                      : e.value.slice(e.value.length - 3) ===
+                                          'xls' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'xml' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'lsx'
+                                      ? 'green'
+                                      : e.value.slice(e.value.length - 3) ===
+                                        'pdf'
+                                      ? 'red'
+                                      : e.value.slice(e.value.length - 3) ===
+                                          'png' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'peg' ||
+                                        e.value.slice(e.value.length - 3) ===
+                                          'jpg'
+                                      ? 'yellow'
+                                      : 'white'
+                                  }
+                                  gradientOpacity={0.5}
+                                  // {e.value[e.value.length - 4] === '.'
+                                  // ? e.value.slice(e.value.length - 3)
+                                  // : e.value[e.value.length - 5] === '.'
+                                  // ? e.value.slice(e.value.length - 4)
+                                  // : 'file'}
+
+                                  // {...defaultStyles.docx}
                                 />
                               </span>
                             </Link>

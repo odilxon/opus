@@ -94,7 +94,7 @@ const LogIn = () => {
   return (
     <div className="LogIn">
       <div className="container">
-        <h1 className="text-center py-5">Metronic</h1>
+        <h1 className="text-center py-5">Opus</h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto">
           <form onSubmit={fetchUser}>
             <h2 className="text-center h3">Sign In to Metronic</h2>
