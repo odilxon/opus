@@ -104,10 +104,9 @@ const TasksList = () => {
       },
     })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         dispatch(HandleClickDateUser(response.data));
         setDescName('');
-        setClickDesc(false);
         setClickDesc(false);
       })
       .catch((err) => {
@@ -211,14 +210,14 @@ const TasksList = () => {
                       <td className="iconDiv">
                         {e.attributes.length > 0 ? (
                           e.attributes.map((e, i) => (
-                            <Link
+                            <a
                               key={i}
-                              to={globalURL + e.value}
+                              href={globalURL + e.value}
                               target="_blank"
                               download
                             >
                               <span title={e.key}>
-                                {console.log(e.value.slice(e.value.length - 4))}
+                                {/* {console.log(e.value.slice(e.value.length - 4))} */}
                                 <FileIcon
                                   extension={
                                     e.value[e.value.length - 4] === '.'
@@ -285,7 +284,7 @@ const TasksList = () => {
                                   // {...defaultStyles.docx}
                                 />
                               </span>
-                            </Link>
+                            </a>
                           ))
                         ) : (
                           <p>File mavjud emas</p>

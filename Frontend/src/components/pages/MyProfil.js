@@ -7,7 +7,7 @@ import { MdOutlineModeEdit, MdOutlineClose } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { GetUserInfoUrl, globalURL, LoginUrl } from '../../service';
+import { GetUserInfoUrl, globalURL } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserInfosLogIn } from '../../redux/actions/UserAction';
 
@@ -17,6 +17,7 @@ const MyProfil = () => {
   // const [picteruUser, setPictureUser] = useState('');
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
+  const [rankAcc, setRankAcc] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,7 +64,8 @@ const MyProfil = () => {
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('fullName', fullName);
-    bodyFormData.append('tel', tel);
+    bodyFormData.append('department', tel);
+    bodyFormData.append('rank', rankAcc);
 
     if (!name || !fullName || !tel) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
@@ -79,17 +81,19 @@ const MyProfil = () => {
 
     await axios({
       method: 'post',
-      url: LoginUrl,
+      url: GetUserInfoUrl,
       data: bodyFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
     })
       .then((response) => {
-        const { data } = response;
         console.log(response.data);
         setName('');
         setFullName('');
         setTel('');
-
+        setRankAcc('');
+        const { data } = response;
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -99,9 +103,7 @@ const MyProfil = () => {
           rank: data.rank,
           role: data.role,
         };
-        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
-
         setEditProfil(false);
 
         return toast.success('Amal bajarildi', {
@@ -417,19 +419,38 @@ const MyProfil = () => {
                   </div>
 
                   <div className="col-lg-4 form-label mt-lg-3">
-                    <label htmlFor="tel">Contact number</label>
+                    <label htmlFor="tel">Department</label>
                   </div>
                   <div className="col-lg-8 image-input">
                     <div className="row mt-lg-3">
                       <div className=" my-2">
                         <input
                           className="form-control form-control-lg form-control-solid "
-                          type="tel"
-                          name="tel"
+                          type="text"
+                          name="department"
                           placeholder="Placeholder"
                           value={tel}
                           onChange={(e) => setTel(e.target.value)}
-                          id="tel"
+                          id="depart"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-4 form-label mt-lg-3">
+                    <label htmlFor="tel">Rank</label>
+                  </div>
+                  <div className="col-lg-8 image-input">
+                    <div className="row mt-lg-3">
+                      <div className=" my-2">
+                        <input
+                          className="form-control form-control-lg form-control-solid "
+                          type="text"
+                          name="Rank"
+                          placeholder="Placeholder"
+                          value={rankAcc}
+                          onChange={(e) => setRankAcc(e.target.value)}
+                          id="ranc"
                           required
                         />
                       </div>
