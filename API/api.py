@@ -1,3 +1,4 @@
+from sqlalchemy.sql.expression import desc
 from core import *
 from datetime import datetime, timedelta
 from sqlalchemy import or_,and_
@@ -26,6 +27,32 @@ def login_a():
 def ping(c):
     return "Post"
 
+@app.route("/user/add", methods=['POST'])
+@token_required
+def useradd(c):
+    u_name = request.form.get('name')
+    u_email = request.form.get('email')
+    u_role = request.form.get('role')
+    u_image = request.form.get('image')
+    u_department = request.form.get('department')
+    u_rank = request.form.get('rank')
+    u_password = request.form.get('password')
+
+    user = User(
+        name = u_name,
+        email = u_email,
+        role = u_role,
+        image = u_image,
+        department = u_department,
+        rank = u_rank
+    )
+
+    user.set_password(u_password)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"msg": "Success"}), 200
+
 @app.route("/user", methods=['GET', 'POST'])
 @token_required
 def userdata(c):
@@ -47,7 +74,6 @@ def userdata(c):
         u_role = request.form.get('role')
         if u_role:
             u.role = u_role
-        u_image = request.form.get('image')
         if 'image' in request.files:
             file = request.files['image']
             if file:
@@ -114,6 +140,7 @@ def user_tasks(c):
     for task in tasks:
         T = task.format()
         T['attributes'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id).all()]
+        T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         ret_data.append(T)
     return jsonify(ret_data)
 
@@ -130,6 +157,70 @@ def calendar_data(c):
     ret_data = {}
     for task in tasks:
         if str(task.start_date) not in ret_data:
-            ret_data[str(task.start_date)] = {"Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0}
+            ret_data[str(task.start_date)] = {"Sana" : str(task.start_date), "Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0}
         ret_data[str(task.start_date)]['Bajarilmagan' if task.status == 1 else ('Bajarilmoqda' if task.status == 2 else 'Bajarildi')] += 1
     return jsonify(ret_data)
+    
+@app.route("/user/task/add", methods=['POST'])
+@token_required
+def task_add(c):
+    user_id = c.id
+    start = request.form.get('start_date')
+    end = request.form.get('end_date')
+    description = request.form.get('desc')
+    stat = 1
+    print(request.form)
+    task = Task(
+        owner_id = user_id,
+        start_date = start,
+        end_table = end,
+        desc = description,
+        status = stat
+    )
+
+    db.session.add(task)
+    db.session.commit()
+    if 'file' in request.files:
+        file = request.files['file']
+        if file:
+            filename = secure_filename(file.filename)
+            filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
+            file.save(filename)
+
+        t_m = Task_Meta(
+        key = 'attach',
+        value = filename,
+        task_id = task.id
+        )
+        db.session.add(t_m)
+        db.session.commit()
+
+    return user_tasks(), 200
+
+@app.route("/user/task/add_event", methods=['POST'])
+@token_required
+def history_add(c):
+    user = c.id
+    task = request.form.get('task_id')
+    description = request.form.get('desc')
+    stat = request.form.get('status')
+
+    history = Task_History(
+        user_id = user,
+        task_id = task,
+        desc = description
+    )
+
+    db.session.add(history)
+    db.session.commit()
+
+    t = Task.query.get(task)
+    print("STAT", stat)
+    if stat == 'true':
+        t.status = 3
+    else:
+        t.status = 2
+    print(t.status)
+    db.session.commit()
+
+    return user_tasks(), 200

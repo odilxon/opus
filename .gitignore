@@ -5,7 +5,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 static/
-API/config.py
+API/config/
 # C extensions
 *.so
 
@@ -92,3 +92,4 @@ ENV/
 .ropeproject
 *.docx
 node_modules/
+API/config.py

@@ -150,10 +150,85 @@
                 }
             }
         },
+        "/user/add": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Create user info",
+                "operationId": "createuserinfo",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "name",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "department",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rank",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/user/tasks": {
             "get": {
                 "tags": [
-                    "user"
+                    "task"
                 ],
                 "summary": "Return task info",
                 "operationId": "selectusertaskinfo",
@@ -232,6 +307,110 @@
                         "in": "formData",
                         "required": true,
                         "type": "string"
+                    }
+                ],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/task/add": {
+            "post": {
+                "tags": [
+                    "task"
+                ],
+                "summary": "Add Task",
+                "operationId": "addtask",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "start_date",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "desc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Success"
+                        }
+                    },
+                    "404": {
+                        "description": "Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/task/add_event": {
+            "post": {
+                "tags": [
+                    "task"
+                ],
+                "summary": "Add Task Event",
+                "operationId": "addtaskevent",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "name": "task_id",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "desc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "required": true,
+                        "type": "boolean"
                     }
                 ],
                 "security": [{

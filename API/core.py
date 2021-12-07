@@ -34,8 +34,9 @@ def token_required(f):
 @app.after_request
 def after_request(response):
     header = response.headers
-    header['Access-Control-Allow-Origin'] = '*'
-    header['Access-Control-Allow-Headers'] = '*'
+    header.add('Access-Control-Allow-Origin', '*')
+    header.add('Access-Control-Allow-Headers', '*')
+    header.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
 @app.route('/uploads/<path:path>')
