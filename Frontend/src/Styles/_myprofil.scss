@@ -188,3 +188,16 @@
     border: 1px dotted #c8c9ca;
   }
 }
+.admin-pic {
+  background-color: yellow;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.card-admin {
+  transition: all 0.3s ease;
+  cursor: pointer !important;
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.08);
+  }
+}

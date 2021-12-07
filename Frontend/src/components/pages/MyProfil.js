@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MdAccountCircle, MdOutlineModeEdit } from 'react-icons/md';
+import { MdOutlineModeEdit } from 'react-icons/md';
 import { AiOutlineMail } from 'react-icons/ai';
 import AccountImg from '../../assets/images/account.png';
 import { FaTasks, FaCalendarCheck, FaUserClock } from 'react-icons/fa';
@@ -277,8 +277,11 @@ const MyProfil = () => {
                   <div className="d-flex align-items-center ">
                     <FaTasks color="#0d6efd" />
                     <div className="fs-2 fw-bolder counted">
-                      {userAction.userInfos.completed +
-                        userAction.userInfos.pending}
+                      {userAction.userInfos.completed &&
+                      userAction.userInfos.pending
+                        ? userAction.userInfos.completed +
+                          userAction.userInfos.pending
+                        : null}
                     </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.vazifa')}</p>
