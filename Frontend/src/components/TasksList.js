@@ -18,6 +18,7 @@ import {
 } from '../redux/actions/UserAction';
 import { FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
 
 const TasksList = () => {
   const [end, setEndTime] = useState('');
@@ -35,6 +36,7 @@ const TasksList = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state);
   const { userAction } = userInfo;
+  const { t } = useTranslation();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -85,7 +87,7 @@ const TasksList = () => {
       })
       .catch((err) => {
         console.log('Err:', err);
-        return toast.error("Noto'g'ri", {
+        return toast.error(t('tasks.alertwarn'), {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -129,7 +131,7 @@ const TasksList = () => {
       })
       .catch((err) => {
         console.log('Err:', err);
-        return toast.error("Noto'g'ri", {
+        return toast.error(t('tasks.alerterr'), {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -231,14 +233,15 @@ const TasksList = () => {
               className="btn btn-outline-primary mt-3 mb-2 d-flex align-items-center justify-content-center"
               to="/calendar"
             >
-              <HiOutlineArrowNarrowLeft className="me-3" /> Orqaga
+              <HiOutlineArrowNarrowLeft className="me-3" />
+              {t('tasks.back')}
             </Link>
           </div>
         </div>
         <div className="bg-white shadow-sm my-md-2 p-4 rounded">
           <div className="row align-items-center">
             <div className="col-md-6 text-start">
-              <h1 className="pt-2 pb-4">Tasklar ro'yhati</h1>
+              <h1 className="pt-2 pb-4">{t('tasks.title')}</h1>
             </div>
 
             {userAction.clickedDate.length > 0 ? (
@@ -253,7 +256,7 @@ const TasksList = () => {
                       onClick={handleShow}
                       className="btn btn-primary d-flex justify-content-between align-items-center"
                     >
-                      <AiOutlinePlus /> Add event
+                      <AiOutlinePlus /> {t('tasks.addEvent')}
                     </button>
                   </div>
                 ) : null}
@@ -266,13 +269,13 @@ const TasksList = () => {
                 <thead>
                   <tr>
                     <th scope="col">№</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">files</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">history</th>
-                    <th scope="col">+</th>
+                    <th scope="col"> {t('tasks.desc')}</th>
+                    <th scope="col">{t('tasks.files')}</th>
+                    <th scope="col">{t('tasks.start')}</th>
+                    <th scope="col">{t('tasks.end')}</th>
+                    <th scope="col">{t('tasks.status')}</th>
+                    <th scope="col">{t('tasks.hist')}</th>
+                    <th scope="col">{t('tasks.plus')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -361,7 +364,7 @@ const TasksList = () => {
                             </a>
                           ))
                         ) : (
-                          <p>File mavjud emas</p>
+                          <p>{t('tasks.fileNo')}</p>
                         )}
 
                         {/* <span>
@@ -386,12 +389,12 @@ const TasksList = () => {
                         }
                       >
                         {e.status === 2
-                          ? 'Bajarilmoqda'
+                          ? t('calendar.bjdti')
                           : e.status === 1
-                          ? 'Bajarilmagan'
+                          ? t('calendar.bjdm')
                           : e.status === 3
-                          ? 'Bajarildi'
-                          : 'Statussiz'}
+                          ? t('calendar.bjd')
+                          : t('calendar.no')}
                       </td>
                       <td className="history text-center ">
                         {e.history.length > 0 ? (
@@ -438,7 +441,7 @@ const TasksList = () => {
                             </div> */}
                           </>
                         ) : (
-                          <p>Ma'lumot mavjud emas</p>
+                          <p>{t('tasks.infoNo')}</p>
                         )}
                       </td>
                       <td className="text-center">
@@ -459,9 +462,7 @@ const TasksList = () => {
               </table>
             </div>
           ) : (
-            <h2 className="text-center py-2 h4">
-              Bu sanada hech qanday ma'lumot yo'q...
-            </h2>
+            <h2 className="text-center py-2 h4">{t('tasks.noGetInfo')}</h2>
           )}
         </div>
       </div>
@@ -469,20 +470,22 @@ const TasksList = () => {
       {/* add eventni bosganda  */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Event</Modal.Title>
+          <Modal.Title>{t('modal.addEvent')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={addEvent} className="p-3">
-            <h2 className="text-center h3">Sign In to Metronic</h2>
+            {/* <h2 className="text-center h3">Sign In to Metronic</h2> */}
 
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Event name</label>
+              <label className="form-label  text-dark">
+                {t('modal.eventName')}
+              </label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
                 type="text"
                 name="name"
-                placeholder="Event name"
+                placeholder={t('modal.eventNameplc')}
                 value={nameAd}
                 onChange={(e) => setNamead(e.target.value)}
               />
@@ -491,13 +494,13 @@ const TasksList = () => {
             </div>
 
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Event end time</label>
+              <label className="form-label  text-dark">{t('tasks.end')}</label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
                 type="date"
                 name="end_time"
-                placeholder="Event end time"
+                placeholder={t('modal.endplc')}
                 value={end}
                 onChange={(e) => setEndTime(e.target.value)}
                 min={localStorage.getItem('ckickedDate')}
@@ -508,7 +511,7 @@ const TasksList = () => {
             <div className="py-2">
               <label
                 className="addFile"
-                title="Fayl qo'shish"
+                title={t('modal.fileAdd')}
                 htmlFor="pic"
                 onChange={(e) => setaddFile(e.target.files)}
               >
@@ -519,10 +522,10 @@ const TasksList = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button type="button" variant="secondary" onClick={handleClose}>
-            Close
+            {t('myacc.back')}
           </Button>
           <Button onClick={addEvent} variant="primary">
-            Submit
+            {t('myacc.save')}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -531,7 +534,7 @@ const TasksList = () => {
       {userAction.clickedHistoryRedux.length > 0 ? (
         <Modal show={clickHist} onHide={() => setClickHist(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>History</Modal.Title>
+            <Modal.Title>{t('modal.hist')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="table-responsive">
@@ -539,10 +542,10 @@ const TasksList = () => {
                 <thead>
                   <tr>
                     <th scope="col">№</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">name</th>
-                    <th scope="col">Depart</th>
-                    <th scope="col">vaqt</th>
+                    <th scope="col">{t('tasks.desc')}</th>
+                    <th scope="col">{t('modal.name')}</th>
+                    <th scope="col">{t('modal.depart')}</th>
+                    <th scope="col">{t('modal.time')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -570,13 +573,15 @@ const TasksList = () => {
         <Modal.Body>
           <form onSubmit={addDesc} className="p-3">
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Add Desc</label>
+              <label className="form-label  text-dark">
+                {t('modal.addDesc')}
+              </label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
                 type="text"
                 name="description"
-                placeholder="Your Description"
+                placeholder={t('modal.descName')}
                 value={descName}
                 onChange={(e) => setDescName(e.target.value)}
               />
@@ -589,7 +594,7 @@ const TasksList = () => {
                   checked={checkDesc}
                   onChange={() => setCheckDesc(!checkDesc)}
                 />
-                {'   '} Bajarildi
+                {'   '} {t('modal.checkBox')}
               </label>
             </div>
           </form>
@@ -600,10 +605,10 @@ const TasksList = () => {
             variant="secondary"
             onClick={() => setClickDesc(false)}
           >
-            Close
+            {t('myacc.back')}
           </Button>
           <Button onClick={addDesc} variant="primary">
-            Submit
+            {t('myacc.save')}
           </Button>
         </Modal.Footer>
       </Modal>

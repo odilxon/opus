@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { CdataUrl, GetUserDateClickUrl, TaskAddUrl } from '../../service';
+import { useTranslation } from 'react-i18next';
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const Calendar = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const { t } = useTranslation();
 
   const addEvent = async (e) => {
     e.preventDefault();
@@ -133,7 +135,7 @@ const Calendar = () => {
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
-        title: `Bajarildi: ${e.Bajarildi} ta`,
+        title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
         date: e.Sana,
         backgroundColor: '#cff4fc',
         textColor: '#055160',
@@ -142,7 +144,7 @@ const Calendar = () => {
     }
     if (e.Bajarilmoqda > 0) {
       elements.push({
-        title: `Bajarilmoqda: ${e.Bajarilmoqda} ta`,
+        title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
         date: e.Sana,
         backgroundColor: '#fff3cd',
         textColor: '#664d03',
@@ -151,7 +153,7 @@ const Calendar = () => {
     }
     if (e.Bajarilmagan) {
       elements.push({
-        title: `Bajarilmoqda: ${e.Bajarilmagan} ta`,
+        title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
         date: e.Sana,
         backgroundColor: '#f8d7da',
         textColor: '#842029',
@@ -168,7 +170,7 @@ const Calendar = () => {
     <div className="calendar">
       <div className="container shadow-sm rounded my-md-3   bg-white">
         <div className="d-flex justify-content-between align-items-center">
-          <h1 className="h3 px-3 pt-3">Calendar</h1>
+          <h1 className="h3 px-3 pt-3">{t('calendar.title')}</h1>
           <div>
             {/* <button
               onClick={handleShow}

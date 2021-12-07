@@ -153,6 +153,8 @@ const MyProfil = () => {
           name: data.name,
           rank: data.rank,
           role: data.role,
+          completed: data.tasks.completed,
+          pending: data.tasks.pending,
         };
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
@@ -252,11 +254,11 @@ const MyProfil = () => {
                   <BiBuildings /> {userAction.userInfos.department}
                 </span>
               ) : null}
-              {userAction.userInfos.role ? (
+              {/* {userAction.userInfos.role ? (
                 <span>
                   <MdAccountCircle /> {userAction.userInfos.role}
                 </span>
-              ) : null}
+              ) : null} */}
               {userAction.userInfos.rank ? (
                 <span>
                   <GiAchievement /> {userAction.userInfos.rank}
@@ -274,7 +276,10 @@ const MyProfil = () => {
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
                     <FaTasks color="#0d6efd" />
-                    <div className="fs-2 fw-bolder counted">$4,500</div>
+                    <div className="fs-2 fw-bolder counted">
+                      {userAction.userInfos.completed +
+                        userAction.userInfos.pending}
+                    </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.vazifa')}</p>
                 </div>
@@ -284,7 +289,9 @@ const MyProfil = () => {
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
                     <FaCalendarCheck color="#50cd89" />
-                    <div className="fs-2 fw-bolder counted">75</div>
+                    <div className="fs-2 fw-bolder counted">
+                      {userAction.userInfos.completed}
+                    </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.bajaril')}</p>
                 </div>
@@ -294,7 +301,9 @@ const MyProfil = () => {
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
                     <FaUserClock color="orange" />
-                    <div className="fs-2 fw-bolder counted">60%</div>
+                    <div className="fs-2 fw-bolder counted">
+                      {userAction.userInfos.pending}
+                    </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.jarayonda')}</p>
                 </div>
@@ -308,14 +317,14 @@ const MyProfil = () => {
         <div className="card_header px-5 pt-2 pb-1">
           <div className="row align-items-center justify-content-between">
             <div className="col-md-6 col-lg-4">
-              <h2 className="h3">Profile Details</h2>
+              <h2 className="h3">{t('myacc.prdt')}</h2>
             </div>
             <div className="col-md-6 col-lg-4 text-end">
               <button
                 onClick={() => setEditProfil(!editProfil)}
                 className="btn btn-primary"
               >
-                Edit Profil
+                {t('myacc.edt')}
               </button>
             </div>
           </div>
@@ -328,7 +337,7 @@ const MyProfil = () => {
               <form onSubmit={submitEdit}>
                 <div className="row my-3 mt-lg-4">
                   <div className="col-lg-4  form-label">
-                    <label htmlFor="pic">Avatar</label>
+                    <label htmlFor="pic"> {t('myacc.avt')}</label>
                   </div>
                   <div className="col-lg-8 image-input">
                     <div
@@ -378,7 +387,7 @@ const MyProfil = () => {
                   </div>
 
                   <div className="col-lg-4 form-label mt-lg-3">
-                    <label htmlFor="name">Full Name</label>
+                    <label htmlFor="name"> {t('myacc.fullName')}</label>
                   </div>
                   <div className="col-lg-8 image-input">
                     <div className="row mt-lg-3">
@@ -387,7 +396,7 @@ const MyProfil = () => {
                           className="form-control form-control-lg form-control-solid "
                           type="text"
                           name="name"
-                          placeholder="Placeholder"
+                          placeholder={t('myacc.nameplc')}
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           required
@@ -399,7 +408,7 @@ const MyProfil = () => {
                           className="form-control form-control-lg form-control-solid "
                           type="text"
                           name="fullname"
-                          placeholder="Placeholder"
+                          placeholder={t('myacc.lastnameplc')}
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
                           required
@@ -409,7 +418,7 @@ const MyProfil = () => {
                   </div>
 
                   <div className="col-lg-4 form-label mt-lg-3">
-                    <label htmlFor="tel">Department</label>
+                    <label htmlFor="tel">{t('myacc.depart')}</label>
                   </div>
                   <div className="col-lg-8 image-input">
                     <div className="row mt-lg-3">
@@ -418,7 +427,7 @@ const MyProfil = () => {
                           className="form-control form-control-lg form-control-solid "
                           type="text"
                           name="department"
-                          placeholder="Placeholder"
+                          placeholder={t('myacc.departplc')}
                           value={tel}
                           onChange={(e) => setTel(e.target.value)}
                           id="depart"
@@ -428,7 +437,7 @@ const MyProfil = () => {
                     </div>
                   </div>
                   <div className="col-lg-4 form-label mt-lg-3">
-                    <label htmlFor="tel">Rank</label>
+                    <label htmlFor="tel">{t('myacc.rank')}</label>
                   </div>
                   <div className="col-lg-8 image-input">
                     <div className="row mt-lg-3">
@@ -437,7 +446,7 @@ const MyProfil = () => {
                           className="form-control form-control-lg form-control-solid "
                           type="text"
                           name="Rank"
-                          placeholder="Placeholder"
+                          placeholder={t('myacc.rankplc')}
                           value={rankAcc}
                           onChange={(e) => setRankAcc(e.target.value)}
                           id="ranc"
@@ -456,9 +465,12 @@ const MyProfil = () => {
                       type="reset"
                       className="btn btn-account me-2"
                     >
-                      Discard
+                      {t('myacc.back')}
                     </button>
-                    <button className="btn btn-primary">Save changes</button>
+                    <button className="btn btn-primary">
+                      {' '}
+                      {t('myacc.save')}
+                    </button>
                   </div>
                 </div>
               </form>
@@ -471,12 +483,12 @@ const MyProfil = () => {
         <div className="detail px-4">
           <div className="row my-3 mt-lg-4 align-items-center justify-content-between">
             <div className="col-6 col-lg-5">
-              <h3 className="h4">Passwpord</h3>
+              <h3 className="h4">{t('myacc.pass')}</h3>
               <p className="text-muted"> {userAction.userInfos.email}</p>
             </div>
             <div className="col-md-6 col-lg-4 text-end">
               <Link to="/changePassword" className="btn btn-account">
-                Change Password
+                {t('myacc.passedit')}
               </Link>
             </div>
           </div>

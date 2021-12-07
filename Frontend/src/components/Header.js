@@ -47,6 +47,8 @@ const Header = () => {
           name: data.name,
           rank: data.rank,
           role: data.role,
+          completed: data.tasks.completed,
+          pending: data.tasks.pending,
         };
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
@@ -88,24 +90,26 @@ const Header = () => {
               className={`menu d-flex list-unstyled ${click ? 'show' : null} `}
             >
               <li>
-                <NavLink to="/" className="menu-link">
-                  Home
-                </NavLink>
+                <Link
+                  className={
+                    path === '/myAccount' ? `menu-link active` : 'menu-link'
+                  }
+                  to="/myAccount"
+                >
+                  {t('header.myProfil')}
+                </Link>
               </li>
               <li>
-                <NavLink to="/calendar" className="menu-link">
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/" className="menu-link">
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/calendar" className="menu-link">
-                  Home
-                </NavLink>
+                <Link
+                  className={
+                    path === '/calendar' || path === '/tasks'
+                      ? `menu-link active`
+                      : 'menu-link'
+                  }
+                  to="/calendar"
+                >
+                  {t('header.project')}
+                </Link>
               </li>
             </ul>
 

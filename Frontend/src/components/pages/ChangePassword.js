@@ -6,12 +6,14 @@ import axios from 'axios';
 // import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
 import { NewPassUrl } from '../../service';
+import { useTranslation } from 'react-i18next';
 // import { LoginUrl } from '../../service';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [showpass, setShowpass] = useState(false);
+  const { t } = useTranslation();
 
   // const dispatch = useDispatch();
   // const userInfo = useSelector((state) => state);
@@ -29,7 +31,7 @@ const ChangePassword = () => {
     bodyFormData.append('new_password', password);
 
     if (!currentPassword || !password) {
-      return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
+      return toast.warning(t('chpass.empty'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -40,7 +42,7 @@ const ChangePassword = () => {
       });
     }
     if (currentPassword === password) {
-      return toast.warning("Parol o'zgarishsiz qoldi", {
+      return toast.warning(t('chpass.compore'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -63,7 +65,7 @@ const ChangePassword = () => {
         setPassword('');
 
         navigate('/myAccount');
-        return toast.success('Amal bajarildi', {
+        return toast.success(t('chpass.success'), {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -76,7 +78,7 @@ const ChangePassword = () => {
       .catch((err) => {
         console.log('Err:', err);
 
-        return toast.error("Noto'g'ri", {
+        return toast.error(t('chpass.error'), {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -96,19 +98,20 @@ const ChangePassword = () => {
   return (
     <div className="LogIn">
       <div className="container">
-        <h1 className="text-center py-3">Metronic</h1>
+        <h1 className="text-center py-3">Opus</h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto mb-2">
           <form onSubmit={editPassword}>
-            <h2 className="text-center h3">Change Password</h2>
+            <h2 className="text-center h3">{t('chpass.changePass')}</h2>
 
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Email</label>
+              <label className="form-label  text-dark">
+                {t('chpass.email')}
+              </label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
                 type="email"
                 name="email"
-                placeholder="Placeholder"
                 value={userAction.userInfos.email}
                 aria-label="Disabled input"
                 disabled={true}
@@ -120,14 +123,14 @@ const ChangePassword = () => {
 
             <div className=" py-2 ">
               <label htmlFor="lastpass" className="form-label  text-dark">
-                Current Password
+                {t('chpass.cpass')}
               </label>
 
               <input
                 className="form-control form-control-lg form-control-solid disabled"
                 type={showpass ? 'text' : 'password'}
                 name="password"
-                placeholder="Password"
+                placeholder={t('chpass.cpassplc')}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 id="lastpass"
@@ -136,14 +139,14 @@ const ChangePassword = () => {
             </div>
             <div className=" py-2 ">
               <label htmlFor="newpass" className="form-label  text-dark">
-                New Password
+                {t('chpass.npass')}
               </label>
 
               <input
                 className="form-control form-control-lg form-control-solid disabled"
                 type={showpass ? 'text' : 'password'}
                 name="password"
-                placeholder="Password"
+                placeholder={t('chpass.npassplc')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 id="newpass"
@@ -158,16 +161,18 @@ const ChangePassword = () => {
                   checked={showpass}
                   onChange={() => setShowpass(!showpass)}
                 />
-                {'   '} Show password
+                {'   '} {t('chpass.checkpass')}
               </label>
               <div className="fv-plugins-message-container invalid-feedback"></div>
             </div>
 
             <div className="py-2 pt-3 d-grid gap-2">
               <Link to="/myAccount" className="btn btn-secondary fw-bold">
-                Back
+                {t('myacc.back')}
               </Link>
-              <button className="btn  btn-primary fw-bold">Continue</button>
+              <button className="btn  btn-primary fw-bold">
+                {t('myacc.save')}
+              </button>
             </div>
           </form>
         </div>
