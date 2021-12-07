@@ -42,3 +42,9 @@ export const HandleHistory = (data) => {
     payload: data,
   };
 };
+export const HandleAllUsers = (data) => {
+  return {
+    type: ActionTypes.ALL_USERS,
+    payload: data,
+  };
+};

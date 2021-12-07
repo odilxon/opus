@@ -30,7 +30,7 @@ const Calendar = () => {
   const calInf = dataRed.userAction.calendarInfos;
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
   const { t } = useTranslation();
 
   const addEvent = async (e) => {
@@ -92,23 +92,45 @@ const Calendar = () => {
     dispatch(HandleClickDate(dateClickInfo.dateStr));
     localStorage.setItem('ckickedDate', dateClickInfo.dateStr);
     navigate('/tasks');
-    await axios({
-      method: 'get',
-      url: GetUserDateClickUrl,
-      params: {
-        date: dateClickInfo.dateStr,
-      },
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        const { data } = response;
-        dispatch(HandleClickDateUser(data));
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: dateClickInfo.dateStr,
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-      });
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    } else {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+
+        params: {
+          date: dateClickInfo.dateStr,
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,7 +138,6 @@ const Calendar = () => {
     await axios({
       method: 'get',
       url: CdataUrl,
-
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
       },
@@ -132,6 +153,34 @@ const Calendar = () => {
       });
   };
 
+  const getCountUsers = async () => {
+    await axios({
+      method: 'get',
+      url: CdataUrl,
+      params: {
+        userId: localStorage.getItem('clickedUserId'),
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        const arr = [];
+        const { data } = response;
+        Object.keys(data).map((e) => arr.push(data[e]));
+        dispatch(CalendarInfos(arr));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
+  const backCard = () => {
+    localStorage.removeItem('clickedUserId');
+    localStorage.setItem('role', 'admin');
+    navigate('/admin');
+  };
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
@@ -163,7 +212,19 @@ const Calendar = () => {
   });
 
   useEffect(() => {
-    getCount();
+    if (!localStorage.getItem('userToken')) {
+      navigate('/');
+    }
+
+    if (localStorage.getItem('role') === 'admin') {
+      navigate('/admin');
+    }
+
+    if (localStorage.getItem('role') === 'adminClicked') {
+      getCountUsers();
+    } else {
+      getCount();
+    }
   }, []);
 
   return (
@@ -178,6 +239,14 @@ const Calendar = () => {
             >
               <AiOutlinePlus /> Add event
             </button> */}
+            {localStorage.getItem('clickedUserId') ? (
+              <button
+                onClick={backCard}
+                className="btn btn-primary d-flex justify-content-between align-items-center"
+              >
+                Ro'yhatga qaytish
+              </button>
+            ) : null}
           </div>
         </div>
         <hr />

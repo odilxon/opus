@@ -8,6 +8,7 @@ const initialState = {
   userInfos: {},
   calendarInfos: [],
   clickedHistoryRedux: {},
+  allUsers: {},
   loading: true,
 };
 
@@ -44,6 +45,8 @@ export const clickDateUser = (state = initialState, { type, payload }) => {
       return { ...state, calendarInfos: payload };
     case ActionTypes.HANDLE_HISTORYS:
       return { ...state, clickedHistoryRedux: payload };
+    case ActionTypes.ALL_USERS:
+      return { ...state, allUsers: payload };
     default:
       return state;
   }

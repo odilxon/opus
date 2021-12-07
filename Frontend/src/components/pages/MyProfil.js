@@ -158,6 +158,7 @@ const MyProfil = () => {
         };
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
+        localStorage.setItem('role', data.role);
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -277,11 +278,8 @@ const MyProfil = () => {
                   <div className="d-flex align-items-center ">
                     <FaTasks color="#0d6efd" />
                     <div className="fs-2 fw-bolder counted">
-                      {userAction.userInfos.completed &&
-                      userAction.userInfos.pending
-                        ? userAction.userInfos.completed +
-                          userAction.userInfos.pending
-                        : null}
+                      {userAction.userInfos.completed * 1 +
+                        userAction.userInfos.pending * 1}
                     </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.vazifa')}</p>

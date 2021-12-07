@@ -19,7 +19,7 @@ import {
 import { FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
-
+import Select from 'react-select';
 const TasksList = () => {
   const [end, setEndTime] = useState('');
   const [show, setShow] = useState(false);
@@ -30,6 +30,7 @@ const TasksList = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
+  const [selectValue, setSelectValue] = useState([]);
 
   console.log(addFile);
   const dispatch = useDispatch();
@@ -53,41 +54,13 @@ const TasksList = () => {
     bodyFormData.append('desc', nameAd);
     bodyFormData.append('start_date', userAction.clickedDate);
     bodyFormData.append('end_date', end);
-    if (addFile.length < 10) {
-      for (let i = 0; i < addFile.length; i++) {
-        bodyFormData.append(`file${[]}`, addFile[i]);
-      }
-    } else {
-      return toast.warning('Fayllar keragidan ortib ketdi', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-
-    await axios({
-      method: 'post',
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      url: TaskAddUrl,
-      data: bodyFormData,
-      headers: { 'x-access-token': localStorage.getItem('userToken') },
-    })
-      .then((response) => {
-        console.log(response.data);
-        dispatch(HandleClickDateUser(response.data));
-        setNamead('');
-        setEndTime('');
-        navigate('/tasks');
-      })
-      .catch((err) => {
-        console.log('Err:', err);
-        return toast.error(t('tasks.alertwarn'), {
+    if (addFile) {
+      if (addFile.length < 10) {
+        for (let i = 0; i < addFile.length; i++) {
+          bodyFormData.append(`file${[]}`, addFile[i]);
+        }
+      } else {
+        return toast.warning('Fayllar keragidan ortib ketdi', {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -96,7 +69,81 @@ const TasksList = () => {
           draggable: true,
           progress: undefined,
         });
-      });
+      }
+    }
+    if (localStorage.getItem('role') === 'adminClicked') {
+      // selectValue.map((e) => {
+      //   users.push(e);
+      // });
+
+      let users = selectValue;
+      console.log(users);
+      users.push(localStorage.getItem('clickedUserId'));
+      console.log('users');
+      console.log(users);
+      for (let i = 0; i < users.length; i++) {
+        bodyFormData.append(`users${[]}`, users[i]);
+      }
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+          setSelectValue({});
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
 
     setShow(false);
   };
@@ -112,35 +159,69 @@ const TasksList = () => {
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
-    await axios({
-      method: 'post',
-      url: ADDEventUrl,
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      data: bodyFormData,
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        dispatch(HandleClickDateUser(response.data));
-        setDescName('');
-        setClickDesc(false);
+
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'post',
+        url: ADDEventUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        data: bodyFormData,
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-        return toast.error(t('tasks.alerterr'), {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setDescName('');
+          setClickDesc(false);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alerterr'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
-      });
+    } else {
+      await axios({
+        method: 'post',
+        url: ADDEventUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        data: bodyFormData,
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setDescName('');
+          setClickDesc(false);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alerterr'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
   };
 
   const converTime = (a) => {
@@ -202,24 +283,90 @@ const TasksList = () => {
   }, [navigate]);
 
   const FetchDateInfos = async () => {
-    await axios({
-      method: 'get',
-      url: GetUserDateClickUrl,
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        const { data } = response;
-        dispatch(HandleClickDateUser(data));
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-      });
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    } else {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    }
   };
+
+  const options = [];
+  userAction.allUsers.map((e, i) => {
+    const obj = {
+      value: e.id,
+      label: e.name,
+    };
+    options.push(obj);
+  });
+
+  const handleChange = (e) => {
+    let options = e.target.options;
+    let value = [];
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setSelectValue(value);
+  };
+  console.log(selectValue);
+  const MySelect = () => (
+    // <Select
+    //   defaultValue={[options[2]]}
+    //   isMulti
+    //   name="colors"
+    //   options={options}
+    //   className="basic-multi-select"
+    //   classNamePrefix="select"
+    //   onChange={handleChange}
+    // />
+
+    <select
+      onChange={handleChange}
+      multiple={true}
+      className="form-control select2"
+      value={selectValue}
+    >
+      {options.map((e, i) => (
+        <option key={i} value={e.value}>
+          {e.label}
+        </option>
+      ))}
+    </select>
+  );
 
   useEffect(() => {
     FetchDateInfos();
@@ -492,6 +639,19 @@ const TasksList = () => {
 
               <div className="fv-plugins-message-container invalid-feedback"></div>
             </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    {t('modal.eventName')}
+                  </label>
+                </div>
+
+                <MySelect />
+                <div className="fv-plugins-message-container invalid-feedback"></div>
+              </div>
+            ) : null}
 
             <div className=" py-2 ">
               <label className="form-label  text-dark">{t('tasks.end')}</label>
