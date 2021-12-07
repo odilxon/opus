@@ -61,8 +61,7 @@ def userdata(c):
     department
     rank
     '''
-    if request.method in ['OPTIONS', 'GET']:
-        return c.format(),200    
+
     if request.method=='POST':
         u = User.query.get(c.id)
         u_name = request.form.get('name')
@@ -90,7 +89,19 @@ def userdata(c):
 
         db.session.commit()
         return u.format(),201
-    return c.format(),200
+    f = c.format()
+    f['tasks'] = { "pending" : 0, "completed": 0 }
+    ff = or_(
+            Task.owner_id == int(c.id), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(c.id)).self_group()
+            )
+    t = db.session.query(Task).outerjoin(Task_Meta, Task_Meta.task_id == Task.id).filter(ff).all()
+    for task in t:
+        if task.status in [1,2]:
+            f['tasks']['pending'] += 1
+        else:
+            f['tasks']['completed'] += 1
+    print(f)
+    return f,200
 
 
 @app.route("/newpass", methods=['POST'])
@@ -169,7 +180,6 @@ def task_add(c):
     end = request.form.get('end_date')
     description = request.form.get('desc')
     stat = 1
-    print(request.form)
     task = Task(
         owner_id = user_id,
         start_date = start,
@@ -181,19 +191,21 @@ def task_add(c):
     db.session.add(task)
     db.session.commit()
     if 'file' in request.files:
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
-            file.save(filename)
+        ffs = request.files.getlist('file')
+        for file in ffs:
+            if file:
+                filename = secure_filename(file.filename)
+                filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
+                file.save(filename)
 
-        t_m = Task_Meta(
-        key = 'attach',
-        value = filename,
-        task_id = task.id
-        )
-        db.session.add(t_m)
-        db.session.commit()
+            t_m = Task_Meta(
+                key = 'attach',
+                value = filename,
+                task_id = task.id
+            )
+            db.session.add(t_m)
+            db.session.commit()
+            print('Submitted: %s'%filename)
 
     return user_tasks(), 200
 
