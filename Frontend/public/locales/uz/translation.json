@@ -4,21 +4,21 @@
     "success": "Siz tizimga muvaffaqiyatli kirdingiz",
     "warning": "Tizimga kirish uchun ma'lumotlar yetarli emas",
     "error": "Login yoki parol xato!",
-    "kirish": "Opus tizimiga kirish",
-    "email": "Emailingizni kiriting",
-    "pass": "Parolingizni kiriting",
-    "cont": "Davom etish"
+    "kirish": "Opus тизимига кириш",
+    "email": "Email киритинг",
+    "pass": "Пароль киритинг",
+    "cont": "Кириш"
   },
   "header": {
-    "myProfil": "Mening profilim",
-    "project": "Mening loyihalarim",
-    "exit": "Chiqish"
+    "myProfil": "Менинг профилим",
+    "project": "Менинг ижроларим",
+    "exit": "Чикиш"
   },
   "myacc": {
-    "vazifa": "Vazifalar",
-    "bajaril": "Bajarilgan",
-    "jarayonda": "jarayonda",
-    "prdt": "profil ma'lumotlari",
+    "vazifa": "Ижролар",
+    "bajaril": "Бажарилган",
+    "jarayonda": "Жараенда",
+    "prdt": "Шахсий малумотлар",
     "edt": "Ma'limotlarni o'zgartirish",
     "avt": "Avatar",
     "fullName": "Ism va Familiya",
@@ -35,10 +35,10 @@
   },
 
   "calendar": {
-    "title": "Kalendar",
-    "bjd": "Bajarildi",
-    "bjdti": "Bajarilyapti",
-    "bjdm": "Bajarilmagan",
+    "title": "Таквим",
+    "bjd": "Бажарилди",
+    "bjdti": "Бажарилмокда",
+    "bjdm": "Бажарилмаган",
     "no": "Statussiz"
   },
   "tasks": {
