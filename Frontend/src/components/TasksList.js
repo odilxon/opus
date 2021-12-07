@@ -1,9 +1,14 @@
 import axios from 'axios';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ADDEventUrl, globalURL, TaskAddUrl } from '../service';
+import {
+  ADDEventUrl,
+  GetUserDateClickUrl,
+  globalURL,
+  TaskAddUrl,
+} from '../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -11,7 +16,7 @@ import {
   HandleClickDateUser,
   HandleHistory,
 } from '../redux/actions/UserAction';
-import { defaultStyles, FileIcon } from 'react-file-icon';
+import { FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 
 const TasksList = () => {
@@ -24,9 +29,8 @@ const TasksList = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
-  const [fileIcon, setFileIcon] = useState('');
 
-  // console.log(addFile);
+  console.log(addFile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state);
@@ -47,7 +51,21 @@ const TasksList = () => {
     bodyFormData.append('desc', nameAd);
     bodyFormData.append('start_date', userAction.clickedDate);
     bodyFormData.append('end_date', end);
-    bodyFormData.append('file', addFile);
+    if (addFile.length < 10) {
+      for (let i = 0; i < addFile.length; i++) {
+        bodyFormData.append(`file${[]}`, addFile[i]);
+      }
+    } else {
+      return toast.warning('Fayllar keragidan ortib ketdi', {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
 
     await axios({
       method: 'post',
@@ -146,12 +164,64 @@ const TasksList = () => {
       seconds.substr(-2);
     return formattedTime;
   };
+  const compareDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const todayDate = today.getDate();
+
+    const lYear = parseFloat(localStorage.getItem('ckickedDate').slice(0, 4));
+    const lMonth = parseFloat(localStorage.getItem('ckickedDate').slice(5, 8));
+    const lDate = parseFloat(localStorage.getItem('ckickedDate').slice(8, 10));
+
+    if (lYear > year) {
+      return true;
+    } else if (year === lYear) {
+      if (lMonth > month) {
+        return true;
+      } else if (lMonth === month) {
+        if (lDate >= todayDate) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
     }
   }, [navigate]);
+
+  const FetchDateInfos = async () => {
+    await axios({
+      method: 'get',
+      url: GetUserDateClickUrl,
+      params: {
+        date: localStorage.getItem('ckickedDate'),
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        dispatch(HandleClickDateUser(data));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
+  useEffect(() => {
+    FetchDateInfos();
+  }, []);
   return (
     <>
       <div className="container">
@@ -176,14 +246,17 @@ const TasksList = () => {
                 <div className="col-md-4 text-end">
                   {userAction.clickedDate}
                 </div>
-                <div className="col-md-2 text-end">
-                  <button
-                    onClick={handleShow}
-                    className="btn btn-primary d-flex justify-content-between align-items-center"
-                  >
-                    <AiOutlinePlus /> Add event
-                  </button>
-                </div>
+
+                {compareDate() ? (
+                  <div className="col-md-2 text-end">
+                    <button
+                      onClick={handleShow}
+                      className="btn btn-primary d-flex justify-content-between align-items-center"
+                    >
+                      <AiOutlinePlus /> Add event
+                    </button>
+                  </div>
+                ) : null}
               </>
             ) : null}
           </div>
@@ -274,7 +347,8 @@ const TasksList = () => {
                                       ? 'yellow'
                                       : 'white'
                                   }
-                                  gradientOpacity={0.5}
+                                  // gradientOpacity={0.5}
+                                  gradientOpacity={1}
                                   // {e.value[e.value.length - 4] === '.'
                                   // ? e.value.slice(e.value.length - 3)
                                   // : e.value[e.value.length - 5] === '.'
@@ -426,6 +500,7 @@ const TasksList = () => {
                 placeholder="Event end time"
                 value={end}
                 onChange={(e) => setEndTime(e.target.value)}
+                min={localStorage.getItem('ckickedDate')}
               />
               <div className="fv-plugins-message-container invalid-feedback"></div>
             </div>
@@ -435,9 +510,9 @@ const TasksList = () => {
                 className="addFile"
                 title="Fayl qo'shish"
                 htmlFor="pic"
-                onChange={(e) => setaddFile(e.target.files[0])}
+                onChange={(e) => setaddFile(e.target.files)}
               >
-                <input id="file" type="file" name="file" />
+                <input multiple id="file" type="file" name="file" />
               </label>
             </div>
           </form>

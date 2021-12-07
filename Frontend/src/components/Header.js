@@ -2,17 +2,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
-import { toast } from 'react-toastify';
-import AccountImg from '../assets/images/account.jpg';
-import { useSelector } from 'react-redux';
+import AccountImg from '../assets/images/account.png';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { GetUserInfoUrl, globalURL } from '../service';
+import { UserInfosLogIn } from '../redux/actions/UserAction';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const [click, setClick] = useState(false);
   const [clickHero, setClickHero] = useState(false);
-  const [clickSidebar, setClickSidebar] = useState(false);
 
   let location = useLocation();
   let path = location.pathname;
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   // const dispatch = useDispatch();
@@ -24,21 +28,46 @@ const Header = () => {
   };
   // let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
 
+  const getUserInfo = async () => {
+    await axios({
+      method: 'get',
+      url: GetUserInfoUrl,
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        // console.log(data);
+        const dataLocal = {
+          department: data.department,
+          email: data.email,
+          id: data.id,
+          image: `${data.image ? globalURL + data.image : 'no'}`,
+          name: data.name,
+          rank: data.rank,
+          role: data.role,
+        };
+        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+        dispatch(UserInfosLogIn(dataLocal));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
-
-      // return toast.warning("Ro'yhatdan o'tmagansiz!", {
-      //   position: 'bottom-right',
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (localStorage.getItem('userToken')) {
+      getUserInfo();
+    }
+  }, []);
+
   return (
     <>
       {path !== '/' &&
@@ -132,13 +161,13 @@ const Header = () => {
                       <hr />
                     </li>
                     <li className="p-2 px-4">
-                      <Link to="/myAccount">My profile</Link>
+                      <Link to="/myAccount">{t('header.myProfil')}</Link>
                     </li>
                     <li className="p-2 px-4">
-                      <Link to="/calendar">My project</Link>
+                      <Link to="/calendar">{t('header.project')}</Link>
                     </li>
                     <li className="p-2 px-4 pb-3">
-                      <a onClick={signOut}>Sign Out</a>
+                      <a onClick={signOut}>{t('header.exit')}</a>
                     </li>
                   </ul>
                 </div>

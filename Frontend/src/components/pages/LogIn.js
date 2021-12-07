@@ -6,6 +6,7 @@ import axios from 'axios';
 import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
 import { LoginUrl } from '../../service';
+import { useTranslation } from 'react-i18next';
 
 const LogIn = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,8 @@ const LogIn = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   // const userInfo = useSelector((state) => state);
   // const { user } = userInfo;
 
@@ -23,7 +26,7 @@ const LogIn = () => {
     bodyFormData.append('password', password);
 
     if (!email || !password) {
-      return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
+      return toast.warning(t('warning'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -54,7 +57,7 @@ const LogIn = () => {
     if (localStorage.getItem('userToken')) {
       navigate('/myAccount');
 
-      return toast.success('Tabriklaymiz, Amal bajarildi', {
+      return toast.success(t('login.success'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -64,7 +67,7 @@ const LogIn = () => {
         progress: undefined,
       });
     } else {
-      return toast.error('Login yoki parol xato!', {
+      return toast.error(t('login.error'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -79,7 +82,7 @@ const LogIn = () => {
   useEffect(() => {
     if (localStorage.getItem('userToken')) {
       navigate('/myAccount');
-      return toast.success('Tabriklaymiz, Amal bajarildi', {
+      return toast.success(t('login.success'), {
         position: 'bottom-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -97,7 +100,7 @@ const LogIn = () => {
         <h1 className="text-center py-5">Opus</h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto">
           <form onSubmit={fetchUser}>
-            <h2 className="text-center h3">Sign In to Metronic</h2>
+            <h2 className="text-center h3">{t('login.kirish')}</h2>
 
             <div className=" py-2 ">
               <label className="form-label  text-dark">Email</label>
@@ -106,7 +109,7 @@ const LogIn = () => {
                 className="form-control form-control-lg form-control-solid "
                 type="email"
                 name="email"
-                placeholder="Placeholder"
+                placeholder={t('login.email')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -121,7 +124,7 @@ const LogIn = () => {
                 className="form-control form-control-lg form-control-solid "
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder={t('login.pass')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -129,13 +132,15 @@ const LogIn = () => {
             </div>
 
             <div className="py-2 pt-3 d-grid gap-2">
-              <button className="btn btn-primary fw-bold"> Continue</button>
+              <button className="btn btn-primary fw-bold">
+                {t('login.cont')}
+              </button>
             </div>
           </form>
         </div>
       </div>
 
-      <div className="links pb-5">
+      {/* <div className="links pb-5">
         <Link className="text-muted" to="/">
           About
         </Link>
@@ -145,7 +150,7 @@ const LogIn = () => {
         <Link className="text-muted" to="/">
           Contact Us
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

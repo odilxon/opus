@@ -170,12 +170,12 @@ const Calendar = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h1 className="h3 px-3 pt-3">Calendar</h1>
           <div>
-            <button
+            {/* <button
               onClick={handleShow}
               className="btn btn-primary d-flex justify-content-between align-items-center"
             >
               <AiOutlinePlus /> Add event
-            </button>
+            </button> */}
           </div>
         </div>
         <hr />

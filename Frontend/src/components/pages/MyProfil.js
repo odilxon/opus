@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { MdAccountCircle } from 'react-icons/md';
+import { MdAccountCircle, MdOutlineModeEdit } from 'react-icons/md';
 import { AiOutlineMail } from 'react-icons/ai';
-import { TiArrowUpOutline, TiArrowDownOutline } from 'react-icons/ti';
-import AccountImg from '../../assets/images/account.jpg';
-import { MdOutlineModeEdit, MdOutlineClose } from 'react-icons/md';
+import AccountImg from '../../assets/images/account.png';
+import { FaTasks, FaCalendarCheck, FaUserClock } from 'react-icons/fa';
+import { BiBuildings } from 'react-icons/bi';
+import { GiAchievement } from 'react-icons/gi';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { GetUserInfoUrl, globalURL } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserInfosLogIn } from '../../redux/actions/UserAction';
+import { useTranslation } from 'react-i18next';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -23,6 +25,7 @@ const MyProfil = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state);
   const { userAction } = userInfo;
+  const { t } = useTranslation();
 
   // console.log(userAction);
 
@@ -141,7 +144,7 @@ const MyProfil = () => {
     })
       .then((response) => {
         const { data } = response;
-        // console.log(data);
+        console.log(data);
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -198,19 +201,6 @@ const MyProfil = () => {
       });
   };
 
-  // console.log(JSON.parse(localStorage.getItem('userInfos')));
-
-  // useEffect(() => {
-  //   if (!localStorage.getItem('userToken') || !userlStorage) {
-  //     navigate('/');
-  //   }
-  // }, [navigate, userlStorage]);
-  // useEffect(() => {
-  //   if (!localStorage.getItem('userToken')) {
-  //     navigate('/');
-  //   }
-  // }, [navigate]);
-
   useEffect(() => {
     getUserInfo();
   }, []);
@@ -259,7 +249,7 @@ const MyProfil = () => {
             <p className="text-muted">
               {userAction.userInfos.department ? (
                 <span>
-                  <MdAccountCircle /> {userAction.userInfos.department}
+                  <BiBuildings /> {userAction.userInfos.department}
                 </span>
               ) : null}
               {userAction.userInfos.role ? (
@@ -269,7 +259,7 @@ const MyProfil = () => {
               ) : null}
               {userAction.userInfos.rank ? (
                 <span>
-                  <MdAccountCircle /> {userAction.userInfos.rank}
+                  <GiAchievement /> {userAction.userInfos.rank}
                 </span>
               ) : null}
 
@@ -283,30 +273,30 @@ const MyProfil = () => {
               <div className="col-md-4 col-lg-3">
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
-                    <TiArrowUpOutline color="#50cd89" />
+                    <FaTasks color="#0d6efd" />
                     <div className="fs-2 fw-bolder counted">$4,500</div>
                   </div>
-                  <p className="text-muted h5">Earnings</p>
+                  <p className="text-muted h5">{t('myacc.vazifa')}</p>
                 </div>
               </div>
 
               <div className="col-md-4 col-lg-3">
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
-                    <TiArrowDownOutline color="#f3527a" />
+                    <FaCalendarCheck color="#50cd89" />
                     <div className="fs-2 fw-bolder counted">75</div>
                   </div>
-                  <p className="text-muted h5">projects</p>
+                  <p className="text-muted h5">{t('myacc.bajaril')}</p>
                 </div>
               </div>
 
               <div className="col-md-4 col-lg-3">
                 <div className="progres border  border-dashed rounded py-3 px-4  mb-3">
                   <div className="d-flex align-items-center ">
-                    <TiArrowUpOutline color="#50cd89" />
+                    <FaUserClock color="orange" />
                     <div className="fs-2 fw-bolder counted">60%</div>
                   </div>
-                  <p className="text-muted h5">Success Rate</p>
+                  <p className="text-muted h5">{t('myacc.jarayonda')}</p>
                 </div>
               </div>
             </div>

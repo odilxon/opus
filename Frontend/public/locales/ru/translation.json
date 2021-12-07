@@ -1,15 +1,18 @@
 {
-  "LogIn": {
-    "join": "Ro'yhatdan o'tish",
-    "signin": "Kirish",
-    "text": "Lorem Ipsum is simply dummy text"
+  "lang": "Ru",
+  "login": {
+    "success": "Siz tizimga muvaffaqiyatli kirdingiz",
+    "warning": "Tizimga kirish uchun ma'lumotlar yetarli emas",
+    "error": "Login yoki parol xato!",
+    "kirish": "Opus tizimiga kirish",
+    "email": "Emailingizni kiriting",
+    "pass": "Parolingizni kiriting",
+    "cont": "Davom etish"
   },
-  "Header": {
-    "search": "Sayt bo'ylab qidiruv",
-    "home": "Bosh sahifa",
-    "message": "Xabarlar",
-    "im": "Men",
-    "signOut": "Chiqish"
+  "header": {
+    "myProfil": "Mening profilim",
+    "project": "Mening loyihalarim",
+    "exit": "Chiqish"
   },
   "calendar": "Yuklanmoqda...",
   "task": {
