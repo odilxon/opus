@@ -1,0 +1,88 @@
+{
+  "lang": "Ru",
+  "login": {
+    "success": "Siz tizimga muvaffaqiyatli kirdingiz",
+    "warning": "Tizimga kirish uchun ma'lumotlar yetarli emas",
+    "error": "Login yoki parol xato!",
+    "kirish": "Opus tizimiga kirish",
+    "email": "Emailingizni kiriting",
+    "pass": "Parolingizni kiriting",
+    "cont": "Davom etish"
+  },
+  "header": {
+    "myProfil": "Mening profilim",
+    "project": "Mening loyihalarim",
+    "exit": "Chiqish"
+  },
+  "myacc": {
+    "vazifa": "Vazifalar",
+    "bajaril": "Bajarilgan",
+    "jarayonda": "jarayonda",
+    "prdt": "profil ma'lumotlari",
+    "edt": "Ma'limotlarni o'zgartirish",
+    "avt": "Avatar",
+    "fullName": "Ism va Familiya",
+    "nameplc": "Ismingizni kiriting",
+    "lastnameplc": "Familiyangizni kiriting",
+    "depart": "depart",
+    "depart plc": "depart placeholder",
+    "rank": "rank",
+    "rankplc": "rank placeholder",
+    "save": "saqlash",
+    "back": "ortga",
+    "pass": "parol",
+    "passedit": "parol edit"
+  },
+
+  "calendar": {
+    "title": "Kalendar",
+    "bjd": "Bajarildi",
+    "bjdti": "Bajarilyapti",
+    "bjdm": "Bajarilmagan",
+    "no": "Statussiz"
+  },
+  "tasks": {
+    "title": "Topshiriqlar ro'yhati",
+    "desc": "Desc",
+    "files": "files",
+    "start": "start",
+    "end": "end",
+    "status": "status",
+    "hist": "hist",
+    "plus": "+",
+    "alertwarn": "Fayllar keragidan ortib ketdi",
+    "alerterr": "Xato",
+    "back": "Orqaga",
+    "addEvent": "Hodisa qo'shish",
+    "fileNo": "file mavjud emas",
+    "infoNo": "Malumot mavjud emas",
+    "noGetInfo": "Bu sanada hech qanday ma'lumot yo'q..."
+  },
+  "modal": {
+    "addEvent": "Add Event",
+    "eventName": "event name",
+    "eventNameplc": "event name placeholder",
+    "endplc": "event end placeholder",
+    "fileAdd": "file Qo'sh",
+    "hist": "History",
+    "name": "Name",
+    "depart": "Depart",
+    "time": "Vaqt",
+    "addDesc": "Add Desc",
+    "descName": "Desc name",
+    "checkBox": "Bajarildi"
+  },
+  "chpass": {
+    "changePass": "Change password",
+    "email": "Email",
+    "cpass": "Current Password",
+    "cpassplc": "Current Password placeholder",
+    "npass": "New Password",
+    "npassplc": "New Password placeholder",
+    "checkpass": "Show password",
+    "empty": "Iltimos to'liq ma'lumot kiriting!",
+    "compore": "Parol o'zgarishsiz qoldi",
+    "success": "Parol o'zgartirildi",
+    "error": "xatolik"
+  }
+}

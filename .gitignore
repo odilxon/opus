@@ -91,6 +91,8 @@ ENV/
 # Rope project settings
 .ropeproject
 *.docx
+
 node_modules/
 API/config.py
 API/uploads/files
+

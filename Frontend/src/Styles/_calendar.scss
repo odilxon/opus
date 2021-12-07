@@ -1,0 +1,111 @@
+.calendar {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  .fc .fc-toolbar {
+    flex-wrap: wrap;
+  }
+  .fc-button {
+    background-color: #f5f8fa !important;
+    border-color: #f5f8fa !important ;
+    color: #9092ad !important;
+    @media (max-width: 768px) {
+      margin: 4px 0 !important;
+    }
+  }
+  .fc-toolbar-title {
+    font-size: 1rem !important;
+    @media (min-width: 768px) {
+      font-size: 1.4rem !important;
+    }
+  }
+
+  label {
+    font-weight: 500;
+  }
+}
+.modal-dialog {
+  .modal-content {
+    input {
+      font-size: 14px !important;
+      border: none !important;
+      background-color: #e8f0fe !important;
+      font-weight: 500 !important;
+      &:focus,
+      &:hover {
+        background-color: #e8f0fe !important;
+      }
+    }
+  }
+}
+
+.table {
+  @media (min-width: 991px) {
+    overflow: hidden;
+    width: 100%;
+    min-height: 50px;
+  }
+  td,
+  th {
+    text-align: center;
+  }
+
+  .iconDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      svg {
+        width: 30px;
+        margin: 2px;
+      }
+    }
+  }
+
+  .history {
+    // position: relative;
+
+    .history_table {
+      table {
+        width: 300px;
+        @media (min-width: 768px) {
+          width: 500px;
+        }
+      }
+    }
+  }
+}
+// .history {
+//   position: relative;
+//   .history-table {
+//     transition: all 0.3s ease;
+//     transform: scale(0);
+//     position: absolute;
+//     background-color: #fff;
+//     top: 20px;
+//     left: -400px;
+//     z-index: 100;
+//     .date {
+//       font-size: 12px;
+//     }
+//     @media (min-width: 991px) {
+//       width: 600px;
+//     }
+//   }
+//   &:hover {
+//     .history-table {
+//       transform: scale(1);
+//     }
+//   }
+//   // .history-table.show {
+//   //   transform: scale(1);
+//   // }
+// }

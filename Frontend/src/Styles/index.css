@@ -1,0 +1,597 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Poppins:wght@400;500;600;800;900&display=swap");
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  overflow-x: hidden;
+  background-color: #f5f8fa !important;
+}
+
+.LogIn {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.LogIn .container {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .LogIn .container {
+    width: 500px;
+  }
+}
+
+.LogIn label {
+  font-weight: 500;
+}
+
+.LogIn input {
+  border: none;
+  background-color: #e8f0fe;
+  font-weight: 500;
+  font-size: 14px !important;
+}
+
+.LogIn input:focus, .LogIn input:hover {
+  background-color: #e8f0fe;
+}
+
+.LogIn .links {
+  margin-top: 30px;
+}
+
+.LogIn .links a {
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+}
+
+.calendar {
+  min-height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.calendar .fc .fc-toolbar {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.calendar .fc-button {
+  background-color: #f5f8fa !important;
+  border-color: #f5f8fa !important;
+  color: #9092ad !important;
+}
+
+@media (max-width: 768px) {
+  .calendar .fc-button {
+    margin: 4px 0 !important;
+  }
+}
+
+.calendar .fc-toolbar-title {
+  font-size: 1rem !important;
+}
+
+@media (min-width: 768px) {
+  .calendar .fc-toolbar-title {
+    font-size: 1.4rem !important;
+  }
+}
+
+.calendar label {
+  font-weight: 500;
+}
+
+.modal-dialog .modal-content input {
+  font-size: 14px !important;
+  border: none !important;
+  background-color: #e8f0fe !important;
+  font-weight: 500 !important;
+}
+
+.modal-dialog .modal-content input:focus, .modal-dialog .modal-content input:hover {
+  background-color: #e8f0fe !important;
+}
+
+@media (min-width: 991px) {
+  .table {
+    overflow: hidden;
+    width: 100%;
+    min-height: 50px;
+  }
+}
+
+.table td,
+.table th {
+  text-align: center;
+}
+
+.table .iconDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.table .iconDiv span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.table .iconDiv span svg {
+  width: 30px;
+  margin: 2px;
+}
+
+.table .history .history_table table {
+  width: 300px;
+}
+
+@media (min-width: 768px) {
+  .table .history .history_table table {
+    width: 500px;
+  }
+}
+
+nav {
+  position: fixed;
+  background-color: #fff;
+  z-index: 99;
+}
+
+nav .container-fluid {
+  position: relative;
+}
+
+nav .container-fluid .logo {
+  max-width: 60px;
+}
+
+@media (min-width: 768px) {
+  nav .container-fluid .logo {
+    max-width: 120px;
+  }
+}
+
+nav .container-fluid .menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block !important;
+  width: 100vw;
+  background-color: #fff;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  -webkit-transform: translateX(100%);
+          transform: translateX(100%);
+  z-index: 5;
+}
+
+@media (min-width: 768px) {
+  nav .container-fluid .menu {
+    margin: 0 auto 0 50px;
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    position: static;
+    width: auto;
+    min-height: 10vh;
+    background-color: transparent;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+nav .container-fluid .menu li {
+  padding: 12px;
+}
+
+@media (min-width: 768px) {
+  nav .container-fluid .menu li {
+    margin: 2px;
+  }
+}
+
+nav .container-fluid .menu li a {
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  color: #5e6278;
+  font-weight: 500;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  nav .container-fluid .menu li a {
+    padding: 0.65rem 1rem;
+    text-decoration: none;
+    color: #5e6278;
+    font-weight: 500;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 0.475rem;
+  }
+}
+
+nav .container-fluid .menu li a:hover, nav .container-fluid .menu li a.active {
+  color: #009ef7;
+}
+
+@media (min-width: 768px) {
+  nav .container-fluid .menu li a:hover, nav .container-fluid .menu li a.active {
+    background-color: rgba(245, 248, 250, 0.8);
+  }
+}
+
+nav .person {
+  cursor: pointer;
+  border-radius: 0.475rem;
+  overflow: hidden;
+}
+
+nav .person .header-account-pic {
+  width: 40px;
+  height: 40px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+
+nav .person .option {
+  z-index: 2;
+  position: absolute;
+  inset: 0px 0px auto auto;
+  margin: 0px;
+  -webkit-transform: translate(-30px, 80px) scale(0);
+          transform: translate(-30px, 80px) scale(0);
+  background-color: #fff;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+nav .person .option p {
+  word-wrap: break-word;
+}
+
+nav .person .option .item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 0.475rem;
+}
+
+nav .person .open {
+  -webkit-transform: translate(-30px, 80px) scale(1);
+          transform: translate(-30px, 80px) scale(1);
+}
+
+nav button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  display: inline-block;
+}
+
+@media (min-width: 768px) {
+  nav button {
+    display: none;
+  }
+}
+
+nav .show {
+  -webkit-transform: translateX(20%) !important;
+          transform: translateX(20%) !important;
+}
+
+nav .show::before {
+  content: ' ';
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.446);
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+  z-index: -1;
+}
+
+nav li a {
+  text-decoration: none;
+  color: #4e5161;
+  font-weight: 500;
+}
+
+.userProfil .infos {
+  color: #181c32 !important;
+}
+
+.userProfil .infos h1.h2 {
+  font-size: 1.5rem !important;
+  font-weight: bold;
+  padding-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.userProfil .infos h1.h2 svg {
+  margin-left: 4px;
+  margin-top: 6px;
+}
+
+.userProfil .infos p {
+  padding: 6px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.userProfil .infos p span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 2px 8px;
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .userProfil .infos p span:first-child {
+    padding-left: 0;
+  }
+}
+
+.userProfil .infos p span svg {
+  margin-right: 6px;
+  color: rgba(128, 128, 128, 0.6);
+}
+
+.userProfil .infos .progres svg {
+  height: 1.35rem;
+  width: 1.35rem;
+  margin-right: 4px;
+}
+
+.userProfil .infos .border-dashed {
+  border: 1px dashed rgba(128, 128, 128, 0.3) !important;
+}
+
+.profilDetails .detail .form-label {
+  padding-top: calc(0.75rem + 1px);
+  padding-bottom: calc(0.75rem + 1px);
+  margin-bottom: 0;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #3f4254;
+  font-size: 1.075rem !important;
+}
+
+.profilDetails .detail .image-input {
+  position: relative;
+  display: inline-block;
+  border-radius: 0.475rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profilDetails .detail .image-input .image-wrapper {
+  border: 3px solid #fff;
+  -webkit-box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.08);
+  border-radius: 0.475rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 125px !important;
+  width: 125px !important;
+  position: relative;
+}
+
+.profilDetails .detail .image-input .image-wrapper img {
+  max-width: 100%;
+  height: 125px !important;
+  width: 125px !important;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  max-height: 100%;
+  border-radius: 0.4rem;
+}
+
+.profilDetails .detail .image-input .icon-pic {
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0;
+  background-color: #fff;
+  width: 25px;
+  height: 25px;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.profilDetails .detail .image-input .icon-pic .info {
+  min-width: 120px;
+  text-align: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background-color: #eee;
+  position: absolute;
+  top: -42px;
+  left: -50px;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: none;
+}
+
+.profilDetails .detail .image-input .icon-pic .info::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 10px;
+  background-color: #eee;
+  -webkit-clip-path: polygon(100% 1%, 0 0, 50% 100%);
+          clip-path: polygon(100% 1%, 0 0, 50% 100%);
+  position: absolute;
+  bottom: -8px;
+  left: calc(50% - 5px);
+}
+
+.profilDetails .detail .image-input .icon-pic .info:hover {
+  color: #3f4254;
+}
+
+.profilDetails .detail .image-input .icon-pic:hover {
+  color: #009ef7;
+}
+
+.profilDetails .detail .image-input .icon-pic:hover .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.profilDetails .detail .image-input .icon-pic svg {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font-size: 0.95rem !important;
+  vertical-align: middle;
+}
+
+.profilDetails .detail .image-input .icon-pic input {
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.profilDetails .detail .image-input .edit-icon {
+  top: -10px;
+  right: -10px;
+}
+
+.profilDetails .detail .image-input .close-icon {
+  bottom: -10px;
+  right: -10px;
+}
+
+.profilDetails input {
+  font-size: 14px !important;
+  border: none !important;
+  background-color: #e8f0fe !important;
+  font-weight: 500 !important;
+}
+
+.profilDetails input:focus, .profilDetails input:hover {
+  background-color: #e8f0fe !important;
+}
+
+.profilDetails .btn-account {
+  display: inline-block;
+  background-color: #e8f0fe !important;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #6c757d !important;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.profilDetails .btn-account:hover {
+  background-color: #d9e0ed !important;
+}
+
+.profilDetails .line {
+  border: 1px dotted #c8c9ca;
+}
+/*# sourceMappingURL=index.css.map */
