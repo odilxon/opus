@@ -1,15 +1,17 @@
+from datetime import datetime
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import Date
 from sqlalchemy.orm import backref, relationship, selectinload
 from sqlalchemy.sql.elements import False_
+from sqlalchemy.sql.sqltypes import TIMESTAMP
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object('config.main')
 
 db = SQLAlchemy(app)
 
@@ -80,7 +82,15 @@ class Task_History(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
     desc = db.Column(db.String, nullable=True)
-    timestamp = db.Column(db.DateTime, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default = datetime.now)
+    def format(self):
+        return {
+            "id" : self.id,
+            "user_name" : self.user.name,
+            "user_depart" : self.user.department,
+            "desc" : self.desc,
+            "timestamp" : self.timestamp.timestamp()
+        }
 
 class Attachment(db.Model):
     __tablename__ = 'attachment'
