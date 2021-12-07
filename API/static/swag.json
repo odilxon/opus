@@ -5,7 +5,7 @@
         "version": "1",
         "title": "Opus"
     },
-    "host": "192.168.43.165:1111",
+    "host": "192.168.2.7:5000",
     "basePath": "/",
     "schemes": [
         "http",
@@ -145,6 +145,35 @@
                         "description": "Error",
                         "schema": {
                             "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/users": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return users info",
+                "operationId": "selectusersinfo",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "security": [{
+                    "Token": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Returns Users info",
+                        "schema": {
+                            "$ref": "#/definitions/User"
                         }
                     }
                 }
