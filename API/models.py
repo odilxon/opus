@@ -1,58 +1,67 @@
+from datetime import datetime
 from flask import *
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin,LoginManager, login_manager, login_required, current_user, login_user, logout_user
+
 from sqlalchemy import Date
 from sqlalchemy.orm import backref, relationship, selectinload
 from sqlalchemy.sql.elements import False_
+from sqlalchemy.sql.sqltypes import TIMESTAMP
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@127.0.0.1:5432/opus"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://antiagro:antiagro@127.0.0.1:5432/opus"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'magnum-opus'
+app.config.from_object('config.main')
 
 db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-login_manager.login_view = 'login_page'
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True)
     role = db.Column(db.String(100), nullable=True)
+    image = db.Column(db.String(500), nullable=True)
+    department = db.Column(db.String(500), nullable=True)
+    rank = db.Column(db.String(500), nullable=True)
     password = db.Column(db.String(500))
-    tasks = db.relationship("Task", backref='user')
     tasks = db.relationship("Task_History", backref='user')
+    owner_ids = db.relationship("Task", backref='user')
     def set_password(self, password):
         self.password = generate_password_hash(password)
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    def Get_UserType(self):
-        if self.role == 'admin':
-            return 'Маъмурият'
-        else:
-            return 'Фойдаланувчи'
-    def getFullName(self):
-        name = ""
-        if self.name is not None:
-            name = str(self.name)
-        return name
+    def format(self):
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "email" : self.email,
+            "role" : self.role,
+            "image" : self.image,
+            "department" : self.department,
+            "rank" : self.rank,
+        }
+   
 
 class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_date = db.Column(db.DateTime, nullable=False)
-    end_table = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_table = db.Column(db.Date, nullable=False)
     desc = db.Column(db.String, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     task_metas = db.relationship("Task_Meta", backref='task')
-    task_metas = db.relationship("Task_History", backref='task')
+    task_histories = db.relationship("Task_History", backref='task')
+    def format(self):
+        return {
+            "id" : self.id,
+            "start_date" : str(self.start_date),
+            "end_date" : str(self.end_table),
+            "desc" : self.desc,
+            "status" : self.status,
+            "owner_id" : self.owner_id,
+        }
 
 class Task_Meta(db.Model):
     __tablename__ = 'task_meta'
@@ -60,6 +69,12 @@ class Task_Meta(db.Model):
     key = db.Column(db.String, nullable=False)
     value = db.Column(db.String, nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
+    def format(self):
+        return {
+            "id" : self.id,
+            "key" : self.key,
+            "value" : self.value
+        }
 
 class Task_History(db.Model):
     __tablename__ = 'task_history'
@@ -67,7 +82,15 @@ class Task_History(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
     desc = db.Column(db.String, nullable=True)
-    timestamp = db.Column(db.DateTime, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default = datetime.now)
+    def format(self):
+        return {
+            "id" : self.id,
+            "user_name" : self.user.name,
+            "user_depart" : self.user.department,
+            "desc" : self.desc,
+            "timestamp" : self.timestamp.timestamp()
+        }
 
 class Attachment(db.Model):
     __tablename__ = 'attachment'
@@ -76,7 +99,9 @@ class Attachment(db.Model):
     type_id = db.Column(db.Integer, nullable=False)
     path = db.Column(db.String, nullable=False)
 
-app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
-admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin = Admin(app, name='microblog', template_mode='bootstrap4')
 admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Task, db.session))
+admin.add_view(ModelView(Task_Meta, db.session))
+admin.add_view(ModelView(Task_History, db.session))
