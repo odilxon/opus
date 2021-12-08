@@ -189,8 +189,11 @@
   }
 }
 .admin-pic {
-  background-color: yellow;
-  width: 70%;
+  // background-color: yellow;
+  width: 200px !important;
+  height: 200px !important;
+  object-fit: cover;
+  object-position: center;
   margin-left: auto;
   margin-right: auto;
 }

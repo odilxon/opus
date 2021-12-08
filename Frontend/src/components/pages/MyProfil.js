@@ -52,6 +52,8 @@ const MyProfil = () => {
           name: data.name,
           rank: data.rank,
           role: data.role,
+          completed: data.tasks.completed,
+          pending: data.tasks.pending,
         };
 
         dispatch(UserInfosLogIn(dataLocal));
@@ -105,6 +107,8 @@ const MyProfil = () => {
           name: data.name,
           rank: data.rank,
           role: data.role,
+          completed: data.tasks.completed,
+          pending: data.tasks.pending,
         };
         dispatch(UserInfosLogIn(dataLocal));
         setEditProfil(false);
@@ -144,7 +148,7 @@ const MyProfil = () => {
     })
       .then((response) => {
         const { data } = response;
-        console.log(data);
+        // console.log(data);
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -172,37 +176,37 @@ const MyProfil = () => {
     setEditProfil(false);
   };
 
-  const removePic = async () => {
-    var bodyFormData = new FormData();
-    bodyFormData.append('image', null);
-    await axios({
-      method: 'post',
-      url: GetUserInfoUrl,
-      data: bodyFormData,
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        const { data } = response;
-        const dataLocal = {
-          department: data.department,
-          email: data.email,
-          id: data.id,
-          image: `${data.image ? globalURL + data.image : 'no'}`,
-          name: data.name,
-          rank: data.rank,
-          role: data.role,
-        };
+  // const removePic = async () => {
+  //   var bodyFormData = new FormData();
+  //   bodyFormData.append('image', null);
+  //   await axios({
+  //     method: 'post',
+  //     url: GetUserInfoUrl,
+  //     data: bodyFormData,
+  //     headers: {
+  //       'x-access-token': localStorage.getItem('userToken'),
+  //     },
+  //   })
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       const { data } = response;
+  //       const dataLocal = {
+  //         department: data.department,
+  //         email: data.email,
+  //         id: data.id,
+  //         image: `${data.image ? globalURL + data.image : 'no'}`,
+  //         name: data.name,
+  //         rank: data.rank,
+  //         role: data.role,
+  //       };
 
-        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
-        dispatch(UserInfosLogIn(dataLocal));
-      })
-      .catch((err) => {
-        console.log('Err:', err);
-      });
-  };
+  //       // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
+  //       dispatch(UserInfosLogIn(dataLocal));
+  //     })
+  //     .catch((err) => {
+  //       console.log('Err:', err);
+  //     });
+  // };
 
   useEffect(() => {
     getUserInfo();
@@ -278,8 +282,10 @@ const MyProfil = () => {
                   <div className="d-flex align-items-center ">
                     <FaTasks color="#0d6efd" />
                     <div className="fs-2 fw-bolder counted">
-                      {userAction.userInfos.completed * 1 +
-                        userAction.userInfos.pending * 1}
+                      {userAction.userInfos.completed
+                        ? userAction.userInfos.completed * 1 +
+                          userAction.userInfos.pending * 1
+                        : null}
                     </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.vazifa')}</p>

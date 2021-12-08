@@ -10,13 +10,15 @@ import {
   HandleClickDate,
   HandleClickDateUser,
 } from '../../redux/actions/UserAction';
-import { AiOutlinePlus } from 'react-icons/ai';
+import uzLocale from '@fullcalendar/core/locales/uz';
+// import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { CdataUrl, GetUserDateClickUrl, TaskAddUrl } from '../../service';
 import { useTranslation } from 'react-i18next';
+
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -262,6 +264,47 @@ const Calendar = () => {
             selectable="true"
             dateClick={handleDateClick}
             events={elements}
+            locales={uzLocale}
+            locale={'uz'}
+            mont
+            // monthNames={[
+            //   'Январь',
+            //   'Февраль',
+            //   'Март',
+            //   'Апрель',
+            //   'Май',
+            //   'Июнь',
+            //   'Июль',
+            //   'Август',
+            //   'Центябр',
+            //   'Октябрь',
+            //   'Ноябрь',
+            //   'Декабрь',
+            // ]}
+            // monthNamesShort={[
+            //   'Ene',
+            //   'Feb',
+            //   'Mar',
+            //   'Abr',
+            //   'May',
+            //   'Jun',
+            //   'Jul',
+            //   'Ago',
+            //   'Sep',
+            //   'Oct',
+            //   'Nov',
+            //   'Dic',
+            // ]}
+            // dayNames={[
+            //   'Domingo',
+            //   'Lunes',
+            //   'Martes',
+            //   'Miércoles',
+            //   'Jueves',
+            //   'Viernes',
+            //   'Sábado',
+            // ]}
+            // dayNamesShort={['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']}
           />
         </div>
       </div>

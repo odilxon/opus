@@ -60,6 +60,7 @@ const AdminPage = () => {
         setDeport('');
         setCheckPass('');
         setShowModal(false);
+        getAllUser();
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -231,14 +232,20 @@ const AdminPage = () => {
                 className="col-md-6 col-lg-4 col-xl-3"
               >
                 <AdminCard
-                  pic={e.image && e.image !== 'no' ? e.image : AccountImg}
+                  pic={
+                    e.image && e.image !== 'no'
+                      ? globalURL + e.image
+                      : AccountImg
+                  }
                   title={e.name}
                   rank={e.department}
                 />
               </div>
             ))}
           </div>
-        ) : null}
+        ) : (
+          <h2 className="text-center">Foydalanuvchi yo'q</h2>
+        )}
       </div>
     </Container>
   );
