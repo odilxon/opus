@@ -76,7 +76,7 @@ const Header = () => {
       localStorage.getItem('userToken') &&
       path !== '/changePassword' ? (
         <nav className="navbar my-0 py-0">
-          <div className="container-fluid py-2 d-md-flex align-items-center bg-white">
+          <div className="container-fluid py-2 d-flex flex-column flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
             <div className="logo">
               <img
                 src="https://preview.keenthemes.com/metronic8/demo1/assets/media/logos/logo-2.svg"
@@ -106,7 +106,12 @@ const Header = () => {
                       ? `menu-link active`
                       : 'menu-link'
                   }
-                  to="/calendar"
+                  // to="/calendar"
+                  to={
+                    localStorage.getItem('role') === 'admin'
+                      ? '/admin'
+                      : '/calendar'
+                  }
                 >
                   {t('header.project')}
                 </Link>
@@ -168,7 +173,15 @@ const Header = () => {
                       <Link to="/myAccount">{t('header.myProfil')}</Link>
                     </li>
                     <li className="p-2 px-4">
-                      <Link to="/calendar">{t('header.project')}</Link>
+                      <Link
+                        to={
+                          localStorage.getItem('role') === 'admin'
+                            ? '/admin'
+                            : '/calendar'
+                        }
+                      >
+                        {t('header.project')}
+                      </Link>
                     </li>
                     <li className="p-2 px-4 pb-3">
                       <a onClick={signOut}>{t('header.exit')}</a>

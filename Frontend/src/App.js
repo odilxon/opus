@@ -10,6 +10,8 @@ import ChangePassword from './components/pages/ChangePassword';
 import TasksList from './components/TasksList';
 import './i18next';
 import LabguageSite from './components/LabguageSite';
+import AdminPage from './components/pages/AdminPage';
+import ERRPage from './components/pages/ERRPage';
 function App() {
   return (
     <>
@@ -22,6 +24,8 @@ function App() {
           <Route path="/tasks" element={<TasksList />} />
           <Route path="/changePassword" element={<ChangePassword />} />
           <Route path="/myAccount" element={<MyProfil />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="*" element={<ERRPage />} />
         </Routes>
 
         <ToastContainer

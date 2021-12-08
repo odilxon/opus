@@ -16,9 +16,11 @@ import {
   HandleClickDateUser,
   HandleHistory,
 } from '../redux/actions/UserAction';
-import { FileIcon } from 'react-file-icon';
+import { defaultStyles, FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
+import { MultiSelect } from 'react-multi-select-component';
+// import DataTable from 'react-data-table-component';
 
 const TasksList = () => {
   const [end, setEndTime] = useState('');
@@ -30,6 +32,7 @@ const TasksList = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
+  const [selectValue, setSelectValue] = useState([]);
 
   console.log(addFile);
   const dispatch = useDispatch();
@@ -53,41 +56,13 @@ const TasksList = () => {
     bodyFormData.append('desc', nameAd);
     bodyFormData.append('start_date', userAction.clickedDate);
     bodyFormData.append('end_date', end);
-    if (addFile.length < 10) {
-      for (let i = 0; i < addFile.length; i++) {
-        bodyFormData.append(`file${[]}`, addFile[i]);
-      }
-    } else {
-      return toast.warning('Fayllar keragidan ortib ketdi', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-
-    await axios({
-      method: 'post',
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      url: TaskAddUrl,
-      data: bodyFormData,
-      headers: { 'x-access-token': localStorage.getItem('userToken') },
-    })
-      .then((response) => {
-        console.log(response.data);
-        dispatch(HandleClickDateUser(response.data));
-        setNamead('');
-        setEndTime('');
-        navigate('/tasks');
-      })
-      .catch((err) => {
-        console.log('Err:', err);
-        return toast.error(t('tasks.alertwarn'), {
+    if (addFile) {
+      if (addFile.length < 10) {
+        for (let i = 0; i < addFile.length; i++) {
+          bodyFormData.append(`file${[]}`, addFile[i]);
+        }
+      } else {
+        return toast.warning('Fayllar keragidan ortib ketdi', {
           position: 'bottom-right',
           autoClose: 5000,
           hideProgressBar: false,
@@ -96,7 +71,82 @@ const TasksList = () => {
           draggable: true,
           progress: undefined,
         });
+      }
+    }
+    if (localStorage.getItem('role') === 'adminClicked') {
+      let users = [];
+      selectValue.map((e) => {
+        users.push(e.value);
       });
+      console.log(users);
+      // let users = selectValue;
+
+      console.log(users);
+      users.push(localStorage.getItem('clickedUserId'));
+      // for (let i = 0; i < users.length; i++) {
+      //   bodyFormData.append(`users${[]}`, users[i]);
+      // }
+      users.forEach((e) => bodyFormData.append(`users${[]}`, e));
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+          setSelectValue([]);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
 
     setShow(false);
   };
@@ -112,35 +162,69 @@ const TasksList = () => {
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
-    await axios({
-      method: 'post',
-      url: ADDEventUrl,
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      data: bodyFormData,
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        dispatch(HandleClickDateUser(response.data));
-        setDescName('');
-        setClickDesc(false);
+
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'post',
+        url: ADDEventUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        data: bodyFormData,
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-        return toast.error(t('tasks.alerterr'), {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setDescName('');
+          setClickDesc(false);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alerterr'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
-      });
+    } else {
+      await axios({
+        method: 'post',
+        url: ADDEventUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        data: bodyFormData,
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setDescName('');
+          setClickDesc(false);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alerterr'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
   };
 
   const converTime = (a) => {
@@ -195,6 +279,125 @@ const TasksList = () => {
     }
   };
 
+  // const columnsClickdate = [
+  //   {
+  //     name: '№',
+  //     selector: (row) => row.nomer,
+  //   },
+  //   {
+  //     name: t('tasks.desc'),
+  //     selector: (row) => row.desc,
+  //   },
+  //   {
+  //     name: t('tasks.files'),
+  //     selector: (row) => row.files,
+  //   },
+  //   {
+  //     name: t('tasks.start'),
+  //     selector: (row) => row.start,
+  //   },
+  //   {
+  //     name: t('tasks.end'),
+  //     selector: (row) => row.end,
+  //   },
+  //   {
+  //     name: t('tasks.status'),
+  //     selector: (row) => row.status,
+  //   },
+  //   {
+  //     name: t('tasks.hist'),
+  //     selector: (row) => row.hist,
+  //   },
+  //   {
+  //     name: t('tasks.plus'),
+  //     selector: (row) => row.plus,
+  //   },
+  // ];
+
+  // const dataClickdate = [
+  //   // {
+  //   //   id: 1,
+  //   //   title: 'Beetlejuice',
+  //   //   year: '1988',
+  //   // },
+  //   // {
+  //   //   id: 2,
+  //   //   title: 'Ghostbusters',
+  //   //   year: '1984',
+  //   // },
+  // ];
+  // if (userAction.clickDate) {
+  //   userAction.clickDate.map((e, i) => {
+  //     const obj = {
+  //       id: i,
+  //       nomer: e.id,
+  //       desc: e.desc,
+  //       files:
+  //         e.attachments.length > 0 ? (
+  //           e.attachments.map((e, i) => (
+  //             <div className="iconDiv">
+  //               <a key={i} href={globalURL + e.path} target="_blank" download>
+  //                 <span title={e.key}>
+  //                   <FileIcon extension={e.ext} {...defaultStyles[e.ext]} />
+  //                 </span>
+  //               </a>
+  //             </div>
+  //           ))
+  //         ) : (
+  //           <p>{t('tasks.fileNo')}</p>
+  //         ),
+  //       start: e.start_date,
+  //       end: e.end_date,
+  //       status: (
+  //         <div
+  //           className={
+  //             e.status === 2
+  //               ? 'badge bg-warning'
+  //               : e.status === 1
+  //               ? 'badge bg-danger text-white'
+  //               : 'badge bg-success text-white'
+  //           }
+  //         >
+  //           {e.status === 2
+  //             ? t('calendar.bjdti')
+  //             : e.status === 1
+  //             ? t('calendar.bjdm')
+  //             : e.status === 3
+  //             ? t('calendar.bjd')
+  //             : t('calendar.no')}
+  //         </div>
+  //       ),
+  //       hist: (
+  //         <div className="history text-center ">
+  //           {e.history.length > 0 ? (
+  //             <>
+  //               <button
+  //                 onClick={() => handleClickHist(e.history)}
+  //                 className="btn btn-link "
+  //               >
+  //                 {e.history[e.history.length - 1].desc}
+  //               </button>
+  //             </>
+  //           ) : (
+  //             <p>{t('tasks.infoNo')}</p>
+  //           )}
+  //         </div>
+  //       ),
+  //       plus: (
+  //         <div className="text-center">
+  //           <button
+  //             onClick={() => handleClickPlus(e.id)}
+  //             className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
+  //           >
+  //             <AiOutlinePlus />
+  //           </button>
+  //         </div>
+  //       ),
+  //     };
+  //     dataClickdate.push(obj);
+  //   });
+  // }
+
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
@@ -202,24 +405,93 @@ const TasksList = () => {
   }, [navigate]);
 
   const FetchDateInfos = async () => {
-    await axios({
-      method: 'get',
-      url: GetUserDateClickUrl,
-      params: {
-        date: localStorage.getItem('ckickedDate'),
-      },
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        const { data } = response;
-        dispatch(HandleClickDateUser(data));
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-      });
+        .then((response) => {
+          const { data } = response;
+          console.log(data);
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    } else {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    }
   };
+
+  const options = [];
+  if (userAction.allUsers.length > 0) {
+    userAction.allUsers
+      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .map((e) => {
+        const obj = {
+          value: e.id,
+          label: e.name,
+        };
+        options.push(obj);
+      });
+  }
+
+  // const handleChange = (e) => {
+  //   let options = e.target.options;
+  //   let value = [];
+  //   for (let i = 0, l = options.length; i < l; i++) {
+  //     if (options[i].selected) {
+  //       value.push(options[i].value);
+  //     }
+  //   }
+  //   setSelectValue(value);
+  // };
+
+  const MySelect = () => (
+    // <select
+    //   onChange={handleChange}
+    //   multiple={true}
+    //   className="form-control select2"
+    //   value={selectValue}
+    // >
+    //   {options.map((e, i) => (
+    //     <option key={i} value={e.value}>
+    //       {e.label}
+    //     </option>
+    //   ))}
+    // </select>
+    <>
+      <MultiSelect
+        options={options}
+        value={selectValue}
+        onChange={setSelectValue}
+        labelledBy="Foydalanuvchi tanlash"
+      />
+    </>
+  );
 
   useEffect(() => {
     FetchDateInfos();
@@ -228,7 +500,7 @@ const TasksList = () => {
     <>
       <div className="container">
         <div className="row justify-content-end">
-          <div className="col-5 col-sm-4 col-md-3 col-lg-2">
+          <div className="col-5 col-sm-4 col-md-3 ">
             <Link
               className="btn btn-outline-primary mt-3 mb-2 d-flex align-items-center justify-content-center"
               to="/calendar"
@@ -264,6 +536,13 @@ const TasksList = () => {
             ) : null}
           </div>
           {userAction.clickDate.length > 0 ? (
+            // <DataTable
+            //   columns={columnsClickdate}
+            //   responsive={true}
+            //   data={dataClickdate}
+            //   className="dt-responsive nowrap"
+            // />
+
             <div className="table-responsive">
               <table className="table table-bordered">
                 <thead>
@@ -284,81 +563,67 @@ const TasksList = () => {
                       <th scope="row">{index + 1}</th>
                       <td>{e.desc}</td>
                       <td className="iconDiv">
-                        {e.attributes.length > 0 ? (
-                          e.attributes.map((e, i) => (
+                        {e.attachments.length > 0 ? (
+                          e.attachments.map((e, i) => (
                             <a
                               key={i}
-                              href={globalURL + e.value}
+                              href={globalURL + e.path}
                               target="_blank"
                               download
                             >
                               <span title={e.key}>
-                                {/* {console.log(e.value.slice(e.value.length - 4))} */}
                                 <FileIcon
-                                  extension={
-                                    e.value[e.value.length - 4] === '.'
-                                      ? e.value.slice(e.value.length - 3)
-                                      : e.value[e.value.length - 5] === '.'
-                                      ? e.value.slice(e.value.length - 4)
-                                      : 'file'
-                                  }
-                                  gradientColor={
-                                    e.value.slice(e.value.length - 3) ===
-                                      'doc' ||
-                                    e.value.slice(e.value.length - 3) === 'ocx'
-                                      ? '#2c5898'
-                                      : e.value.slice(e.value.length - 3) ===
-                                          'xls' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'xml' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'lsx'
-                                      ? 'green'
-                                      : e.value.slice(e.value.length - 3) ===
-                                        'pdf'
-                                      ? 'red'
-                                      : e.value.slice(e.value.length - 3) ===
-                                          'png' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'peg' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'jpg'
-                                      ? 'yellow'
-                                      : 'white'
-                                  }
-                                  labelColor={
-                                    e.value.slice(e.value.length - 3) ===
-                                      'doc' ||
-                                    e.value.slice(e.value.length - 3) === 'ocx'
-                                      ? '#2c5898'
-                                      : e.value.slice(e.value.length - 3) ===
-                                          'xls' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'xml' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'lsx'
-                                      ? 'green'
-                                      : e.value.slice(e.value.length - 3) ===
-                                        'pdf'
-                                      ? 'red'
-                                      : e.value.slice(e.value.length - 3) ===
-                                          'png' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'peg' ||
-                                        e.value.slice(e.value.length - 3) ===
-                                          'jpg'
-                                      ? 'yellow'
-                                      : 'white'
-                                  }
-                                  // gradientOpacity={0.5}
-                                  gradientOpacity={1}
-                                  // {e.value[e.value.length - 4] === '.'
-                                  // ? e.value.slice(e.value.length - 3)
-                                  // : e.value[e.value.length - 5] === '.'
-                                  // ? e.value.slice(e.value.length - 4)
-                                  // : 'file'}
-
-                                  // {...defaultStyles.docx}
+                                  extension={e.ext}
+                                  // gradientColor={
+                                  //   e.value.slice(e.value.length - 3) ===
+                                  //     'doc' ||
+                                  //   e.value.slice(e.value.length - 3) === 'ocx'
+                                  //     ? '#2c5898'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //         'xls' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'xml' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'lsx'
+                                  //     ? 'green'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //       'pdf'
+                                  //     ? 'red'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //         'png' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'peg' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'jpg'
+                                  //     ? 'yellow'
+                                  //     : 'white'
+                                  // }
+                                  // labelColor={
+                                  //   e.value.slice(e.value.length - 3) ===
+                                  //     'doc' ||
+                                  //   e.value.slice(e.value.length - 3) === 'ocx'
+                                  //     ? '#2c5898'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //         'xls' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'xml' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'lsx'
+                                  //     ? 'green'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //       'pdf'
+                                  //     ? 'red'
+                                  //     : e.value.slice(e.value.length - 3) ===
+                                  //         'png' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'peg' ||
+                                  //       e.value.slice(e.value.length - 3) ===
+                                  //         'jpg'
+                                  //     ? 'yellow'
+                                  //     : 'white'
+                                  // }
+                                  // gradientOpacity={1}
+                                  {...defaultStyles[e.ext]}
                                 />
                               </span>
                             </a>
@@ -366,20 +631,10 @@ const TasksList = () => {
                         ) : (
                           <p>{t('tasks.fileNo')}</p>
                         )}
-
-                        {/* <span>
-                          <FileIcon extension="pdf" {...defaultStyles.pdf} />
-                        </span>
-                        <span>
-                          <FileIcon extension="ppt" {...defaultStyles.ppt} />
-                        </span>
-                        <span>
-                          <FileIcon extension="xls" {...defaultStyles.xls} />
-                        </span> */}
                       </td>
                       <td>{e.start_date}</td>
                       <td>{e.end_date}</td>
-                      <td
+                      {/* <td
                         className={
                           e.status === 2
                             ? 'bg-warning'
@@ -395,60 +650,42 @@ const TasksList = () => {
                           : e.status === 3
                           ? t('calendar.bjd')
                           : t('calendar.no')}
+                      </td> */}
+
+                      <td>
+                        <div
+                          className={
+                            e.status === 2
+                              ? 'badge bg-warning'
+                              : e.status === 1
+                              ? 'badge bg-danger text-white'
+                              : 'badge bg-success text-white'
+                          }
+                        >
+                          {e.status === 2
+                            ? t('calendar.bjdti')
+                            : e.status === 1
+                            ? t('calendar.bjdm')
+                            : e.status === 3
+                            ? t('calendar.bjd')
+                            : t('calendar.no')}
+                        </div>
                       </td>
                       <td className="history text-center ">
                         {e.history.length > 0 ? (
                           <>
-                            {/* <button
-                              onClick={() => setClickHist(true)}
-                              className="btn btn-link "
-                            >
-                              {e.history[e.history.length - 1].desc}
-                            </button> */}
-
                             <button
                               onClick={() => handleClickHist(e.history)}
-                              className="btn btn-link "
+                              className="btn btn-link btn-hist"
                             >
                               {e.history[e.history.length - 1].desc}
                             </button>
-
-                            {/* <div className="table-responsive history-table p-2 bg-white rounded shadow">
-                              <table className="table ">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">№</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">name</th>
-                                    <th scope="col">Depart</th>
-                                    <th scope="col">vaqt</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {e.history.map((e, i) => (
-                                    <tr key={i}>
-                                      <th scope="row">{i + 1}</th>
-                                      <td>{e.desc}</td>
-                                      <td>{e.user_name}</td>
-                                      <td>{e.user_depart}</td>
-                                      <td className="date">
-                                        {converTime(e.timestamp)}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div> */}
                           </>
                         ) : (
                           <p>{t('tasks.infoNo')}</p>
                         )}
                       </td>
                       <td className="text-center">
-                        {/* <button className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto">
-                          <AiOutlinePlus />
-                        </button> */}
-
                         <button
                           onClick={() => handleClickPlus(e.id)}
                           className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
@@ -462,6 +699,141 @@ const TasksList = () => {
               </table>
             </div>
           ) : (
+            // <div className="table-responsive">
+            //   <table className="table table-bordered">
+            //     <thead>
+            //       <tr>
+            //         <th scope="col">№</th>
+            //         <th scope="col"> {t('tasks.desc')}</th>
+            //         <th scope="col">{t('tasks.files')}</th>
+            //         <th scope="col">{t('tasks.start')}</th>
+            //         <th scope="col">{t('tasks.end')}</th>
+            //         <th scope="col">{t('tasks.status')}</th>
+            //         <th scope="col">{t('tasks.hist')}</th>
+            //         <th scope="col">{t('tasks.plus')}</th>
+            //       </tr>
+            //     </thead>
+            //     <tbody>
+            //       {userAction.clickDate.map((e, index) => (
+            //         <tr key={index}>
+            //           <th scope="row">{index + 1}</th>
+            //           <td>{e.desc}</td>
+            //           <td className="iconDiv">
+            //             {e.attachments.length > 0 ? (
+            //               e.attachments.map((e, i) => (
+            //                 <a
+            //                   key={i}
+            //                   href={globalURL + e.path}
+            //                   target="_blank"
+            //                   download
+            //                 >
+            //                   <span title={e.key}>
+            //                     <FileIcon
+            //                       extension={e.ext}
+            //                       // gradientColor={
+            //                       //   e.value.slice(e.value.length - 3) ===
+            //                       //     'doc' ||
+            //                       //   e.value.slice(e.value.length - 3) === 'ocx'
+            //                       //     ? '#2c5898'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //         'xls' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'xml' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'lsx'
+            //                       //     ? 'green'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //       'pdf'
+            //                       //     ? 'red'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //         'png' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'peg' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'jpg'
+            //                       //     ? 'yellow'
+            //                       //     : 'white'
+            //                       // }
+            //                       // labelColor={
+            //                       //   e.value.slice(e.value.length - 3) ===
+            //                       //     'doc' ||
+            //                       //   e.value.slice(e.value.length - 3) === 'ocx'
+            //                       //     ? '#2c5898'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //         'xls' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'xml' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'lsx'
+            //                       //     ? 'green'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //       'pdf'
+            //                       //     ? 'red'
+            //                       //     : e.value.slice(e.value.length - 3) ===
+            //                       //         'png' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'peg' ||
+            //                       //       e.value.slice(e.value.length - 3) ===
+            //                       //         'jpg'
+            //                       //     ? 'yellow'
+            //                       //     : 'white'
+            //                       // }
+            //                       // gradientOpacity={1}
+            //                       {...defaultStyles[e.ext]}
+            //                     />
+            //                   </span>
+            //                 </a>
+            //               ))
+            //             ) : (
+            //               <p>{t('tasks.fileNo')}</p>
+            //             )}
+            //           </td>
+            //           <td>{e.start_date}</td>
+            //           <td>{e.end_date}</td>
+            //           <td
+            //             className={
+            //               e.status === 2
+            //                 ? 'bg-warning'
+            //                 : e.status === 1
+            //                 ? 'bg-danger text-white'
+            //                 : 'bg-success text-white'
+            //             }
+            //           >
+            //             {e.status === 2
+            //               ? t('calendar.bjdti')
+            //               : e.status === 1
+            //               ? t('calendar.bjdm')
+            //               : e.status === 3
+            //               ? t('calendar.bjd')
+            //               : t('calendar.no')}
+            //           </td>
+            //           <td className="history text-center ">
+            //             {e.history.length > 0 ? (
+            //               <>
+            //                 <button
+            //                   onClick={() => handleClickHist(e.history)}
+            //                   className="btn btn-link "
+            //                 >
+            //                   {e.history[e.history.length - 1].desc}
+            //                 </button>
+            //               </>
+            //             ) : (
+            //               <p>{t('tasks.infoNo')}</p>
+            //             )}
+            //           </td>
+            //           <td className="text-center">
+            //             <button
+            //               onClick={() => handleClickPlus(e.id)}
+            //               className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
+            //             >
+            //               <AiOutlinePlus />
+            //             </button>
+            //           </td>
+            //         </tr>
+            //       ))}
+            //     </tbody>
+            //   </table>
+            // </div>
             <h2 className="text-center py-2 h4">{t('tasks.noGetInfo')}</h2>
           )}
         </div>
@@ -474,8 +846,6 @@ const TasksList = () => {
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={addEvent} className="p-3">
-            {/* <h2 className="text-center h3">Sign In to Metronic</h2> */}
-
             <div className=" py-2 ">
               <label className="form-label  text-dark">
                 {t('modal.eventName')}
@@ -492,6 +862,19 @@ const TasksList = () => {
 
               <div className="fv-plugins-message-container invalid-feedback"></div>
             </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    {t('modal.eventName')}
+                  </label>
+                </div>
+
+                <MySelect />
+                <div className="fv-plugins-message-container invalid-feedback"></div>
+              </div>
+            ) : null}
 
             <div className=" py-2 ">
               <label className="form-label  text-dark">{t('tasks.end')}</label>
@@ -530,7 +913,7 @@ const TasksList = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* Historyni bosganda */}
+      {/* Historyni  bosganda */}
       {userAction.clickedHistoryRedux.length > 0 ? (
         <Modal show={clickHist} onHide={() => setClickHist(false)}>
           <Modal.Header closeButton>

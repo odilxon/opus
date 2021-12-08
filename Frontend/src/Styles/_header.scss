@@ -22,7 +22,7 @@ nav {
       min-height: 100vh;
       transform: translateX(100%);
       z-index: 5;
-
+      align-items: center;
       @media (min-width: 768px) {
         margin: 0 auto 0 50px;
         display: flex !important;

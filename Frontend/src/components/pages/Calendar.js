@@ -10,13 +10,15 @@ import {
   HandleClickDate,
   HandleClickDateUser,
 } from '../../redux/actions/UserAction';
-import { AiOutlinePlus } from 'react-icons/ai';
+import uzLocale from '@fullcalendar/core/locales/uz';
+// import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { CdataUrl, GetUserDateClickUrl, TaskAddUrl } from '../../service';
 import { useTranslation } from 'react-i18next';
+
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,7 +32,7 @@ const Calendar = () => {
   const calInf = dataRed.userAction.calendarInfos;
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
   const { t } = useTranslation();
 
   const addEvent = async (e) => {
@@ -92,23 +94,45 @@ const Calendar = () => {
     dispatch(HandleClickDate(dateClickInfo.dateStr));
     localStorage.setItem('ckickedDate', dateClickInfo.dateStr);
     navigate('/tasks');
-    await axios({
-      method: 'get',
-      url: GetUserDateClickUrl,
-      params: {
-        date: dateClickInfo.dateStr,
-      },
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        const { data } = response;
-        dispatch(HandleClickDateUser(data));
+    if (localStorage.getItem('role') === 'adminClicked') {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+        params: {
+          date: dateClickInfo.dateStr,
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
       })
-      .catch((err) => {
-        console.log('Err:', err);
-      });
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    } else {
+      await axios({
+        method: 'get',
+        url: GetUserDateClickUrl,
+
+        params: {
+          date: dateClickInfo.dateStr,
+        },
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          const { data } = response;
+          dispatch(HandleClickDateUser(data));
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,7 +140,6 @@ const Calendar = () => {
     await axios({
       method: 'get',
       url: CdataUrl,
-
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
       },
@@ -132,6 +155,34 @@ const Calendar = () => {
       });
   };
 
+  const getCountUsers = async () => {
+    await axios({
+      method: 'get',
+      url: CdataUrl,
+      params: {
+        userId: localStorage.getItem('clickedUserId'),
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        const arr = [];
+        const { data } = response;
+        Object.keys(data).map((e) => arr.push(data[e]));
+        dispatch(CalendarInfos(arr));
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
+  const backCard = () => {
+    localStorage.removeItem('clickedUserId');
+    localStorage.setItem('role', 'admin');
+    navigate('/admin');
+  };
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
@@ -163,7 +214,19 @@ const Calendar = () => {
   });
 
   useEffect(() => {
-    getCount();
+    if (!localStorage.getItem('userToken')) {
+      navigate('/');
+    }
+
+    if (localStorage.getItem('role') === 'admin') {
+      navigate('/admin');
+    }
+
+    if (localStorage.getItem('role') === 'adminClicked') {
+      getCountUsers();
+    } else {
+      getCount();
+    }
   }, []);
 
   return (
@@ -178,6 +241,14 @@ const Calendar = () => {
             >
               <AiOutlinePlus /> Add event
             </button> */}
+            {localStorage.getItem('clickedUserId') ? (
+              <button
+                onClick={backCard}
+                className="btn btn-primary d-flex justify-content-between align-items-center"
+              >
+                Ro'yhatga qaytish
+              </button>
+            ) : null}
           </div>
         </div>
         <hr />
@@ -193,6 +264,47 @@ const Calendar = () => {
             selectable="true"
             dateClick={handleDateClick}
             events={elements}
+            locales={uzLocale}
+            locale={'uz'}
+            mont
+            // monthNames={[
+            //   'Январь',
+            //   'Февраль',
+            //   'Март',
+            //   'Апрель',
+            //   'Май',
+            //   'Июнь',
+            //   'Июль',
+            //   'Август',
+            //   'Центябр',
+            //   'Октябрь',
+            //   'Ноябрь',
+            //   'Декабрь',
+            // ]}
+            // monthNamesShort={[
+            //   'Ene',
+            //   'Feb',
+            //   'Mar',
+            //   'Abr',
+            //   'May',
+            //   'Jun',
+            //   'Jul',
+            //   'Ago',
+            //   'Sep',
+            //   'Oct',
+            //   'Nov',
+            //   'Dic',
+            // ]}
+            // dayNames={[
+            //   'Domingo',
+            //   'Lunes',
+            //   'Martes',
+            //   'Miércoles',
+            //   'Jueves',
+            //   'Viernes',
+            //   'Sábado',
+            // ]}
+            // dayNamesShort={['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']}
           />
         </div>
       </div>
