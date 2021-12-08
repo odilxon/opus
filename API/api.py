@@ -8,7 +8,7 @@ import os
 def login_a():
     email = request.form.get('email')
     password = request.form.get('password')
-    print(request.form)
+
     user = User.query.filter(User.email==email).first()
     if user:
         ch = user.check_password(password)
@@ -99,7 +99,7 @@ def userdata(c):
                 f['tasks']['pending'] += 1
             else:
                 f['tasks']['completed'] += 1
-        print(f)
+
         return f,201
     f = c.format()
     f['tasks'] = { "pending" : 0, "completed": 0 }
@@ -112,7 +112,7 @@ def userdata(c):
             f['tasks']['pending'] += 1
         else:
             f['tasks']['completed'] += 1
-    print(f)
+
     return f,200
 
 
@@ -150,7 +150,7 @@ def user_tasks(c):
         user = request.args.get('userId')
     else:
         user = c.id
-    print(date)
+
     
     ff = or_(
             Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
@@ -168,15 +168,14 @@ def user_tasks(c):
     tasks = db.session.query(Task)\
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)\
         .filter(ff)
-    print("FF", ff)
-    print(tasks)
+
     tasks = tasks.all()
 
-    print("TASKS", tasks)
     ret_data = []
     for task in tasks:
         T = task.format()
-        T['attributes'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id).all()]
+        T['linked'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id, Task_Meta.key=='user_id').all()]
+        T['attachments'] = [x.format() for x in Attachment.query.filter(Attachment.type=='task', Attachment.type_id==task.id).all()]
         T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         ret_data.append(T)
     return jsonify(ret_data)
@@ -184,6 +183,7 @@ def user_tasks(c):
 @app.route("/user/c_data", methods=['GET'])
 @token_required
 def calendar_data(c):
+    print(request.args)
     if c.role == 'admin':
         user = request.args.get('userId')
     else:
@@ -235,14 +235,15 @@ def task_add(c):
         ffs = request.files.getlist('file')
         for file in ffs:
             if file:
-                filename = secure_filename(file.filename)
+                filename = HASH_FILE(file.filename)
+                print(filename)
                 filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
                 file.save(filename)
 
-            t_m = Task_Meta(
-                key = 'attach',
-                value = filename,
-                task_id = task.id
+            t_m = Attachment(
+                type = 'task',
+                type_id = task.id,
+                path = filename
             )
             db.session.add(t_m)
             db.session.commit()
@@ -268,12 +269,12 @@ def history_add(c):
     db.session.commit()
 
     t = Task.query.get(task)
-    print("STAT", stat)
+
     if stat == 'true':
         t.status = 3
     else:
         t.status = 2
-    print(t.status)
+
     db.session.commit()
 
     return user_tasks(), 200

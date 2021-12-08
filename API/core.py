@@ -42,3 +42,11 @@ def after_request(response):
 @app.route('/uploads/<path:path>')
 def send_uploads(path):
     return send_from_directory('uploads', path)
+
+def HASH_FILE(filename):
+    print(filename)
+    name , ext = filename.rsplit('.',1)
+    sha = sha256(name.encode()).hexdigest()
+    return "%s.%s"%(sha,ext)
+
+    
