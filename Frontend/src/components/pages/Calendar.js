@@ -246,7 +246,7 @@ const Calendar = () => {
                 onClick={backCard}
                 className="btn btn-primary d-flex justify-content-between align-items-center"
               >
-                Ro'yhatga qaytish
+                {t('calendar.qaytish')}
               </button>
             ) : null}
           </div>

@@ -141,3 +141,8 @@
     clip-path: polygon(0 0, 0 100%, 100% 100%);
   }
 }
+.fc-scrollgrid-sync-inner {
+  a {
+    text-decoration: none !important;
+  }
+}

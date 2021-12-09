@@ -119,7 +119,18 @@ const Header = () => {
               </li>
             </ul>
 
-            <div className="d-flex align-items-center justify-content-center ms-auto me-2">
+            <div className="languages ms-auto">
+              <LabguageSite className="languageSite" />
+              <div className="titleIcon">
+                <span
+                  className={`flag-icon flag-icon-${
+                    t('lang') === 'Уз' ? 'uz' : 'ru'
+                  } mx-2`}
+                ></span>
+              </div>
+            </div>
+
+            <div className="d-flex align-items-center justify-content-center ms-1 me-2">
               <OutsideClickHandler
                 onOutsideClick={() => {
                   setClickHero(false);
@@ -191,8 +202,6 @@ const Header = () => {
                 </div>
               </OutsideClickHandler>
             </div>
-
-            <LabguageSite className="languageSite" />
 
             <button onClick={() => setClick(true)}>
               <svg

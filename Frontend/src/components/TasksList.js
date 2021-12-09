@@ -556,7 +556,7 @@ const TasksList = () => {
                 <tbody>
                   {userAction.clickDate.map((e, index) => (
                     <tr key={index}>
-                      <th scope="row" className="rib">
+                      <th scope="row" className={e.isAdmin ? 'rib' : null}>
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
