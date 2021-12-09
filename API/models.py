@@ -9,7 +9,7 @@ from sqlalchemy.sql.sqltypes import TIMESTAMP
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-
+from hashlib import sha256
 app = Flask(__name__)
 app.config.from_object('config.main')
 
@@ -41,7 +41,8 @@ class User(db.Model):
             "department" : self.department,
             "rank" : self.rank,
         }
-   
+    def __repr__(self):
+        return "%s"%self.name
 
 class Task(db.Model):
     __tablename__ = 'task'
@@ -95,13 +96,22 @@ class Task_History(db.Model):
 class Attachment(db.Model):
     __tablename__ = 'attachment'
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.Integer, nullable=False)
+    type = db.Column(db.String, nullable=False)
     type_id = db.Column(db.Integer, nullable=False)
     path = db.Column(db.String, nullable=False)
 
+    def format(self):
+        return {
+            'id' : self.id,
+            'type' : self.type,
+            'type_id' : self.type_id,
+            'path' : self.path,
+            'ext': self.path.rsplit('.',1)[-1]
+    }
 
 admin = Admin(app, name='microblog', template_mode='bootstrap4')
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Task, db.session))
 admin.add_view(ModelView(Task_Meta, db.session))
 admin.add_view(ModelView(Task_History, db.session))
+admin.add_view(ModelView(Attachment, db.session))

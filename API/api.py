@@ -8,7 +8,7 @@ import os
 def login_a():
     email = request.form.get('email')
     password = request.form.get('password')
-    print(request.form)
+
     user = User.query.filter(User.email==email).first()
     if user:
         ch = user.check_password(password)
@@ -88,7 +88,19 @@ def userdata(c):
             u.rank = u_rank
 
         db.session.commit()
-        return u.format(),201
+        f = u.format()
+        f['tasks'] = { "pending" : 0, "completed": 0 }
+        ff = or_(
+                Task.owner_id == int(u.id), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(u.id)).self_group()
+                )
+        t = db.session.query(Task).outerjoin(Task_Meta, Task_Meta.task_id == Task.id).filter(ff).all()
+        for task in t:
+            if task.status in [1,2]:
+                f['tasks']['pending'] += 1
+            else:
+                f['tasks']['completed'] += 1
+
+        return f,201
     f = c.format()
     f['tasks'] = { "pending" : 0, "completed": 0 }
     ff = or_(
@@ -100,7 +112,7 @@ def userdata(c):
             f['tasks']['pending'] += 1
         else:
             f['tasks']['completed'] += 1
-    print(f)
+
     return f,200
 
 
@@ -117,17 +129,31 @@ def newpass(c):
         return jsonify({"msg": "Success"}), 200
     else:
         return jsonify({"msg": "Incorrect password"}),405
+
+@app.route("/user/users", methods=['GET'])
+@token_required
+def user_choose(c):
+    users = db.session.query(User).filter(User.role != 'admin').all()
+    ret_data = []
+    for user in users:
+        U = user.format()
+        ret_data.append(U)
+    return jsonify(ret_data)
+
 @app.route("/user/tasks", methods=['GET'])
 @token_required
 def user_tasks(c):
     import calendar
     date = request.args.get('date')
     month = request.args.get('month')# 2021-11
+    if c.role == 'admin':
+        user = request.args.get('userId')
+    else:
+        user = c.id
 
-    print(date)
     
     ff = or_(
-            Task.owner_id == int(c.id), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(c.id)).self_group()
+            Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
             ).self_group()
     if date:
         # date = "-".join(date.split("-")[::-1]) # 2012-02-31 -> 31-02-2012
@@ -142,15 +168,14 @@ def user_tasks(c):
     tasks = db.session.query(Task)\
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)\
         .filter(ff)
-    print("FF", ff)
-    print(tasks)
+
     tasks = tasks.all()
 
-    print("TASKS", tasks)
     ret_data = []
     for task in tasks:
         T = task.format()
-        T['attributes'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id).all()]
+        T['linked'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id, Task_Meta.key=='user_id').all()]
+        T['attachments'] = [x.format() for x in Attachment.query.filter(Attachment.type=='task', Attachment.type_id==task.id).all()]
         T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         ret_data.append(T)
     return jsonify(ret_data)
@@ -158,8 +183,13 @@ def user_tasks(c):
 @app.route("/user/c_data", methods=['GET'])
 @token_required
 def calendar_data(c):
+    print(request.args)
+    if c.role == 'admin':
+        user = request.args.get('userId')
+    else:
+        user = c.id
     ff = or_(
-        Task.owner_id == int(c.id), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(c.id)).self_group()
+        Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
         ).self_group()
     tasks = db.session.query(Task)\
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)\
@@ -179,6 +209,7 @@ def task_add(c):
     start = request.form.get('start_date')
     end = request.form.get('end_date')
     description = request.form.get('desc')
+    
     stat = 1
     task = Task(
         owner_id = user_id,
@@ -190,18 +221,29 @@ def task_add(c):
 
     db.session.add(task)
     db.session.commit()
+    if c.role == 'admin':
+        users = request.form.getlist('users')
+        for user in users:
+            new_tm = Task_Meta(
+                key = 'user_id',
+                value = user,
+                task_id = task.id
+            )
+            db.session.add(new_tm)
+            db.session.commit()
     if 'file' in request.files:
         ffs = request.files.getlist('file')
         for file in ffs:
             if file:
-                filename = secure_filename(file.filename)
+                filename = HASH_FILE(file.filename)
+                print(filename)
                 filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
                 file.save(filename)
 
-            t_m = Task_Meta(
-                key = 'attach',
-                value = filename,
-                task_id = task.id
+            t_m = Attachment(
+                type = 'task',
+                type_id = task.id,
+                path = filename
             )
             db.session.add(t_m)
             db.session.commit()
@@ -227,12 +269,12 @@ def history_add(c):
     db.session.commit()
 
     t = Task.query.get(task)
-    print("STAT", stat)
+
     if stat == 'true':
         t.status = 3
     else:
         t.status = 2
-    print(t.status)
+
     db.session.commit()
 
     return user_tasks(), 200
