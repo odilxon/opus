@@ -107,7 +107,7 @@ nav {
     }
   }
 
-  .show {
+  .menu.show {
     transform: translateX(20%) !important;
     &::before {
       content: ' ';
@@ -132,4 +132,26 @@ nav {
   position: fixed;
   top: 0;
   right: 0;
+}
+.drdLang {
+  .dropdown-menu {
+    min-width: 10px;
+
+    .dropdown-item {
+      width: 100px;
+      text-align: center;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
+.languages {
+  position: relative;
+  .titleIcon {
+    background-color: #fff;
+    padding: 6px;
+    position: absolute;
+    top: 0;
+    left: -14px;
+  }
 }

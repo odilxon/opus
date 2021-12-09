@@ -9,7 +9,6 @@ import MyProfil from './components/pages/MyProfil';
 import ChangePassword from './components/pages/ChangePassword';
 import TasksList from './components/TasksList';
 import './i18next';
-import LabguageSite from './components/LabguageSite';
 import AdminPage from './components/pages/AdminPage';
 import ERRPage from './components/pages/ERRPage';
 function App() {
@@ -17,7 +16,6 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
-        <LabguageSite className="languageSite" />
         <Routes>
           <Route path="/" element={<LogIn />} />
           <Route path="/calendar" element={<Calendar />} />

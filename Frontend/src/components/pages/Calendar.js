@@ -246,7 +246,7 @@ const Calendar = () => {
                 onClick={backCard}
                 className="btn btn-primary d-flex justify-content-between align-items-center"
               >
-                Ro'yhatga qaytish
+                {t('calendar.qaytish')}
               </button>
             ) : null}
           </div>
@@ -256,7 +256,7 @@ const Calendar = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: 'prev,next today',
+              left: 'prev,next',
               center: 'title',
               right: 'dayGridDay,dayGridWeek,dayGridMonth',
             }}

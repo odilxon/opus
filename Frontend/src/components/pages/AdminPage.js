@@ -14,7 +14,7 @@ const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  // const [role, setRole] = useState('');
   const [deport, setDeport] = useState('');
   const [rank, setRank] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +37,7 @@ const AdminPage = () => {
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
     bodyFormData.append('email', email);
-    bodyFormData.append('role', role);
+    bodyFormData.append('role', 'user');
     bodyFormData.append('department', deport);
     bodyFormData.append('rank', rank);
     bodyFormData.append('password', password);
@@ -55,7 +55,7 @@ const AdminPage = () => {
         setName('');
         setPassword('');
         setRank('');
-        setRole('');
+        // setRole('');
         setEmail('');
         setDeport('');
         setCheckPass('');
@@ -71,7 +71,7 @@ const AdminPage = () => {
     setName('');
     setPassword('');
     setRank('');
-    setRole('');
+    // setRole('');
     setEmail('');
     setDeport('');
     setCheckPass('');
@@ -107,52 +107,56 @@ const AdminPage = () => {
     <Container>
       <div className="bg-white rounded shadow-sm p-3 p-md-4 my-3">
         <div className="row">
-          <div className="col-7">
-            <h2>Admin panel</h2>
+          <div className="col-md-7">
+            <h2>{t('admin.title')}</h2>
           </div>
-          <div className="col-5 text-end">
+          <div className="col-md-5 text-end">
             <button
               onClick={() => {
                 setShowModal(!showModal);
               }}
               className="btn btn-primary"
             >
-              Add User
+              {t('admin.addUser')}
             </button>
           </div>
         </div>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
-            <Modal.Title>Add User</Modal.Title>
+            <Modal.Title> {t('admin.addUser')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={addUser} className="p-3">
               <div className=" py-2 ">
-                <label className="form-label  text-dark">Email</label>
+                <label className="form-label  text-dark">
+                  {t('admin.email')}
+                </label>
 
                 <input
                   className="form-control form-control-lg form-control-solid "
                   type="email"
                   name="email"
-                  placeholder="Email"
+                  placeholder={t('admin.emailplc')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
               <div className=" py-2 ">
-                <label className="form-label  text-dark">Name</label>
+                <label className="form-label  text-dark">
+                  {t('admin.name')}
+                </label>
 
                 <input
                   className="form-control form-control-lg form-control-solid "
                   type="text"
                   name="name"
-                  placeholder="name"
+                  placeholder={t('admin.nameplc')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className=" py-2 ">
+              {/* <div className=" py-2 ">
                 <label className="form-label  text-dark">Role</label>
 
                 <input
@@ -163,39 +167,45 @@ const AdminPage = () => {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div className=" py-2 ">
-                <label className="form-label  text-dark">Depart</label>
+                <label className="form-label  text-dark">
+                  {t('admin.depart')}
+                </label>
 
                 <input
                   className="form-control form-control-lg form-control-solid "
                   type="text"
                   name="depart"
-                  placeholder="depart"
+                  placeholder={t('admin.departplc')}
                   value={deport}
                   onChange={(e) => setDeport(e.target.value)}
                 />
               </div>
               <div className=" py-2 ">
-                <label className="form-label  text-dark">Rank</label>
+                <label className="form-label  text-dark">
+                  {t('admin.rank')}
+                </label>
 
                 <input
                   className="form-control form-control-lg form-control-solid "
                   type="text"
                   name="Rank"
-                  placeholder="rank"
+                  placeholder={t('admin.rankplc')}
                   value={rank}
                   onChange={(e) => setRank(e.target.value)}
                 />
               </div>
               <div className=" py-2 ">
-                <label className="form-label  text-dark">Password</label>
+                <label className="form-label  text-dark">
+                  {t('chpass.npass')}
+                </label>
 
                 <input
                   className="form-control form-control-lg form-control-solid "
                   type={checkPass ? 'text' : 'password'}
                   name="password"
-                  placeholder="password"
+                  placeholder={t('chpass.npassplc')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -208,17 +218,17 @@ const AdminPage = () => {
                     checked={checkPass}
                     onChange={() => setCheckPass(!checkPass)}
                   />
-                  {'   '} {t('modal.checkBox')}
+                  {'   '} {t('chpass.checkpass')}
                 </label>
               </div>
             </form>
           </Modal.Body>
           <Modal.Footer>
             <Button type="button" variant="secondary" onClick={back}>
-              Orqaga
+              {t('tasks.back')}
             </Button>
             <Button onClick={addUser} variant="primary">
-              save
+              {t('admin.save')}
             </Button>
           </Modal.Footer>
         </Modal>
