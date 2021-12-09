@@ -23,7 +23,10 @@ body {
   background-color: #f5f8fa !important;
 }
 
+$base-color: rgba(16,120,98,1);
+$opus-input : #f1f7f5;
 @import 'LogIn';
 @import 'calendar';
 @import 'header';
 @import 'myprofil';
+@import 'custom';

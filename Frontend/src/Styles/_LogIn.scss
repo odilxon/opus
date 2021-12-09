@@ -1,3 +1,5 @@
+
+
 .LogIn {
   width: 100%;
   min-height: 100vh;
@@ -19,12 +21,13 @@
   }
   input {
     border: none;
-    background-color: #e8f0fe;
+    background-color: $opus-input;
     font-weight: 500;
     font-size: 14px !important;
     &:focus,
     &:hover {
-      background-color: #e8f0fe;
+      background-color: $opus-input !important;
+      
     }
   }
 

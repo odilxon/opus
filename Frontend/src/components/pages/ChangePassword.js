@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { NewPassUrl } from '../../service';
 import { useTranslation } from 'react-i18next';
 // import { LoginUrl } from '../../service';
-
+import Logo from '../../assets/images/logo.svg';
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -98,7 +98,14 @@ const ChangePassword = () => {
   return (
     <div className="LogIn">
       <div className="container">
-        <h1 className="text-center py-3">Opus</h1>
+        <h1 className="text-center py-3"><div className="logo">
+              <img
+                src={Logo}
+                alt="random"
+                className="img-fluid"
+                width="250"
+              />
+            </div>  </h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto mb-2">
           <form onSubmit={editPassword}>
             <h2 className="text-center h3">{t('chpass.changePass')}</h2>
@@ -167,10 +174,10 @@ const ChangePassword = () => {
             </div>
 
             <div className="py-2 pt-3 d-grid gap-2">
-              <Link to="/myAccount" className="btn btn-secondary fw-bold">
+              <Link to="/myAccount" className="btn btn-sec fw-bold">
                 {t('myacc.back')}
               </Link>
-              <button className="btn  btn-primary fw-bold">
+              <button className="btn  btn-opus fw-bold">
                 {t('myacc.save')}
               </button>
             </div>

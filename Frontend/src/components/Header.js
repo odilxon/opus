@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 import AccountImg from '../assets/images/account.png';
+import Logo from '../assets/images/logo.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { GetUserInfoUrl, globalURL } from '../service';
@@ -80,9 +81,10 @@ const Header = () => {
           <div className="container-fluid py-2 d-flex  flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
             <div className="logo">
               <img
-                src="https://preview.keenthemes.com/metronic8/demo1/assets/media/logos/logo-2.svg"
+                src={Logo}
                 alt="random"
                 className="img-fluid"
+                width="1000"
               />
             </div>
 
@@ -127,6 +129,7 @@ const Header = () => {
                     t('lang') === 'Уз' ? 'uz' : 'ru'
                   } mx-2`}
                 ></span>
+                
               </div>
             </div>
 

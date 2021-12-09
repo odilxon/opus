@@ -1,3 +1,4 @@
+
 nav {
   position: fixed;
   background-color: #fff;
@@ -53,7 +54,7 @@ nav {
           }
           &:hover,
           &.active {
-            color: #009ef7;
+            color: $base-color;
             @media (min-width: 768px) {
               background-color: rgba(245, 248, 250, 0.8);
             }

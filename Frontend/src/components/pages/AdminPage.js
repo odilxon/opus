@@ -115,7 +115,7 @@ const AdminPage = () => {
               onClick={() => {
                 setShowModal(!showModal);
               }}
-              className="btn btn-primary"
+              className="btn btn-opus"
             >
               {t('admin.addUser')}
             </button>
@@ -217,6 +217,7 @@ const AdminPage = () => {
                     type="checkbox"
                     checked={checkPass}
                     onChange={() => setCheckPass(!checkPass)}
+                    
                   />
                   {'   '} {t('chpass.checkpass')}
                 </label>
@@ -224,10 +225,10 @@ const AdminPage = () => {
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="button" variant="secondary" onClick={back}>
+            <Button type="button" variant='sec'   onClick={back}>
               {t('tasks.back')}
             </Button>
-            <Button onClick={addUser} variant="primary">
+            <Button onClick={addUser}  variant='opus'>
               {t('admin.save')}
             </Button>
           </Modal.Footer>

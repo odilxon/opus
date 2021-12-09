@@ -7,7 +7,7 @@ import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
 import { LoginUrl } from '../../service';
 import { useTranslation } from 'react-i18next';
-
+import Logo from '../../assets/images/logo.svg';
 const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -97,7 +97,14 @@ const LogIn = () => {
   return (
     <div className="LogIn">
       <div className="container">
-        <h1 className="text-center py-5">Opus</h1>
+        <h1 className="text-center py-5"> <div className="logo">
+              <img
+                src={Logo}
+                alt="random"
+                className="img-fluid"
+                width="250"
+              />
+            </div>  </h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto">
           <form onSubmit={fetchUser}>
             <h2 className="text-center h3">{t('login.kirish')}</h2>
@@ -132,7 +139,7 @@ const LogIn = () => {
             </div>
 
             <div className="py-2 pt-3 d-grid gap-2">
-              <button className="btn btn-primary fw-bold">
+              <button className="btn btn-opus fw-bold">
                 {t('login.cont')}
               </button>
             </div>

@@ -16,10 +16,10 @@ const LabguageSite = () => {
   return (
     <NavDropdown className="drdLang" title={t('lang')}>
       <NavDropdown.Item onClick={() => handleClick(`uz`)}>
-        <span className={`flag-icon flag-icon-uz mx-2`}></span>
+        <span className={`flag-icon flag-icon-uz mx-2`}></span> UZ
       </NavDropdown.Item>
       <NavDropdown.Item onClick={() => handleClick(`ru`)}>
-        <span className={`flag-icon flag-icon-ru mx-2`}></span>
+        <span className={`flag-icon flag-icon-ru mx-2`}></span> RU
       </NavDropdown.Item>
     </NavDropdown>
   );
