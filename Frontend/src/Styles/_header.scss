@@ -107,7 +107,7 @@ nav {
     }
   }
 
-  .show {
+  .menu.show {
     transform: translateX(20%) !important;
     &::before {
       content: ' ';

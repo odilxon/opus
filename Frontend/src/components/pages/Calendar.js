@@ -256,7 +256,7 @@ const Calendar = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: 'prev,next today',
+              left: 'prev,next',
               center: 'title',
               right: 'dayGridDay,dayGridWeek,dayGridMonth',
             }}

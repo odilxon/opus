@@ -42,7 +42,7 @@
   }
 }
 .btn-hist {
-  max-width: 100px !important;
+  max-width: 180px !important;
   overflow: hidden;
   display: inline-block;
   text-overflow: ellipsis;
@@ -120,5 +120,24 @@
   .modal-dialog {
     max-width: 900px !important;
     margin: 1.75rem auto;
+  }
+}
+.sts {
+  text-align: center;
+}
+.rib {
+  overflow: hidden;
+  position: relative;
+  &::before {
+    content: ' ';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    bottom: -5px;
+    right: 20px;
+    background-color: #59a1de;
+    -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%);
+    clip-path: polygon(0 0, 0 100%, 100% 100%);
   }
 }

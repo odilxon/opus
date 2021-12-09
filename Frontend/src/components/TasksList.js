@@ -250,12 +250,12 @@ const TasksList = () => {
       seconds.substr(-2);
     return formattedTime;
   };
+
   const compareDate = () => {
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
     const todayDate = today.getDate();
-
     const lYear = parseFloat(localStorage.getItem('ckickedDate').slice(0, 4));
     const lMonth = parseFloat(localStorage.getItem('ckickedDate').slice(5, 8));
     const lDate = parseFloat(localStorage.getItem('ckickedDate').slice(8, 10));
@@ -489,12 +489,14 @@ const TasksList = () => {
         value={selectValue}
         onChange={setSelectValue}
         labelledBy="Foydalanuvchi tanlash"
+        autoBlur={false}
       />
     </>
   );
 
   useEffect(() => {
     FetchDateInfos();
+    localStorage.setItem('compare', compareDate());
   }, []);
   return (
     <>
@@ -516,23 +518,17 @@ const TasksList = () => {
               <h1 className="pt-2 pb-4">{t('tasks.title')}</h1>
             </div>
 
-            {userAction.clickedDate.length > 0 ? (
-              <>
-                <div className="col-md-4 text-end">
-                  {userAction.clickedDate}
-                </div>
+            <div className="col-md-3 text-end">{userAction.clickedDate}</div>
 
-                {compareDate() ? (
-                  <div className="col-md-2 text-end">
-                    <button
-                      onClick={handleShow}
-                      className="btn btn-primary d-flex justify-content-between align-items-center"
-                    >
-                      <AiOutlinePlus /> {t('tasks.addEvent')}
-                    </button>
-                  </div>
-                ) : null}
-              </>
+            {localStorage.getItem('compare') == 'true' ? (
+              <div className="col-md-3 text-end">
+                <button
+                  onClick={handleShow}
+                  className="btn btn-primary d-flex justify-content-between align-items-center"
+                >
+                  <AiOutlinePlus /> {t('tasks.addEvent')}
+                </button>
+              </div>
             ) : null}
           </div>
           {userAction.clickDate.length > 0 ? (
@@ -560,7 +556,9 @@ const TasksList = () => {
                 <tbody>
                   {userAction.clickDate.map((e, index) => (
                     <tr key={index}>
-                      <th scope="row">{index + 1}</th>
+                      <th scope="row" className="rib">
+                        {e.id}
+                      </th>
                       <td>{e.desc}</td>
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
@@ -652,7 +650,7 @@ const TasksList = () => {
                           : t('calendar.no')}
                       </td> */}
 
-                      <td>
+                      <td className="sts">
                         <div
                           className={
                             e.status === 2

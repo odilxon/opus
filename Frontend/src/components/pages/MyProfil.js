@@ -68,11 +68,10 @@ const MyProfil = () => {
     e.preventDefault();
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
-    bodyFormData.append('fullName', fullName);
     bodyFormData.append('department', tel);
     bodyFormData.append('rank', rankAcc);
 
-    if (!name || !fullName || !tel) {
+    if (!name || !tel) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
         position: 'bottom-right',
         autoClose: 5000,
@@ -95,7 +94,6 @@ const MyProfil = () => {
       .then((response) => {
         console.log(response.data);
         setName('');
-        setFullName('');
         setTel('');
         setRankAcc('');
         const { data } = response;
@@ -163,6 +161,11 @@ const MyProfil = () => {
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
         localStorage.setItem('role', data.role);
+
+        setName(data.name);
+        setFullName(data.name);
+        setTel(data.department);
+        setRankAcc(data.rank);
       })
       .catch((err) => {
         console.log('Err:', err);
@@ -323,10 +326,10 @@ const MyProfil = () => {
       <div className="profilDetails bg-white rounded shadow-sm py-3 my-3">
         <div className="card_header px-5 pt-2 pb-1">
           <div className="row align-items-center justify-content-between">
-            <div className="col-md-6 col-lg-4">
+            <div className="col-md-6 col-lg-4 text-center text-md-start">
               <h2 className="h3">{t('myacc.prdt')}</h2>
             </div>
-            <div className="col-md-6 col-lg-4 text-end">
+            <div className="col-md-6 col-lg-4 text-center text-md-end">
               <button
                 onClick={() => setEditProfil(!editProfil)}
                 className="btn btn-primary"
@@ -398,7 +401,7 @@ const MyProfil = () => {
                   </div>
                   <div className="col-lg-8 image-input">
                     <div className="row mt-lg-3">
-                      <div className="col-lg-6 my-2">
+                      <div className=" my-2">
                         <input
                           className="form-control form-control-lg form-control-solid "
                           type="text"
@@ -410,7 +413,7 @@ const MyProfil = () => {
                           id="name"
                         />
                       </div>
-                      <div className="col-lg-6 my-2">
+                      {/* <div className="col-lg-6 my-2">
                         <input
                           className="form-control form-control-lg form-control-solid "
                           type="text"
@@ -420,7 +423,7 @@ const MyProfil = () => {
                           onChange={(e) => setFullName(e.target.value)}
                           required
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { GetUserInfoUrl, globalURL } from '../service';
 import { UserInfosLogIn } from '../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
+import LabguageSite from './LabguageSite';
 
 const Header = () => {
   const [click, setClick] = useState(false);
@@ -76,7 +77,7 @@ const Header = () => {
       localStorage.getItem('userToken') &&
       path !== '/changePassword' ? (
         <nav className="navbar my-0 py-0">
-          <div className="container-fluid py-2 d-flex flex-column flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
+          <div className="container-fluid py-2 d-flex  flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
             <div className="logo">
               <img
                 src="https://preview.keenthemes.com/metronic8/demo1/assets/media/logos/logo-2.svg"
@@ -190,6 +191,8 @@ const Header = () => {
                 </div>
               </OutsideClickHandler>
             </div>
+
+            <LabguageSite className="languageSite" />
 
             <button onClick={() => setClick(true)}>
               <svg
