@@ -125,7 +125,7 @@ const LogIn = () => {
             </div>
 
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Password</label>
+              <label className="form-label  text-dark">{t('myacc.pass')}</label>
 
               <input
                 className="form-control form-control-lg form-control-solid "

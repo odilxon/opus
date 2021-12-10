@@ -10,7 +10,7 @@ import {
   HandleClickDate,
   HandleClickDateUser,
 } from '../../redux/actions/UserAction';
-import uzLocale from '@fullcalendar/core/locales/uz';
+import uzLocale from '@fullcalendar/core/locales/ru';
 // import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -256,7 +256,7 @@ const Calendar = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: 'prev,next',
+              left: 'prev,next today',
               center: 'title',
               right: 'dayGridDay,dayGridWeek,dayGridMonth',
             }}
@@ -265,7 +265,7 @@ const Calendar = () => {
             dateClick={handleDateClick}
             events={elements}
             locales={uzLocale}
-            locale={'uz'}
+            locale={'ru'}
             mont
             // monthNames={[
             //   'Январь',
