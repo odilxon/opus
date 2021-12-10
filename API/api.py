@@ -143,9 +143,7 @@ def user_choose(c):
 @app.route("/user/tasks", methods=['GET'])
 @token_required
 def user_tasks(c):
-    import calendar
     date = request.args.get('date')
-    month = request.args.get('month')# 2021-11
     if c.role == 'admin':
         user = request.args.get('userId')
     else:
@@ -155,21 +153,18 @@ def user_tasks(c):
     ff = or_(
             Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
             ).self_group()
+    
+    
+    tasks = db.session.query(Task)\
+        .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)
+        
+
     if date:
         # date = "-".join(date.split("-")[::-1]) # 2012-02-31 -> 31-02-2012
         ff = and_(ff,Task.start_date == date ).self_group()
-    if month:
-        year = int(month.split("-")[0])
-        month = int(month.split("-")[1])
-        s_date = datetime.date(year,month, 1) 
-        l = calendar.monthrange(year, month)
-        e_date = datetime.date(year,month, l[1])
-        ff = and_(ff,Task.start_date.between(s_date,e_date)).self_group()
-    tasks = db.session.query(Task)\
-        .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)\
-        .filter(ff)
-
-    tasks = tasks.all()
+        
+    tasks = tasks.filter(ff).all()
+    
 
     ret_data = []
     for task in tasks:
