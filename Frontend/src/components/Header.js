@@ -80,12 +80,7 @@ const Header = () => {
         <nav className="navbar my-0 py-0">
           <div className="container-fluid py-2 d-flex  flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
             <div className="logo">
-              <img
-                src={Logo}
-                alt="random"
-                className="img-fluid"
-                width="1000"
-              />
+              <img src={Logo} alt="random" className="img-fluid" width="1000" />
             </div>
 
             <ul
@@ -119,6 +114,17 @@ const Header = () => {
                   {t('header.project')}
                 </Link>
               </li>
+
+              <li>
+                <Link
+                  className={
+                    path === '/alltasks' ? `menu-link active` : 'menu-link'
+                  }
+                  to="/alltasks"
+                >
+                  Barcha ijrolar
+                </Link>
+              </li>
             </ul>
 
             <div className="languages ms-auto">
@@ -129,7 +135,6 @@ const Header = () => {
                     t('lang') === 'Уз' ? 'uz' : 'ru'
                   } mx-2`}
                 ></span>
-                
               </div>
             </div>
 
