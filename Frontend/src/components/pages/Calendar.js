@@ -10,7 +10,7 @@ import {
   HandleClickDate,
   HandleClickDateUser,
 } from '../../redux/actions/UserAction';
-import uzLocale from '@fullcalendar/core/locales/uz';
+import uzLocale from '@fullcalendar/core/locales/ru';
 // import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -190,27 +190,27 @@ const Calendar = () => {
       elements.push({
         title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
         date: e.Sana,
-        backgroundColor: '#cff4fc',
-        textColor: '#055160',
-        borderColor: '#b6effb',
+        backgroundColor: '#299e85',
+        textColor: '#fff',
+        borderColor: '#1a8770',
       });
     }
     if (e.Bajarilmoqda > 0) {
       elements.push({
         title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
         date: e.Sana,
-        backgroundColor: '#fff3cd',
+        backgroundColor: 'rgb(249,235,91)',
         textColor: '#664d03',
-        borderColor: '#ffecb5',
+        borderColor: 'rgb(253,216,62)',
       });
     }
     if (e.Bajarilmagan) {
       elements.push({
         title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
         date: e.Sana,
-        backgroundColor: '#f8d7da',
-        textColor: '#842029',
-        borderColor: '#f5c2c7',
+        backgroundColor: 'rgb(233,101,113)',
+        textColor: '#fff',
+        borderColor: 'rgb(227,71,85)',
       });
     }
   });
@@ -239,14 +239,14 @@ const Calendar = () => {
           <div>
             {/* <button
               onClick={handleShow}
-              className="btn btn-primary d-flex justify-content-between align-items-center"
+              className="btn btn-opus d-flex justify-content-between align-items-center"
             >
               <AiOutlinePlus /> Add event
             </button> */}
             {localStorage.getItem('clickedUserId') ? (
               <button
                 onClick={backCard}
-                className="btn btn-primary d-flex justify-content-between align-items-center"
+                className="btn btn-opus d-flex justify-content-between align-items-center"
               >
                 {t('calendar.qaytish')}
               </button>
@@ -258,7 +258,7 @@ const Calendar = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: 'prev,next',
+              left: 'prev,next today',
               center: 'title',
               right: 'dayGridDay,dayGridWeek,dayGridMonth',
             }}
@@ -267,7 +267,7 @@ const Calendar = () => {
             dateClick={handleDateClick}
             events={elements}
             locales={uzLocale}
-            locale={'uz'}
+            locale={'ru'}
             mont
             // monthNames={[
             //   'Январь',
@@ -363,10 +363,10 @@ const Calendar = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button type="button" variant="secondary" onClick={handleClose}>
+          <Button type="button" variant="sec" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={addEvent} variant="primary">
+          <Button onClick={addEvent} variant='opus'>
             Submit
           </Button>
         </Modal.Footer>

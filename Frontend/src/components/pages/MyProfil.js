@@ -288,7 +288,7 @@ const MyProfil = () => {
                       {userAction.userInfos.completed
                         ? userAction.userInfos.completed * 1 +
                           userAction.userInfos.pending * 1
-                        : null}
+                        : 0}
                     </div>
                   </div>
                   <p className="text-muted h5">{t('myacc.vazifa')}</p>
@@ -332,7 +332,7 @@ const MyProfil = () => {
             <div className="col-md-6 col-lg-4 text-center text-md-end">
               <button
                 onClick={() => setEditProfil(!editProfil)}
-                className="btn btn-primary"
+                className="btn btn-opus"
               >
                 {t('myacc.edt')}
               </button>
@@ -477,7 +477,7 @@ const MyProfil = () => {
                     >
                       {t('myacc.back')}
                     </button>
-                    <button className="btn btn-primary">
+                    <button className="btn btn-opus">
                       {' '}
                       {t('myacc.save')}
                     </button>

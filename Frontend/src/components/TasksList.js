@@ -387,7 +387,7 @@ const TasksList = () => {
   //         <div className="text-center">
   //           <button
   //             onClick={() => handleClickPlus(e.id)}
-  //             className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
+  //             className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
   //           >
   //             <AiOutlinePlus />
   //           </button>
@@ -504,7 +504,7 @@ const TasksList = () => {
         <div className="row justify-content-end">
           <div className="col-5 col-sm-4 col-md-3 ">
             <Link
-              className="btn btn-outline-primary mt-3 mb-2 d-flex align-items-center justify-content-center"
+              className="btn btn-outline-opus mt-3 mb-2 d-flex align-items-center justify-content-center"
               to="/calendar"
             >
               <HiOutlineArrowNarrowLeft className="me-3" />
@@ -524,7 +524,7 @@ const TasksList = () => {
               <div className="col-md-3 text-end">
                 <button
                   onClick={handleShow}
-                  className="btn btn-primary d-flex justify-content-between align-items-center"
+                  className="btn btn-opus d-flex justify-content-between align-items-center f-r"
                 >
                   <AiOutlinePlus /> {t('tasks.addEvent')}
                 </button>
@@ -686,7 +686,7 @@ const TasksList = () => {
                       <td className="text-center">
                         <button
                           onClick={() => handleClickPlus(e.id)}
-                          className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
+                          className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
                         >
                           <AiOutlinePlus />
                         </button>
@@ -822,7 +822,7 @@ const TasksList = () => {
             //           <td className="text-center">
             //             <button
             //               onClick={() => handleClickPlus(e.id)}
-            //               className="btn btn-outline-primary d-flex justify-content-between align-items-center mx-auto"
+            //               className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
             //             >
             //               <AiOutlinePlus />
             //             </button>
@@ -902,10 +902,10 @@ const TasksList = () => {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button type="button" variant="secondary" onClick={handleClose}>
+          <Button type="button" variant="sec" onClick={handleClose}>
             {t('myacc.back')}
           </Button>
-          <Button onClick={addEvent} variant="primary">
+          <Button onClick={addEvent} variant='opus'>
             {t('myacc.save')}
           </Button>
         </Modal.Footer>
@@ -983,12 +983,12 @@ const TasksList = () => {
         <Modal.Footer>
           <Button
             type="button"
-            variant="secondary"
+            variant="sec"
             onClick={() => setClickDesc(false)}
           >
             {t('myacc.back')}
           </Button>
-          <Button onClick={addDesc} variant="primary">
+          <Button onClick={addDesc} variant="opus" >
             {t('myacc.save')}
           </Button>
         </Modal.Footer>
