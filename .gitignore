@@ -95,4 +95,5 @@ ENV/
 node_modules/
 API/config.py
 API/uploads/files
+API/uploads/photo
 
