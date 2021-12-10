@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -8,21 +8,20 @@ import {
   GetUserDateClickUrl,
   globalURL,
   TaskAddUrl,
-} from '../service';
+} from '../../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import {
   HandleClickDateUser,
   HandleHistory,
-} from '../redux/actions/UserAction';
+} from '../../redux/actions/UserAction';
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
-// import DataTable from 'react-data-table-component';
 
-const TasksList = () => {
+const AllTasksToday = () => {
   const [end, setEndTime] = useState('');
   const [show, setShow] = useState(false);
   const [nameAd, setNamead] = useState('');
@@ -276,45 +275,24 @@ const TasksList = () => {
   };
 
   const FetchDateInfos = async () => {
-    if (localStorage.getItem('role') === 'adminClicked') {
-      await axios({
-        method: 'get',
-        url: GetUserDateClickUrl,
-        params: {
-          date: localStorage.getItem('ckickedDate'),
-          userId: localStorage.getItem('clickedUserId'),
-        },
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
-        },
+    await axios({
+      method: 'get',
+      url: GetUserDateClickUrl,
+      params: {
+        userId: localStorage.getItem('myId'),
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        console.log(data);
+        dispatch(HandleClickDateUser(data));
       })
-        .then((response) => {
-          const { data } = response;
-          console.log(data);
-          dispatch(HandleClickDateUser(data));
-        })
-        .catch((err) => {
-          console.log('Err:', err);
-        });
-    } else {
-      await axios({
-        method: 'get',
-        url: GetUserDateClickUrl,
-        params: {
-          date: localStorage.getItem('ckickedDate'),
-        },
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
-        },
-      })
-        .then((response) => {
-          const { data } = response;
-          dispatch(HandleClickDateUser(data));
-        })
-        .catch((err) => {
-          console.log('Err:', err);
-        });
-    }
+      .catch((err) => {
+        console.log('Err:', err);
+      });
   };
 
   const options = [];
@@ -356,21 +334,10 @@ const TasksList = () => {
   return (
     <>
       <div className="container">
-        <div className="row justify-content-end">
-          <div className="col-5 col-sm-4 col-md-3 ">
-            <Link
-              className="btn btn-outline-opus mt-3 mb-2 d-flex align-items-center justify-content-center"
-              to="/calendar"
-            >
-              <HiOutlineArrowNarrowLeft className="me-3" />
-              {t('tasks.back')}
-            </Link>
-          </div>
-        </div>
         <div className="bg-white shadow-sm my-md-2 p-4 rounded">
           <div className="row align-items-center">
             <div className="col-md-6 text-start">
-              <h1 className="pt-2 pb-4">{t('tasks.title')}</h1>
+              <h1 className="pt-2 pb-4">Barcha ijrolar Ro'yhati</h1>
             </div>
 
             <div className="col-md-3 text-end">{userAction.clickedDate}</div>
@@ -420,55 +387,6 @@ const TasksList = () => {
                               <span title={e.key}>
                                 <FileIcon
                                   extension={e.ext}
-                                  // gradientColor={
-                                  //   e.value.slice(e.value.length - 3) ===
-                                  //     'doc' ||
-                                  //   e.value.slice(e.value.length - 3) === 'ocx'
-                                  //     ? '#2c5898'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'xls' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'xml' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'lsx'
-                                  //     ? 'green'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //       'pdf'
-                                  //     ? 'red'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'png' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'peg' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'jpg'
-                                  //     ? 'yellow'
-                                  //     : 'white'
-                                  // }
-                                  // labelColor={
-                                  //   e.value.slice(e.value.length - 3) ===
-                                  //     'doc' ||
-                                  //   e.value.slice(e.value.length - 3) === 'ocx'
-                                  //     ? '#2c5898'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'xls' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'xml' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'lsx'
-                                  //     ? 'green'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //       'pdf'
-                                  //     ? 'red'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'png' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'peg' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'jpg'
-                                  //     ? 'yellow'
-                                  //     : 'white'
-                                  // }
-                                  // gradientOpacity={1}
                                   {...defaultStyles[e.ext]}
                                 />
                               </span>
@@ -480,23 +398,6 @@ const TasksList = () => {
                       </td>
                       <td>{e.start_date}</td>
                       <td>{e.end_date}</td>
-                      {/* <td
-                        className={
-                          e.status === 2
-                            ? 'bg-warning'
-                            : e.status === 1
-                            ? 'bg-danger text-white'
-                            : 'bg-success text-white'
-                        }
-                      >
-                        {e.status === 2
-                          ? t('calendar.bjdti')
-                          : e.status === 1
-                          ? t('calendar.bjdm')
-                          : e.status === 3
-                          ? t('calendar.bjd')
-                          : t('calendar.no')}
-                      </td> */}
 
                       <td className="sts">
                         <div
@@ -710,4 +611,4 @@ const TasksList = () => {
   );
 };
 
-export default TasksList;
+export default AllTasksToday;

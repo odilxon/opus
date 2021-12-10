@@ -8,10 +8,14 @@ import { GiAchievement } from 'react-icons/gi';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { GetUserInfoUrl, globalURL } from '../../service';
+import { GetUserDateClickUrl, GetUserInfoUrl, globalURL } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserInfosLogIn } from '../../redux/actions/UserAction';
+import {
+  HandleClickDateUser,
+  UserInfosLogIn,
+} from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
+import Today from './Today';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -161,6 +165,7 @@ const MyProfil = () => {
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
         localStorage.setItem('role', data.role);
+        localStorage.setItem('myId', data.id);
 
         setName(data.name);
         setFullName(data.name);
@@ -178,38 +183,6 @@ const MyProfil = () => {
     setTel('');
     setEditProfil(false);
   };
-
-  // const removePic = async () => {
-  //   var bodyFormData = new FormData();
-  //   bodyFormData.append('image', null);
-  //   await axios({
-  //     method: 'post',
-  //     url: GetUserInfoUrl,
-  //     data: bodyFormData,
-  //     headers: {
-  //       'x-access-token': localStorage.getItem('userToken'),
-  //     },
-  //   })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       const { data } = response;
-  //       const dataLocal = {
-  //         department: data.department,
-  //         email: data.email,
-  //         id: data.id,
-  //         image: `${data.image ? globalURL + data.image : 'no'}`,
-  //         name: data.name,
-  //         rank: data.rank,
-  //         role: data.role,
-  //       };
-
-  //       // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
-  //       dispatch(UserInfosLogIn(dataLocal));
-  //     })
-  //     .catch((err) => {
-  //       console.log('Err:', err);
-  //     });
-  // };
 
   useEffect(() => {
     getUserInfo();
@@ -262,11 +235,7 @@ const MyProfil = () => {
                   <BiBuildings /> {userAction.userInfos.department}
                 </span>
               ) : null}
-              {/* {userAction.userInfos.role ? (
-                <span>
-                  <MdAccountCircle /> {userAction.userInfos.role}
-                </span>
-              ) : null} */}
+
               {userAction.userInfos.rank ? (
                 <span>
                   <GiAchievement /> {userAction.userInfos.rank}
@@ -322,7 +291,7 @@ const MyProfil = () => {
           </div>
         </div>
       </div>
-
+      <Today />
       <div className="profilDetails bg-white rounded shadow-sm py-3 my-3">
         <div className="card_header px-5 pt-2 pb-1">
           <div className="row align-items-center justify-content-between">
@@ -384,15 +353,6 @@ const MyProfil = () => {
                           accept=".png, .jpg, .jpeg"
                         />
                       </label>
-                      {/* <div
-                        className="close-icon icon-pic shadow"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="bottom"
-                        title="Remove Image"
-                        onClick={removePic}
-                      >
-                        <MdOutlineClose />
-                      </div> */}
                     </div>
                   </div>
 
@@ -413,17 +373,6 @@ const MyProfil = () => {
                           id="name"
                         />
                       </div>
-                      {/* <div className="col-lg-6 my-2">
-                        <input
-                          className="form-control form-control-lg form-control-solid "
-                          type="text"
-                          name="fullname"
-                          placeholder={t('myacc.lastnameplc')}
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          required
-                        />
-                      </div> */}
                     </div>
                   </div>
 
@@ -477,10 +426,7 @@ const MyProfil = () => {
                     >
                       {t('myacc.back')}
                     </button>
-                    <button className="btn btn-opus">
-                      {' '}
-                      {t('myacc.save')}
-                    </button>
+                    <button className="btn btn-opus"> {t('myacc.save')}</button>
                   </div>
                 </div>
               </form>

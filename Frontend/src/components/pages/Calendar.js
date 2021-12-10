@@ -183,6 +183,8 @@ const Calendar = () => {
     localStorage.setItem('role', 'admin');
     navigate('/admin');
   };
+
+  
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
