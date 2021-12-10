@@ -20,6 +20,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True)
+    phone = db.Column(db.String(100),nullable=True)  # +998932446330
     role = db.Column(db.String(100), nullable=True)
     image = db.Column(db.String(500), nullable=True)
     department = db.Column(db.String(500), nullable=True)
@@ -36,6 +37,7 @@ class User(db.Model):
             "id" : self.id,
             "name" : self.name,
             "email" : self.email,
+            "phone" : self.phone,
             "role" : self.role,
             "image" : self.image,
             "department" : self.department,
