@@ -106,7 +106,10 @@ def userdata(c):
     ff = or_(
             Task.owner_id == int(c.id), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(c.id)).self_group()
             )
-    t = db.session.query(Task).outerjoin(Task_Meta, Task_Meta.task_id == Task.id).filter(ff).all()
+
+    t = db.session.query(Task).outerjoin(Task_Meta, Task_Meta.task_id == Task.id)
+    if c.role != 'admin':
+        t = t.filter(ff).all()
     for task in t:
         if task.status in [1,2]:
             f['tasks']['pending'] += 1
@@ -133,7 +136,7 @@ def newpass(c):
 @app.route("/user/users", methods=['GET'])
 @token_required
 def user_choose(c):
-    users = db.session.query(User).filter(User.role != 'admin').all()
+    users = db.session.query(User).filter(User.role != 'admin').order_by(User.id.asc()).all()
     ret_data = []
     for user in users:
         U = user.format()
@@ -144,35 +147,51 @@ def user_choose(c):
 @token_required
 def user_tasks(c):
     date = request.args.get('date')
+    adminAll = request.args.get('allTasks')
+    print(adminAll)
     if c.role == 'admin':
         user = request.args.get('userId')
     else:
         user = c.id
 
-    
-    ff = or_(
-            Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
-            ).self_group()
-    
-    
+
+    if user:
+        ff = or_(
+                Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
+                ).self_group()
     tasks = db.session.query(Task)\
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)
-        
-
     if date:
         # date = "-".join(date.split("-")[::-1]) # 2012-02-31 -> 31-02-2012
         ff = and_(ff,Task.start_date == date ).self_group()
-        
-    tasks = tasks.filter(ff).all()
     
+    foradmin = False
+    if adminAll and c.role == 'admin':
+        tasks = tasks.order_by(Task.start_date.desc()).all()
+        foradmin = True
+    else:
+        tasks = tasks.filter(ff).order_by(Task.start_date.desc()).all()
+    
+    def fetchUsers(task):
+        admin_id = c.id
+        ids = []
+        if task['owner_id'] != c.id:
+            ids.append(int(task['owner_id']))
+        for us in task['linked']:
+            ids.append(int(us['value']))
+        users = [x[0] for x in db.session.query(User.name).filter(User.id.in_(ids)).all()] # [('name',), ('sd',)]
+        return users
 
     ret_data = []
     for task in tasks:
         T = task.format()
+
         T['linked'] = [ x.format() for x in Task_Meta.query.filter(Task_Meta.task_id == task.id, Task_Meta.key=='user_id').all()]
         T['attachments'] = [x.format() for x in Attachment.query.filter(Attachment.type=='task', Attachment.type_id==task.id).all()]
         T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         T['isAdmin'] = True if db.session.query(User).filter(User.id == task.owner_id).first().role == 'admin' else False
+        if foradmin:
+            T['users'] = fetchUsers(T)
         ret_data.append(T)
     return jsonify(ret_data)
 

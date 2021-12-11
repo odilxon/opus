@@ -280,6 +280,8 @@ const AllTasksToday = () => {
       url: GetUserDateClickUrl,
       params: {
         userId: localStorage.getItem('myId'),
+        clicked: localStorage.getItem('clickedUserId'),
+        allTasks: true
       },
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
@@ -337,19 +339,14 @@ const AllTasksToday = () => {
         <div className="bg-white shadow-sm my-md-2 p-4 rounded">
           <div className="row align-items-center">
             <div className="col-md-6 text-start">
-              <h1 className="pt-2 pb-4">Barcha ijrolar Ro'yhati</h1>
+              <h1 className="pt-2 pb-4">{ t('tasks.alltaskslist') }</h1>
             </div>
 
             <div className="col-md-3 text-end">{userAction.clickedDate}</div>
 
             {localStorage.getItem('compare') == 'true' ? (
               <div className="col-md-3 text-end">
-                <button
-                  onClick={handleShow}
-                  className="btn btn-opus d-flex justify-content-between align-items-center f-r"
-                >
-                  <AiOutlinePlus /> {t('tasks.addEvent')}
-                </button>
+                
               </div>
             ) : null}
           </div>
@@ -360,6 +357,11 @@ const AllTasksToday = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
+                    
+                    { localStorage.getItem('role') == 'admin' ?
+                    (
+                      <th scope="col"> {t('tasks.linked')}</th>
+                    ): '' }
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -375,6 +377,12 @@ const AllTasksToday = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
+                      { localStorage.getItem('role') == 'admin' ?
+                    (
+                      <td>  {e.users.map((e,i) =>  ( <div className='badge bg-secondary'> {e}   </div>   ) )} 
+
+                      </td>
+                    ): '' }                      
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (

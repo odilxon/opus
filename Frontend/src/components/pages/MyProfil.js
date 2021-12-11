@@ -16,6 +16,7 @@ import {
 } from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
 import Today from './Today';
+import AllTasksToday from './AllTasksToday';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -291,7 +292,11 @@ const MyProfil = () => {
           </div>
         </div>
       </div>
-      <Today />
+      { localStorage.getItem('role') != 'admin'?
+      (<Today />) :
+      "" }
+      
+
       <div className="profilDetails bg-white rounded shadow-sm py-3 my-3">
         <div className="card_header px-5 pt-2 pb-1">
           <div className="row align-items-center justify-content-between">

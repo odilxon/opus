@@ -102,7 +102,7 @@ const LogIn = () => {
                 src={Logo}
                 alt="random"
                 className="img-fluid"
-                width="250"
+                width="800"
               />
             </div>  </h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto">

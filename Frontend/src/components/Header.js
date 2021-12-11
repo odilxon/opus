@@ -80,7 +80,7 @@ const Header = () => {
         <nav className="navbar my-0 py-0">
           <div className="container-fluid py-2 d-flex  flex-lg-row justify-content-lg-between align-items-center justify-content-center bg-white">
             <div className="logo">
-              <img src={Logo} alt="random" className="img-fluid" width="1000" />
+              <img src={Logo} alt="random" className="img-fluid" width="400" />
             </div>
 
             <ul
@@ -111,7 +111,9 @@ const Header = () => {
                       : '/calendar'
                   }
                 >
-                  {t('header.project')}
+                  {localStorage.getItem('role') === 'admin'
+                  ? t('header.users')
+                  : t('calendar.title')}
                 </Link>
               </li>
 
@@ -122,7 +124,7 @@ const Header = () => {
                   }
                   to="/alltasks"
                 >
-                  Barcha ijrolar
+                  { t('header.alltask') }
                 </Link>
               </li>
             </ul>

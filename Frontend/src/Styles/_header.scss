@@ -6,9 +6,9 @@ nav {
   .container-fluid {
     position: relative;
     .logo {
-      max-width: 60px;
+      max-width: 200px;
       @media (min-width: 768px) {
-        max-width: 120px;
+        max-width: 400px;
       }
     }
 

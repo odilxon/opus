@@ -235,7 +235,7 @@ const Today = () => {
       <div className="bg-white shadow-sm  p-4 rounded">
         <div className="row align-items-center">
           <div className="col-md-6 text-start">
-            <p className="pt-1 pb-2">Bugungi ijrolar ro'yhati</p>
+            <p className="pt-1 pb-2">{ t('tasks.todaytasks') }</p>
           </div>
 
           <div className="col-md-6 text-end">{userAction.clickedDate}</div>

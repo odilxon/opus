@@ -41,7 +41,7 @@ def after_request(response):
 
 @app.route('/uploads/<path:path>')
 def send_uploads(path):
-    return send_from_directory('uploads', path)
+    return send_from_directory('uploads', path, as_attachment=True)
 
 def HASH_FILE(filename):
     print(filename)
