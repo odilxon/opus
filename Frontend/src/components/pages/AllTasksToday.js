@@ -179,6 +179,7 @@ const AllTasksToday = () => {
         // clicked: localStorage.getItem('clickedUserId'),
         allTasks: true,
       },
+
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
       },
