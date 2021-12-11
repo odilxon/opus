@@ -156,18 +156,7 @@ const AdminPage = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              {/* <div className=" py-2 ">
-                <label className="form-label  text-dark">Role</label>
 
-                <input
-                  className="form-control form-control-lg form-control-solid "
-                  type="text"
-                  name="role"
-                  placeholder="name"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-              </div> */}
               <div className=" py-2 ">
                 <label className="form-label  text-dark">
                   {t('admin.depart')}
@@ -217,7 +206,6 @@ const AdminPage = () => {
                     type="checkbox"
                     checked={checkPass}
                     onChange={() => setCheckPass(!checkPass)}
-                    
                   />
                   {'   '} {t('chpass.checkpass')}
                 </label>
@@ -225,10 +213,10 @@ const AdminPage = () => {
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="button" variant='sec'   onClick={back}>
+            <Button type="button" variant="sec" onClick={back}>
               {t('tasks.back')}
             </Button>
-            <Button onClick={addUser}  variant='opus'>
+            <Button onClick={addUser} variant="opus">
               {t('admin.save')}
             </Button>
           </Modal.Footer>

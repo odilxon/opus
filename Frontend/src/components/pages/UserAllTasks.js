@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   ADDEventUrl,
   GetUserDateClickUrl,
@@ -18,13 +17,19 @@ import {
 } from '../../redux/actions/UserAction';
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { useTranslation } from 'react-i18next';
+import { MultiSelect } from 'react-multi-select-component';
 
-const AllTasksToday = () => {
+const UserAllTasks = () => {
+  const [end, setEndTime] = useState('');
+  const [show, setShow] = useState(false);
+  const [nameAd, setNamead] = useState('');
   const [clickHist, setClickHist] = useState(false);
+  const [addFile, setaddFile] = useState(null);
   const [taskId, setTaskId] = useState('');
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
+  const [selectValue, setSelectValue] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,9 +37,109 @@ const AllTasksToday = () => {
   const { userAction } = userInfo;
   const { t } = useTranslation();
 
+  const handleClose = () => setShow(false);
+
   const handleClickHist = (array) => {
     dispatch(HandleHistory(array));
     setClickHist(true);
+  };
+
+  const addEvent = async (e) => {
+    e.preventDefault();
+    var bodyFormData = new FormData();
+
+    bodyFormData.append('desc', nameAd);
+    bodyFormData.append('start_date', userAction.clickedDate);
+    bodyFormData.append('end_date', end);
+    if (addFile) {
+      if (addFile.length < 10) {
+        for (let i = 0; i < addFile.length; i++) {
+          bodyFormData.append(`file${[]}`, addFile[i]);
+        }
+      } else {
+        return toast.warning('Fayllar keragidan ortib ketdi', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }
+    if (localStorage.getItem('role') === 'adminClicked') {
+      let users = [];
+      selectValue.map((e) => {
+        users.push(e.value);
+      });
+      console.log(users);
+
+      console.log(users);
+      users.push(localStorage.getItem('clickedUserId'));
+      users.forEach((e) => bodyFormData.append(`users${[]}`, e));
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+          userId: localStorage.getItem('clickedUserId'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+          setSelectValue([]);
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          date: localStorage.getItem('ckickedDate'),
+        },
+        url: TaskAddUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          dispatch(HandleClickDateUser(response.data));
+          setNamead('');
+          setEndTime('');
+          navigate('/tasks');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
+
+    setShow(false);
   };
 
   const handleClickPlus = (id) => {
@@ -165,18 +270,14 @@ const AllTasksToday = () => {
       return false;
     }
   };
-  const backCard = () => {
-    localStorage.removeItem('clickedUserId');
-    localStorage.setItem('role', 'admin');
-    navigate('/admin');
-  };
+
   const FetchDateInfos = async () => {
     await axios({
       method: 'get',
       url: GetUserDateClickUrl,
       params: {
         userId: localStorage.getItem('myId'),
-        // clicked: localStorage.getItem('clickedUserId'),
+        clicked: localStorage.getItem('clickedUserId'),
         allTasks: true,
       },
       headers: {
@@ -192,6 +293,31 @@ const AllTasksToday = () => {
         console.log('Err:', err);
       });
   };
+
+  const options = [];
+  if (userAction.allUsers.length > 0) {
+    userAction.allUsers
+      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .map((e) => {
+        const obj = {
+          value: e.id,
+          label: e.name,
+        };
+        options.push(obj);
+      });
+  }
+
+  const MySelect = () => (
+    <>
+      <MultiSelect
+        options={options}
+        value={selectValue}
+        onChange={setSelectValue}
+        labelledBy="Foydalanuvchi tanlash"
+        autoBlur={false}
+      />
+    </>
+  );
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
@@ -214,16 +340,10 @@ const AllTasksToday = () => {
             </div>
 
             <div className="col-md-3 text-end">{userAction.clickedDate}</div>
-            <div className="col-md-3">
-              {localStorage.getItem('clickedUserId') ? (
-                <button
-                  onClick={backCard}
-                  className="btn btn-opus d-flex justify-content-center ms-auto align-items-center "
-                >
-                  {t('calendar.qaytish')}
-                </button>
-              ) : null}
-            </div>
+
+            {localStorage.getItem('compare') === 'true' ? (
+              <div className="col-md-3 text-end"></div>
+            ) : null}
           </div>
           {userAction.clickDate.length > 0 ? (
             <div className="table-responsive">
@@ -233,8 +353,7 @@ const AllTasksToday = () => {
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
 
-                    {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? (
+                    {localStorage.getItem('role') == 'admin' ? (
                       <th scope="col"> {t('tasks.linked')}</th>
                     ) : null}
                     <th scope="col">{t('tasks.files')}</th>
@@ -252,19 +371,15 @@ const AllTasksToday = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? (
+                      {localStorage.getItem('role') === 'admin' ? (
                         <td>
-                          {e.users
-                            ? e.users.map((user, i) => (
-                                <span key={i} className="badge bg-secondary">
-                                  {user}
-                                </span>
-                              ))
-                            : null}
+                          {e.users.map((e, i) => (
+                            <div key={i} className="badge bg-secondary">
+                              {e}
+                            </div>
+                          ))}
                         </td>
                       ) : null}
-
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (
@@ -286,9 +401,7 @@ const AllTasksToday = () => {
                           <p>{t('tasks.fileNo')}</p>
                         )}
                       </td>
-
                       <td>{e.start_date}</td>
-
                       <td>{e.end_date}</td>
 
                       <td className="sts">
@@ -310,7 +423,6 @@ const AllTasksToday = () => {
                             : t('calendar.no')}
                         </div>
                       </td>
-
                       <td className="history text-center ">
                         {e.history.length > 0 ? (
                           <>
@@ -325,7 +437,6 @@ const AllTasksToday = () => {
                           <p>{t('tasks.infoNo')}</p>
                         )}
                       </td>
-
                       <td className="text-center">
                         <button
                           onClick={() => handleClickPlus(e.id)}
@@ -344,6 +455,80 @@ const AllTasksToday = () => {
           )}
         </div>
       </div>
+
+      {/* add eventni bosganda  */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('modal.addEvent')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={addEvent} className="p-3">
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">
+                {t('modal.eventName')}
+              </label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="text"
+                name="name"
+                placeholder={t('modal.eventNameplc')}
+                value={nameAd}
+                onChange={(e) => setNamead(e.target.value)}
+              />
+
+              <div className="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    {t('modal.eventName')}
+                  </label>
+                </div>
+
+                <MySelect />
+                <div className="fv-plugins-message-container invalid-feedback"></div>
+              </div>
+            ) : null}
+
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">{t('tasks.end')}</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="date"
+                name="end_time"
+                placeholder={t('modal.endplc')}
+                value={end}
+                onChange={(e) => setEndTime(e.target.value)}
+                min={localStorage.getItem('ckickedDate')}
+              />
+              <div className="fv-plugins-message-container invalid-feedback"></div>
+            </div>
+
+            <div className="py-2">
+              <label
+                className="addFile"
+                title={t('modal.fileAdd')}
+                htmlFor="pic"
+                onChange={(e) => setaddFile(e.target.files)}
+              >
+                <input multiple id="file" type="file" name="file" />
+              </label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button type="button" variant="sec" onClick={handleClose}>
+            {t('myacc.back')}
+          </Button>
+          <Button onClick={addEvent} variant="opus">
+            {t('myacc.save')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Historyni  bosganda */}
       {userAction.clickedHistoryRedux.length > 0 ? (
@@ -431,4 +616,4 @@ const AllTasksToday = () => {
   );
 };
 
-export default AllTasksToday;
+export default UserAllTasks;

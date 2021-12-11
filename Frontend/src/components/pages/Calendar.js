@@ -184,7 +184,10 @@ const Calendar = () => {
     navigate('/admin');
   };
 
-  
+  const allTasksUser = () => {
+    navigate('/taskUsers');
+  };
+
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
@@ -234,23 +237,28 @@ const Calendar = () => {
   return (
     <div className="calendar">
       <div className="container shadow-sm rounded my-md-3   bg-white">
-        <div className="d-flex justify-content-between align-items-center">
-          <h1 className="h3 px-3 pt-3">{t('calendar.title')}</h1>
-          <div>
-            {/* <button
-              onClick={handleShow}
-              className="btn btn-opus d-flex justify-content-between align-items-center"
-            >
-              <AiOutlinePlus /> Add event
-            </button> */}
-            {localStorage.getItem('clickedUserId') ? (
-              <button
-                onClick={backCard}
-                className="btn btn-opus d-flex justify-content-between align-items-center"
-              >
-                {t('calendar.qaytish')}
-              </button>
-            ) : null}
+        <div className="row d-flex justify-content-between align-items-center">
+          <div className="col-md-4">
+            <h1 className="h3 px-3 pt-3">{t('calendar.title')}</h1>
+          </div>
+          <div className="col-md-6  col-lg-5 ">
+            <div className="row p-2">
+              {localStorage.getItem('role') === 'adminClicked' ? (
+                <div className="col-7 tex-end">
+                  <button onClick={allTasksUser} className="btn btn-opus">
+                    Foydalanuvchining barcha ijrolari
+                  </button>
+                </div>
+              ) : null}
+
+              {localStorage.getItem('clickedUserId') ? (
+                <div className="col-5 tex-end">
+                  <button onClick={backCard} className="btn btn-opus">
+                    {t('calendar.qaytish')}
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <hr />
@@ -269,48 +277,10 @@ const Calendar = () => {
             locales={uzLocale}
             locale={'ru'}
             mont
-            // monthNames={[
-            //   'Январь',
-            //   'Февраль',
-            //   'Март',
-            //   'Апрель',
-            //   'Май',
-            //   'Июнь',
-            //   'Июль',
-            //   'Август',
-            //   'Центябр',
-            //   'Октябрь',
-            //   'Ноябрь',
-            //   'Декабрь',
-            // ]}
-            // monthNamesShort={[
-            //   'Ene',
-            //   'Feb',
-            //   'Mar',
-            //   'Abr',
-            //   'May',
-            //   'Jun',
-            //   'Jul',
-            //   'Ago',
-            //   'Sep',
-            //   'Oct',
-            //   'Nov',
-            //   'Dic',
-            // ]}
-            // dayNames={[
-            //   'Domingo',
-            //   'Lunes',
-            //   'Martes',
-            //   'Miércoles',
-            //   'Jueves',
-            //   'Viernes',
-            //   'Sábado',
-            // ]}
-            // dayNamesShort={['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']}
           />
         </div>
       </div>
-      <Modal show={show} onHide={handleClose}>
+      {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Event</Modal.Title>
         </Modal.Header>
@@ -366,11 +336,11 @@ const Calendar = () => {
           <Button type="button" variant="sec" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={addEvent} variant='opus'>
+          <Button onClick={addEvent} variant="opus">
             Submit
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

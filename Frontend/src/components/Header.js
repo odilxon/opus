@@ -100,7 +100,9 @@ const Header = () => {
               <li>
                 <Link
                   className={
-                    path === '/calendar' || path === '/tasks'
+                    path === '/calendar' ||
+                    path === '/tasks' ||
+                    path === '/taskUsers'
                       ? `menu-link active`
                       : 'menu-link'
                   }
@@ -111,9 +113,7 @@ const Header = () => {
                       : '/calendar'
                   }
                 >
-                  {localStorage.getItem('role') === 'admin'
-                  ? t('header.users')
-                  : t('calendar.title')}
+                  {t('header.users')}
                 </Link>
               </li>
 
@@ -124,7 +124,7 @@ const Header = () => {
                   }
                   to="/alltasks"
                 >
-                  { t('header.alltask') }
+                  {t('header.alltask')}
                 </Link>
               </li>
             </ul>

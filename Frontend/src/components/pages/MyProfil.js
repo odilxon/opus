@@ -292,10 +292,7 @@ const MyProfil = () => {
           </div>
         </div>
       </div>
-      { localStorage.getItem('role') != 'admin'?
-      (<Today />) :
-      "" }
-      
+      {localStorage.getItem('role') !== 'admin' ? <Today /> : null}
 
       <div className="profilDetails bg-white rounded shadow-sm py-3 my-3">
         <div className="card_header px-5 pt-2 pb-1">
