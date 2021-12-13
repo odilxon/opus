@@ -193,6 +193,7 @@ const Today = () => {
           const { data } = response;
           console.log(data);
           dispatch(HandleClickDateUser(data));
+          // FetchDateInfos();
         })
         .catch((err) => {
           console.log('Err:', err);
@@ -211,6 +212,7 @@ const Today = () => {
         .then((response) => {
           const { data } = response;
           dispatch(HandleClickDateUser(data));
+          // FetchDateInfos();
         })
         .catch((err) => {
           console.log('Err:', err);
@@ -235,7 +237,7 @@ const Today = () => {
       <div className="bg-white shadow-sm  p-4 rounded">
         <div className="row align-items-center">
           <div className="col-md-6 text-start">
-            <p className="pt-1 pb-2">{ t('tasks.todaytasks') }</p>
+            <p className="pt-1 pb-2">{t('tasks.todaytasks')}</p>
           </div>
 
           <div className="col-md-6 text-end">{userAction.clickedDate}</div>
@@ -247,6 +249,10 @@ const Today = () => {
                 <tr>
                   <th scope="col">№</th>
                   <th scope="col"> {t('tasks.desc')}</th>
+                  {/* {localStorage.getItem('role') === 'admin' ||
+                  localStorage.getItem('role') === 'adminClicked' ? ( */}
+                  <th scope="col"> {t('tasks.linked')}</th>
+                  {/* ) : null} */}
                   <th scope="col">{t('tasks.files')}</th>
                   <th scope="col">{t('tasks.start')}</th>
                   <th scope="col">{t('tasks.end')}</th>
@@ -262,6 +268,18 @@ const Today = () => {
                       {e.id}
                     </th>
                     <td>{e.desc}</td>
+                    {/* {localStorage.getItem('role') === 'admin' ||
+                    localStorage.getItem('role') === 'adminClicked' ? ( */}
+                    <td>
+                      {e.users
+                        ? e.users.map((user, i) => (
+                            <span key={i} className="badge bg-secondary">
+                              {user}
+                            </span>
+                          ))
+                        : null}
+                    </td>
+                    {/* ) : null} */}
                     <td className="iconDiv">
                       {e.attachments.length > 0 ? (
                         e.attachments.map((e, i) => (

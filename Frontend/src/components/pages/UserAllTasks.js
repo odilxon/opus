@@ -1,28 +1,25 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   ADDEventUrl,
   GetUserDateClickUrl,
   globalURL,
   TaskAddUrl,
-} from '../service';
+} from '../../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import {
   HandleClickDateUser,
   HandleHistory,
-} from '../redux/actions/UserAction';
+} from '../../redux/actions/UserAction';
 import { defaultStyles, FileIcon } from 'react-file-icon';
-import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
-// import DataTable from 'react-data-table-component';
 
-const TasksList = () => {
+const UserAllTasks = () => {
   const [end, setEndTime] = useState('');
   const [show, setShow] = useState(false);
   const [nameAd, setNamead] = useState('');
@@ -41,7 +38,6 @@ const TasksList = () => {
   const { t } = useTranslation();
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const handleClickHist = (array) => {
     dispatch(HandleHistory(array));
@@ -72,10 +68,7 @@ const TasksList = () => {
         });
       }
     }
-    if (
-      localStorage.getItem('role') === 'adminClicked' ||
-      localStorage.getItem('role') === 'admin'
-    ) {
+    if (localStorage.getItem('role') === 'adminClicked') {
       let users = [];
       selectValue.map((e) => {
         users.push(e.value);
@@ -97,9 +90,7 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          // dispatch(HandleClickDateUser(response.data));
-          FetchDateInfos();
-
+          dispatch(HandleClickDateUser(response.data));
           setNamead('');
           setEndTime('');
           navigate('/tasks');
@@ -129,9 +120,7 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          // dispatch(HandleClickDateUser(response.data));
-          FetchDateInfos();
-
+          dispatch(HandleClickDateUser(response.data));
           setNamead('');
           setEndTime('');
           navigate('/tasks');
@@ -166,10 +155,7 @@ const TasksList = () => {
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
 
-    if (
-      localStorage.getItem('role') === 'adminClicked' ||
-      localStorage.getItem('role') === 'admin'
-    ) {
+    if (localStorage.getItem('role') === 'adminClicked') {
       await axios({
         method: 'post',
         url: ADDEventUrl,
@@ -184,8 +170,7 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          // dispatch(HandleClickDateUser(response.data));
-          FetchDateInfos();
+          dispatch(HandleClickDateUser(response.data));
           setDescName('');
           setClickDesc(false);
         })
@@ -215,8 +200,7 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          // dispatch(HandleClickDateUser(response.data));
-          FetchDateInfos();
+          dispatch(HandleClickDateUser(response.data));
           setDescName('');
           setClickDesc(false);
         })
@@ -288,45 +272,26 @@ const TasksList = () => {
   };
 
   const FetchDateInfos = async () => {
-    if (localStorage.getItem('role') === 'adminClicked') {
-      await axios({
-        method: 'get',
-        url: GetUserDateClickUrl,
-        params: {
-          date: localStorage.getItem('ckickedDate'),
-          userId: localStorage.getItem('clickedUserId'),
-        },
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
-        },
+    await axios({
+      method: 'get',
+      url: GetUserDateClickUrl,
+      params: {
+        // userId: localStorage.getItem('myId'),
+        clicked: localStorage.getItem('clickedUserId'),
+        // allTasks: true,
+      },
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        console.log(data);
+        dispatch(HandleClickDateUser(data));
       })
-        .then((response) => {
-          const { data } = response;
-          console.log(data);
-          dispatch(HandleClickDateUser(data));
-        })
-        .catch((err) => {
-          console.log('Err:', err);
-        });
-    } else {
-      await axios({
-        method: 'get',
-        url: GetUserDateClickUrl,
-        params: {
-          date: localStorage.getItem('ckickedDate'),
-        },
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
-        },
-      })
-        .then((response) => {
-          const { data } = response;
-          dispatch(HandleClickDateUser(data));
-        })
-        .catch((err) => {
-          console.log('Err:', err);
-        });
-    }
+      .catch((err) => {
+        console.log('Err:', err);
+      });
   };
 
   const options = [];
@@ -368,34 +333,16 @@ const TasksList = () => {
   return (
     <>
       <div className="container">
-        <div className="row justify-content-end">
-          <div className="col-5 col-sm-4 col-md-3 ">
-            <Link
-              className="btn btn-outline-opus mt-3 mb-2 d-flex align-items-center justify-content-center"
-              to="/calendar"
-            >
-              <HiOutlineArrowNarrowLeft className="me-3" />
-              {t('tasks.back')}
-            </Link>
-          </div>
-        </div>
         <div className="bg-white shadow-sm my-md-2 p-4 rounded">
           <div className="row align-items-center">
             <div className="col-md-6 text-start">
-              <h1 className="pt-2 pb-4">{t('tasks.title')}</h1>
+              <h1 className="pt-2 pb-4">{t('tasks.alltaskslist')}</h1>
             </div>
 
             <div className="col-md-3 text-end">{userAction.clickedDate}</div>
 
             {localStorage.getItem('compare') === 'true' ? (
-              <div className="col-md-3 text-end">
-                <button
-                  onClick={handleShow}
-                  className="btn btn-opus d-flex justify-content-between align-items-center f-r"
-                >
-                  <AiOutlinePlus /> {t('tasks.addEvent')}
-                </button>
-              </div>
+              <div className="col-md-3 text-end"></div>
             ) : null}
           </div>
           {userAction.clickDate.length > 0 ? (
@@ -405,8 +352,8 @@ const TasksList = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
-                    {/* {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? ( */}
+
+                    {/* {localStorage.getItem('role') == 'admin' ? ( */}
                     <th scope="col"> {t('tasks.linked')}</th>
                     {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
@@ -424,16 +371,13 @@ const TasksList = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {/* {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? ( */}
+                      {/* {localStorage.getItem('role') === 'admin' ? ( */}
                       <td>
-                        {e.users
-                          ? e.users.map((user, i) => (
-                              <span key={i} className="badge bg-secondary">
-                                {user}
-                              </span>
-                            ))
-                          : null}
+                        {e.users.map((e, i) => (
+                          <div key={i} className="badge bg-secondary">
+                            {e}
+                          </div>
+                        ))}
                       </td>
                       {/* ) : null} */}
                       <td className="iconDiv">
@@ -672,4 +616,4 @@ const TasksList = () => {
   );
 };
 
-export default TasksList;
+export default UserAllTasks;

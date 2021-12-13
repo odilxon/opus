@@ -13,6 +13,7 @@ import AdminPage from './components/pages/AdminPage';
 import ERRPage from './components/pages/ERRPage';
 import Today from './components/pages/Today';
 import AllTasksToday from './components/pages/AllTasksToday';
+import UserAllTasks from './components/pages/UserAllTasks';
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/myAccount" element={<MyProfil />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/alltasks" element={<AllTasksToday />} />
+          <Route path="/taskUsers" element={<UserAllTasks />} />
           <Route path="*" element={<ERRPage />} />
         </Routes>
 

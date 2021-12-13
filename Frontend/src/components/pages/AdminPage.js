@@ -19,6 +19,7 @@ const AdminPage = () => {
   const [rank, setRank] = useState('');
   const [password, setPassword] = useState('');
   const [checkPass, setCheckPass] = useState(false);
+  const [telNum, setTelNum] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const AdminPage = () => {
     bodyFormData.append('department', deport);
     bodyFormData.append('rank', rank);
     bodyFormData.append('password', password);
+    bodyFormData.append('phone', `+998${telNum}`);
     await axios({
       method: 'post',
       url: UserAddUrl,
@@ -139,6 +141,7 @@ const AdminPage = () => {
                   placeholder={t('admin.emailplc')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
 
@@ -154,20 +157,10 @@ const AdminPage = () => {
                   placeholder={t('admin.nameplc')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </div>
-              {/* <div className=" py-2 ">
-                <label className="form-label  text-dark">Role</label>
 
-                <input
-                  className="form-control form-control-lg form-control-solid "
-                  type="text"
-                  name="role"
-                  placeholder="name"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-              </div> */}
               <div className=" py-2 ">
                 <label className="form-label  text-dark">
                   {t('admin.depart')}
@@ -180,6 +173,7 @@ const AdminPage = () => {
                   placeholder={t('admin.departplc')}
                   value={deport}
                   onChange={(e) => setDeport(e.target.value)}
+                  required
                 />
               </div>
               <div className=" py-2 ">
@@ -194,8 +188,39 @@ const AdminPage = () => {
                   placeholder={t('admin.rankplc')}
                   value={rank}
                   onChange={(e) => setRank(e.target.value)}
+                  required
                 />
               </div>
+              <div className=" py-2 ">
+                <label className="form-label  text-dark">
+                  {t('admin.tel')}
+                </label>
+                <div className="row">
+                  <div className="col-4 col-md-3 px-1">
+                    <input
+                      className="form-control form-control-lg form-control-solid "
+                      type="text"
+                      name="tel"
+                      value={'+998'}
+                      aria-label="Disabled input"
+                      disabled={true}
+                      readOnly
+                    />
+                  </div>
+                  <div className="col-8 col-md-9 px-1">
+                    <input
+                      className="form-control form-control-lg form-control-solid "
+                      type="number"
+                      name="tel"
+                      placeholder={t('admin.telplc')}
+                      value={telNum}
+                      onChange={(e) => setTelNum(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className=" py-2 ">
                 <label className="form-label  text-dark">
                   {t('chpass.npass')}
@@ -208,6 +233,7 @@ const AdminPage = () => {
                   placeholder={t('chpass.npassplc')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
 
@@ -217,7 +243,6 @@ const AdminPage = () => {
                     type="checkbox"
                     checked={checkPass}
                     onChange={() => setCheckPass(!checkPass)}
-                    
                   />
                   {'   '} {t('chpass.checkpass')}
                 </label>
@@ -225,10 +250,10 @@ const AdminPage = () => {
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="button" variant='sec'   onClick={back}>
+            <Button type="button" variant="sec" onClick={back}>
               {t('tasks.back')}
             </Button>
-            <Button onClick={addUser}  variant='opus'>
+            <Button onClick={addUser} variant="opus">
               {t('admin.save')}
             </Button>
           </Modal.Footer>
@@ -255,7 +280,7 @@ const AdminPage = () => {
             ))}
           </div>
         ) : (
-          <h2 className="text-center">Foydalanuvchi yo'q</h2>
+          <h2 className="text-center">{t('admin.user')}</h2>
         )}
       </div>
     </Container>

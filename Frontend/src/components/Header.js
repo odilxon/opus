@@ -64,6 +64,7 @@ const Header = () => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
     }
+    setClickHero(false);
   }, [navigate]);
 
   useEffect(() => {
@@ -100,7 +101,9 @@ const Header = () => {
               <li>
                 <Link
                   className={
-                    path === '/calendar' || path === '/tasks'
+                    path === '/calendar' ||
+                    path === '/tasks' ||
+                    path === '/taskUsers'
                       ? `menu-link active`
                       : 'menu-link'
                   }
@@ -111,9 +114,10 @@ const Header = () => {
                       : '/calendar'
                   }
                 >
-                  {localStorage.getItem('role') === 'admin'
-                  ? t('header.users')
-                  : t('calendar.title')}
+                  {localStorage.getItem('role') === 'admin' ||
+                  localStorage.getItem('role') === 'adminClicked'
+                    ? t('header.project')
+                    : t('calendar.title')}
                 </Link>
               </li>
 
@@ -124,7 +128,7 @@ const Header = () => {
                   }
                   to="/alltasks"
                 >
-                  { t('header.alltask') }
+                  {t('header.alltask')}
                 </Link>
               </li>
             </ul>
@@ -197,12 +201,16 @@ const Header = () => {
                     <li className="p-2 px-4">
                       <Link
                         to={
-                          localStorage.getItem('role') === 'admin'
+                          localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked'
                             ? '/admin'
                             : '/calendar'
                         }
                       >
-                        {t('header.project')}
+                        {localStorage.getItem('role') === 'admin' ||
+                        localStorage.getItem('role') === 'adminClicked'
+                          ? t('header.project')
+                          : t('calendar.title')}
                       </Link>
                     </li>
                     <li className="p-2 px-4 pb-3">
