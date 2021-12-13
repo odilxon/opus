@@ -153,7 +153,8 @@ def user_tasks(c):
         user = request.args.get('userId')
     else:
         user = c.id
-
+    if request.args.get('clicked'):
+        user = request.args.get('clicked')
 
     if user:
         ff = or_(
