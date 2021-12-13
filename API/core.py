@@ -31,8 +31,12 @@ class SMS:
         session.auth = (self.LOGIN, self.PASS)
         send = session.post(self.URL, json=body)
         return send.status_code
-    def Task_create(self, reciver:str, task_id:int) -> int:
-        msg = "Сизга янги вазифа яратилди #%s. IJRO.AGRO.UZ"%(task_id)
+    def Task_create(self, reciver:str, deadline:str, creator:str, task_id:int) -> int:
+        msg = "Сизга %s санагача %s томонидан янги вазифа яратилди, вазифа рақами: #%s. IJRO.AGRO.UZ"%(deadline, creator, task_id)
+        return self.Send(reciver,msg)
+    def Task_edit(self, reciver:str, moderator:str, status:bool, task_id:int) -> int:
+        stat_msg = "Вазифа якунланди." if status else ""
+        msg = "%s сизнинг #%s вазифангизни тарихини янгилади.%s IJRO.AGRO.UZ"%(moderator, task_id, stat_msg)
         return self.Send(reciver,msg)
 
 sms = SMS(app)
