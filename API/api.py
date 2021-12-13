@@ -190,8 +190,7 @@ def user_tasks(c):
         T['attachments'] = [x.format() for x in Attachment.query.filter(Attachment.type=='task', Attachment.type_id==task.id).all()]
         T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         T['isAdmin'] = True if db.session.query(User).filter(User.id == task.owner_id).first().role == 'admin' else False
-        if foradmin:
-            T['users'] = fetchUsers(T)
+        T['users'] = fetchUsers(T)
         ret_data.append(T)
     return jsonify(ret_data)
 
