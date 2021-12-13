@@ -1,6 +1,5 @@
 from models import *
 from functools import wraps
-
 import jwt, requests
 
 class SMS:
@@ -33,7 +32,7 @@ class SMS:
         send = session.post(self.URL, json=body)
         return send.status_code
     def Task_create(self, reciver:str, task_id:int) -> int:
-        msg = "Сизга янги вазифа яратилди #%s"%(task_id)
+        msg = "Сизга янги вазифа яратилди #%s. IJRO.AGRO.UZ"%(task_id)
         return self.Send(reciver,msg)
 
 sms = SMS(app)
