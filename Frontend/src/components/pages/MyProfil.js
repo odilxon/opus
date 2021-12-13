@@ -25,6 +25,7 @@ const MyProfil = () => {
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
   const [rankAcc, setRankAcc] = useState('');
+  const [telNum, setTelNum] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ const MyProfil = () => {
     bodyFormData.append('name', name);
     bodyFormData.append('department', tel);
     bodyFormData.append('rank', rankAcc);
+    bodyFormData.append('phone', `+998${telNum}`);
 
     if (!name || !tel) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
@@ -397,6 +399,7 @@ const MyProfil = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="col-lg-4 form-label mt-lg-3">
                     <label htmlFor="tel">{t('myacc.rank')}</label>
                   </div>
@@ -413,6 +416,43 @@ const MyProfil = () => {
                           id="ranc"
                           required
                         />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-4 form-label mt-lg-3">
+                    <label className="form-label  text-dark">
+                      {t('admin.tel')}
+                    </label>
+                  </div>
+
+                  <div className="col-lg-8 image-input">
+                    <div className="row mt-lg-3">
+                      <div className=" py-2 ">
+                        <div className="row">
+                          <div className="col-4 col-md-3 px-1">
+                            <input
+                              className="form-control form-control-lg form-control-solid "
+                              type="text"
+                              name="tel"
+                              value={'+998'}
+                              aria-label="Disabled input"
+                              disabled={true}
+                              readOnly
+                            />
+                          </div>
+                          <div className="col-8 col-md-9 px-1">
+                            <input
+                              className="form-control form-control-lg form-control-solid "
+                              type="number"
+                              name="tel"
+                              placeholder={t('admin.telplc')}
+                              value={telNum}
+                              onChange={(e) => setTelNum(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

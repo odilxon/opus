@@ -332,7 +332,7 @@ const TasksList = () => {
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
-      .filter((e) => e.id != localStorage.getItem('myId'))
+      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
       .map((e) => {
         const obj = {
           value: e.id,
