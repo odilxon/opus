@@ -276,9 +276,9 @@ const UserAllTasks = () => {
       method: 'get',
       url: GetUserDateClickUrl,
       params: {
-        userId: localStorage.getItem('myId'),
+        // userId: localStorage.getItem('myId'),
         clicked: localStorage.getItem('clickedUserId'),
-        allTasks: true,
+        // allTasks: true,
       },
       headers: {
         'x-access-token': localStorage.getItem('userToken'),
@@ -353,9 +353,9 @@ const UserAllTasks = () => {
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
 
-                    {localStorage.getItem('role') == 'admin' ? (
-                      <th scope="col"> {t('tasks.linked')}</th>
-                    ) : null}
+                    {/* {localStorage.getItem('role') == 'admin' ? ( */}
+                    <th scope="col"> {t('tasks.linked')}</th>
+                    {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -371,15 +371,15 @@ const UserAllTasks = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {localStorage.getItem('role') === 'admin' ? (
-                        <td>
-                          {e.users.map((e, i) => (
-                            <div key={i} className="badge bg-secondary">
-                              {e}
-                            </div>
-                          ))}
-                        </td>
-                      ) : null}
+                      {/* {localStorage.getItem('role') === 'admin' ? ( */}
+                      <td>
+                        {e.users.map((e, i) => (
+                          <div key={i} className="badge bg-secondary">
+                            {e}
+                          </div>
+                        ))}
+                      </td>
+                      {/* ) : null} */}
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (

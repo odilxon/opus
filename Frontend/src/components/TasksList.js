@@ -332,7 +332,7 @@ const TasksList = () => {
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
-      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .filter((e) => e.id != localStorage.getItem('myId'))
       .map((e) => {
         const obj = {
           value: e.id,
@@ -424,18 +424,18 @@ const TasksList = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? (
-                        <td>
-                          {e.users
-                            ? e.users.map((user, i) => (
-                                <span key={i} className="badge bg-secondary">
-                                  {user}
-                                </span>
-                              ))
-                            : null}
-                        </td>
-                      ) : null}
+                      {/* {localStorage.getItem('role') === 'admin' ||
+                      localStorage.getItem('role') === 'adminClicked' ? ( */}
+                      <td>
+                        {e.users
+                          ? e.users.map((user, i) => (
+                              <span key={i} className="badge bg-secondary">
+                                {user}
+                              </span>
+                            ))
+                          : null}
+                      </td>
+                      {/* ) : null} */}
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (

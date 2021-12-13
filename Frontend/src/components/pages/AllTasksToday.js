@@ -180,7 +180,7 @@ const AllTasksToday = () => {
       method: 'get',
       url: GetUserDateClickUrl,
       params: {
-        userId: localStorage.getItem('myId'),
+        // userId: localStorage.getItem('myId'),
         // clicked: localStorage.getItem('clickedUserId'),
         allTasks: true,
       },
@@ -239,10 +239,10 @@ const AllTasksToday = () => {
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
 
-                    {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? (
-                      <th scope="col"> {t('tasks.linked')}</th>
-                    ) : null}
+                    {/* {localStorage.getItem('role') === 'admin' ||
+                    localStorage.getItem('role') === 'adminClicked' ? ( */}
+                    <th scope="col"> {t('tasks.linked')}</th>
+                    {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -258,18 +258,18 @@ const AllTasksToday = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? (
-                        <td>
-                          {e.users
-                            ? e.users.map((user, i) => (
-                                <span key={i} className="badge bg-secondary">
-                                  {user}
-                                </span>
-                              ))
-                            : null}
-                        </td>
-                      ) : null}
+                      {/* {localStorage.getItem('role') === 'admin' ||
+                      localStorage.getItem('role') === 'adminClicked' ? ( */}
+                      <td>
+                        {e.users
+                          ? e.users.map((user, i) => (
+                              <span key={i} className="badge bg-secondary">
+                                {user}
+                              </span>
+                            ))
+                          : null}
+                      </td>
+                      {/* ) : null} */}
 
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
