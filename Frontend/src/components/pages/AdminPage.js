@@ -243,7 +243,7 @@ const AdminPage = () => {
             ))}
           </div>
         ) : (
-          <h2 className="text-center">Foydalanuvchi yo'q</h2>
+          <h2 className="text-center">{t('admin.user')}</h2>
         )}
       </div>
     </Container>

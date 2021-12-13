@@ -50,7 +50,10 @@ const AllTasksToday = () => {
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
 
-    if (localStorage.getItem('role') === 'adminClicked') {
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
       await axios({
         method: 'post',
         url: ADDEventUrl,
@@ -65,7 +68,8 @@ const AllTasksToday = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
           setDescName('');
           setClickDesc(false);
         })
@@ -95,7 +99,8 @@ const AllTasksToday = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
           setDescName('');
           setClickDesc(false);
         })
@@ -214,8 +219,8 @@ const AllTasksToday = () => {
               <h1 className="pt-2 pb-4">{t('tasks.alltaskslist')}</h1>
             </div>
 
-            <div className="col-md-3 text-end">{userAction.clickedDate}</div>
-            <div className="col-md-3">
+            <div className="col-md-6 text-end">{userAction.clickedDate}</div>
+            {/* <div className="col-md-3">
               {localStorage.getItem('clickedUserId') ? (
                 <button
                   onClick={backCard}
@@ -224,7 +229,7 @@ const AllTasksToday = () => {
                   {t('calendar.qaytish')}
                 </button>
               ) : null}
-            </div>
+            </div> */}
           </div>
           {userAction.clickDate.length > 0 ? (
             <div className="table-responsive">

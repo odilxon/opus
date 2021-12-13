@@ -64,6 +64,7 @@ const Header = () => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
     }
+    setClickHero(false);
   }, [navigate]);
 
   useEffect(() => {
@@ -113,7 +114,10 @@ const Header = () => {
                       : '/calendar'
                   }
                 >
-                  {t('header.users')}
+                  {localStorage.getItem('role') === 'admin' ||
+                  localStorage.getItem('role') === 'adminClicked'
+                    ? t('header.project')
+                    : t('calendar.title')}
                 </Link>
               </li>
 
@@ -197,12 +201,16 @@ const Header = () => {
                     <li className="p-2 px-4">
                       <Link
                         to={
-                          localStorage.getItem('role') === 'admin'
+                          localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked'
                             ? '/admin'
                             : '/calendar'
                         }
                       >
-                        {t('header.project')}
+                        {localStorage.getItem('role') === 'admin' ||
+                        localStorage.getItem('role') === 'adminClicked'
+                          ? t('header.project')
+                          : t('calendar.title')}
                       </Link>
                     </li>
                     <li className="p-2 px-4 pb-3">

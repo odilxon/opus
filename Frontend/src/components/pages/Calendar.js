@@ -241,18 +241,18 @@ const Calendar = () => {
           <div className="col-md-4">
             <h1 className="h3 px-3 pt-3">{t('calendar.title')}</h1>
           </div>
-          <div className="col-md-6  col-lg-5 ">
-            <div className="row p-2">
+          <div className="col-md-6">
+            <div className="row py-2 justify-content-end align-items-center">
               {localStorage.getItem('role') === 'adminClicked' ? (
-                <div className="col-7 tex-end">
+                <div className="co-md-6 col-lg-7 tex-end">
                   <button onClick={allTasksUser} className="btn btn-opus">
-                    Foydalanuvchining barcha ijrolari
+                    {t('calendar.allTasks')}
                   </button>
                 </div>
               ) : null}
 
               {localStorage.getItem('clickedUserId') ? (
-                <div className="col-5 tex-end">
+                <div className="col-md-5 col-lg-5 tex-end">
                   <button onClick={backCard} className="btn btn-opus">
                     {t('calendar.qaytish')}
                   </button>

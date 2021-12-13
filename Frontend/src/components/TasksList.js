@@ -72,7 +72,10 @@ const TasksList = () => {
         });
       }
     }
-    if (localStorage.getItem('role') === 'adminClicked') {
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
       let users = [];
       selectValue.map((e) => {
         users.push(e.value);
@@ -94,7 +97,9 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
+
           setNamead('');
           setEndTime('');
           navigate('/tasks');
@@ -124,7 +129,9 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
+
           setNamead('');
           setEndTime('');
           navigate('/tasks');
@@ -159,7 +166,10 @@ const TasksList = () => {
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
 
-    if (localStorage.getItem('role') === 'adminClicked') {
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
       await axios({
         method: 'post',
         url: ADDEventUrl,
@@ -174,7 +184,8 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
           setDescName('');
           setClickDesc(false);
         })
@@ -204,7 +215,8 @@ const TasksList = () => {
       })
         .then((response) => {
           console.log(response.data);
-          dispatch(HandleClickDateUser(response.data));
+          // dispatch(HandleClickDateUser(response.data));
+          FetchDateInfos();
           setDescName('');
           setClickDesc(false);
         })
@@ -375,7 +387,7 @@ const TasksList = () => {
 
             <div className="col-md-3 text-end">{userAction.clickedDate}</div>
 
-            {localStorage.getItem('compare') == 'true' ? (
+            {localStorage.getItem('compare') === 'true' ? (
               <div className="col-md-3 text-end">
                 <button
                   onClick={handleShow}
@@ -393,6 +405,10 @@ const TasksList = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
+                    {/* {localStorage.getItem('role') === 'admin' ||
+                    localStorage.getItem('role') === 'adminClicked' ? ( */}
+                    <th scope="col"> {t('tasks.linked')}</th>
+                    {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -408,6 +424,18 @@ const TasksList = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
+                      {localStorage.getItem('role') === 'admin' ||
+                      localStorage.getItem('role') === 'adminClicked' ? (
+                        <td>
+                          {e.users
+                            ? e.users.map((user, i) => (
+                                <span key={i} className="badge bg-secondary">
+                                  {user}
+                                </span>
+                              ))
+                            : null}
+                        </td>
+                      ) : null}
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (
@@ -420,55 +448,6 @@ const TasksList = () => {
                               <span title={e.key}>
                                 <FileIcon
                                   extension={e.ext}
-                                  // gradientColor={
-                                  //   e.value.slice(e.value.length - 3) ===
-                                  //     'doc' ||
-                                  //   e.value.slice(e.value.length - 3) === 'ocx'
-                                  //     ? '#2c5898'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'xls' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'xml' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'lsx'
-                                  //     ? 'green'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //       'pdf'
-                                  //     ? 'red'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'png' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'peg' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'jpg'
-                                  //     ? 'yellow'
-                                  //     : 'white'
-                                  // }
-                                  // labelColor={
-                                  //   e.value.slice(e.value.length - 3) ===
-                                  //     'doc' ||
-                                  //   e.value.slice(e.value.length - 3) === 'ocx'
-                                  //     ? '#2c5898'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'xls' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'xml' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'lsx'
-                                  //     ? 'green'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //       'pdf'
-                                  //     ? 'red'
-                                  //     : e.value.slice(e.value.length - 3) ===
-                                  //         'png' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'peg' ||
-                                  //       e.value.slice(e.value.length - 3) ===
-                                  //         'jpg'
-                                  //     ? 'yellow'
-                                  //     : 'white'
-                                  // }
-                                  // gradientOpacity={1}
                                   {...defaultStyles[e.ext]}
                                 />
                               </span>
@@ -480,23 +459,6 @@ const TasksList = () => {
                       </td>
                       <td>{e.start_date}</td>
                       <td>{e.end_date}</td>
-                      {/* <td
-                        className={
-                          e.status === 2
-                            ? 'bg-warning'
-                            : e.status === 1
-                            ? 'bg-danger text-white'
-                            : 'bg-success text-white'
-                        }
-                      >
-                        {e.status === 2
-                          ? t('calendar.bjdti')
-                          : e.status === 1
-                          ? t('calendar.bjdm')
-                          : e.status === 3
-                          ? t('calendar.bjd')
-                          : t('calendar.no')}
-                      </td> */}
 
                       <td className="sts">
                         <div

@@ -97,14 +97,12 @@ const LogIn = () => {
   return (
     <div className="LogIn">
       <div className="container">
-        <h1 className="text-center py-5"> <div className="logo">
-              <img
-                src={Logo}
-                alt="random"
-                className="img-fluid"
-                width="800"
-              />
-            </div>  </h1>
+        <h1 className="text-center py-5">
+          {' '}
+          <div className="logo">
+            <img src={Logo} alt="random" className="img-fluid" width="800" />
+          </div>{' '}
+        </h1>
         <div className="bg-white rounded shadow-sm p-5 mx-auto">
           <form onSubmit={fetchUser}>
             <h2 className="text-center h3">{t('login.kirish')}</h2>
