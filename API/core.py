@@ -1,7 +1,42 @@
 from models import *
 from functools import wraps
 
-import jwt
+import jwt, requests
+
+class SMS:
+    def __init__(self, app) -> None:
+        self.LOGIN = app.config.get('SMS_LOGIN')
+        self.PASS = app.config.get('SMS_PASS')
+        self.URL = app.config.get('SMS_URL')
+        if None in [self.LOGIN, self.PASS, self.URL]:
+            raise AttributeError('SMS credentials are not set')
+        self.EXAMPLE = json.loads('''{ "messages": [ { "recipient":"998932446330", "message-id":"opus000000001", "sms":{ "originator": "3700", "content": { "text": "Test message" } } } ] }''')
+    def Send(self, reciver:str, message:str) -> int:
+        """[summary]
+
+        Args:
+            reciver (str): Phone number of person +9989XAAABBCC
+            message (str): Body of message to send
+
+        Returns:
+            (int): Returns status code of request if 200 then it is sent
+        """
+        if not(type(reciver) == str and len(reciver) == 13):
+            return 404 
+        if not("+" == reciver[0] and "+9989" in reciver):
+            return 404
+        body = self.EXAMPLE
+        body['messages'][0]['sms']['content']['text'] = message
+        body['messages'][0]['recipient'] = reciver
+        session = requests.Session()
+        session.auth = (self.LOGIN, self.PASS)
+        send = session.post(self.URL, json=body)
+        return send.status_code
+    def Task_create(self, reciver:str, task_id:int) -> int:
+        msg = "Сизга янги вазифа яратилди #%s"%(task_id)
+        return self.Send(reciver,msg)
+
+sms = SMS(app)
 
 def token_required(f):
     @wraps(f)

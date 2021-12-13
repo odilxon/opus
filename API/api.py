@@ -241,8 +241,8 @@ def task_add(c):
 
     db.session.add(task)
     db.session.commit()
+    users = request.form.getlist('users')
     if c.role == 'admin':
-        users = request.form.getlist('users')
         for user in users:
             new_tm = Task_Meta(
                 key = 'user_id',
@@ -268,7 +268,9 @@ def task_add(c):
             db.session.add(t_m)
             db.session.commit()
             print('Submitted: %s'%filename)
-
+    users = User.query.filter(User.id.in_(users)).all()
+    for user in users:
+        sms.Task_create(user.phone,task.id)
     return user_tasks(), 200
 
 @app.route("/user/task/add_event", methods=['POST'])
