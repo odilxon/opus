@@ -131,7 +131,6 @@ const Calendar = () => {
         });
     }
   };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getCount = async () => {
     await axios({
@@ -188,16 +187,18 @@ const Calendar = () => {
   calInf.map((e) => {
     if (e.Bajarildi > 0) {
       elements.push({
-        title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
+        title: ` ${e.Bajarildi}`,
+        // title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
         date: e.Sana,
-        backgroundColor: '#299e85',
-        textColor: '#fff',
+        backgroundColor: '#03A9F4',
+        textColor: '#ffff',
         borderColor: '#1a8770',
       });
     }
     if (e.Bajarilmoqda > 0) {
       elements.push({
-        title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
+        title: `${e.Bajarilmoqda}`,
+        // title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
         date: e.Sana,
         backgroundColor: 'rgb(249,235,91)',
         textColor: '#664d03',
@@ -206,14 +207,46 @@ const Calendar = () => {
     }
     if (e.Bajarilmagan) {
       elements.push({
-        title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        title: `${e.Bajarilmagan}`,
         date: e.Sana,
         backgroundColor: 'rgb(233,101,113)',
-        textColor: '#fff',
+        textColor: '#ffff',
         borderColor: 'rgb(227,71,85)',
       });
     }
+    if (e.Bajarilmagan) {
+      elements.push({
+        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        title: `${e.Bajarilmagan}`,
+        date: e.Sana,
+        backgroundColor: 'rgb(233,101,113)',
+        textColor: '#ffff',
+        borderColor: 'rgb(227,71,85)',
+      });
+    }
+    if (e.Tasdiqlandi) {
+      elements.push({
+        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        title: `${e.Tasdiqlandi}`,
+        date: e.Sana,
+        backgroundColor: '#299e85',
+        textColor: '#ffff',
+        borderColor: '#1a8770',
+      });
+    }
+    if (e.Kech_topshirildi) {
+      elements.push({
+        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        title: `${e.Kech_topshirildi}`,
+        date: e.Sana,
+        backgroundColor: 'red',
+        textColor: '#ffff',
+        borderColor: 'red',
+      });
+    }
   });
+  console.log(elements);
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {

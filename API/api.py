@@ -270,7 +270,7 @@ def task_add(c):
             print('Submitted: %s'%filename)
     users = User.query.filter(User.id.in_(users)).all()
     for user in users:
-        sms.Task_create(user.phone,task.id)
+        sms.Task_create(user.phone,task.end_table,task.owner.name,task.id)
     return user_tasks(), 200
 
 @app.route("/user/task/add_event", methods=['POST'])
@@ -291,12 +291,23 @@ def history_add(c):
     db.session.commit()
 
     t = Task.query.get(task)
+    t_m = db.session.query(Task_Meta).filter(Task_Meta.task_id == t.id).all()
+    users = []
+    for meta in t_m:
+        if meta.key == 'user_id':
+            u = User.query.filter(User.id == int(meta.value)).first()
+            print('PHONE', u)
+            users.append(u)
 
+    status = False
     if stat == 'true':
         t.status = 3
+        status = True
     else:
         t.status = 2
 
     db.session.commit()
 
+    for user in users:
+        sms.Task_edit(user.phone, c.name, status, task)
     return user_tasks(), 200

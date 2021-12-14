@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { ADDEventUrl, GetUserDateClickUrl, globalURL } from '../../service';
+import {
+  ADDEventUrl,
+  AdminChekUrl,
+  GetUserDateClickUrl,
+  globalURL,
+} from '../../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -19,6 +24,8 @@ const AllTasksToday = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
+  const [adminCheck, setAdminCheck] = useState(false);
+  const [addFile, setaddFile] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +50,23 @@ const AllTasksToday = () => {
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
-
+    if (addFile) {
+      if (addFile.length < 10) {
+        for (let i = 0; i < addFile.length; i++) {
+          bodyFormData.append(`file${[]}`, addFile[i]);
+        }
+      } else {
+        return toast.warning('Fayllar keragidan ortib ketdi', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }
     if (
       localStorage.getItem('role') === 'adminClicked' ||
       localStorage.getItem('role') === 'admin'
@@ -193,6 +216,31 @@ const AllTasksToday = () => {
       });
   };
 
+  const handleChack = async (id) => {
+    if (adminCheck) {
+      await axios({
+        method: 'get',
+        url: AdminChekUrl,
+        params: {
+          taskId: id,
+        },
+
+        headers: {
+          'x-access-token': localStorage.getItem('userToken'),
+        },
+      })
+        .then((response) => {
+          const { data } = response;
+          console.log(data);
+          FetchDateInfos();
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+        });
+    }
+    setAdminCheck(true);
+  };
+
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
       navigate('/');
@@ -286,7 +334,11 @@ const AllTasksToday = () => {
                               ? 'badge bg-warning'
                               : e.status === 1
                               ? 'badge bg-danger text-white'
-                              : 'badge bg-success text-white'
+                              : e.status === 3
+                              ? 'badge bg-info text-white'
+                              : e.status === 4
+                              ? 'badge bg-success text-white'
+                              : 'badge bg-info text-white'
                           }
                         >
                           {e.status === 2
@@ -295,8 +347,22 @@ const AllTasksToday = () => {
                             ? t('calendar.bjdm')
                             : e.status === 3
                             ? t('calendar.bjd')
+                            : e.status === 4
+                            ? 'Tasdiqlandi'
+                            : e.status === 5
+                            ? 'Kechikdi'
                             : t('calendar.no')}
                         </div>
+                        {e.status === 3 ? (
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              value={adminCheck}
+                              onChange={() => handleChack(e.id)}
+                            />
+                            {'  '} Tasdiqlash
+                          </label>
+                        ) : null}
                       </td>
 
                       <td className="history text-center ">
@@ -346,6 +412,7 @@ const AllTasksToday = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col">{t('tasks.desc')}</th>
+                    <th scope="col">files</th>
                     <th scope="col">{t('modal.name')}</th>
                     <th scope="col">{t('modal.depart')}</th>
                     <th scope="col">{t('modal.time')}</th>
@@ -356,6 +423,30 @@ const AllTasksToday = () => {
                     <tr key={i}>
                       <th scope="row">{i + 1}</th>
                       <td>{e.desc}</td>
+
+                      <td className="iconDiv">
+                        {e.attachment.length > 0 ? (
+                          e.attachment.map((e, i) => (
+                            <a
+                              key={i}
+                              href={globalURL + e.path}
+                              target="_blank"
+                              download
+                              rel="noreferrer"
+                            >
+                              <span title={e.key}>
+                                <FileIcon
+                                  extension={e.ext}
+                                  {...defaultStyles[e.ext]}
+                                />
+                              </span>
+                            </a>
+                          ))
+                        ) : (
+                          <p>{t('tasks.fileNo')}</p>
+                        )}
+                      </td>
+
                       <td>{e.user_name}</td>
                       <td>{e.user_depart}</td>
                       <td className="date">{converTime(e.timestamp)}</td>
@@ -399,6 +490,17 @@ const AllTasksToday = () => {
                 />
                 {'   '} {t('modal.checkBox')}
               </label>
+
+              <div className="py-2">
+                <label
+                  className="addFile"
+                  title={t('modal.fileAdd')}
+                  htmlFor="pic"
+                  onChange={(e) => setaddFile(e.target.files)}
+                >
+                  <input multiple id="file" type="file" name="file" />
+                </label>
+              </div>
             </div>
           </form>
         </Modal.Body>

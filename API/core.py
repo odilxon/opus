@@ -1,6 +1,5 @@
 from models import *
 from functools import wraps
-
 import jwt, requests
 
 class SMS:
@@ -8,6 +7,7 @@ class SMS:
         self.LOGIN = app.config.get('SMS_LOGIN')
         self.PASS = app.config.get('SMS_PASS')
         self.URL = app.config.get('SMS_URL')
+        self.HOST = "http://192.168.43.165:3000"
         if None in [self.LOGIN, self.PASS, self.URL]:
             raise AttributeError('SMS credentials are not set')
         self.EXAMPLE = json.loads('''{ "messages": [ { "recipient":"998932446330", "message-id":"opus000000001", "sms":{ "originator": "3700", "content": { "text": "Test message" } } } ] }''')
@@ -23,17 +23,21 @@ class SMS:
         """
         if not(type(reciver) == str and len(reciver) == 13):
             return 404 
-        if not("+" == reciver[0] and "+9989" in reciver):
+        if not("+" == reciver[0] and "+998" in reciver):
             return 404
         body = self.EXAMPLE
-        body['messages'][0]['sms']['content']['text'] = message
+        body['messages'][0]['sms']['content']['text'] = message + ". %s"%(self.HOST) 
         body['messages'][0]['recipient'] = reciver
         session = requests.Session()
         session.auth = (self.LOGIN, self.PASS)
         send = session.post(self.URL, json=body)
         return send.status_code
-    def Task_create(self, reciver:str, task_id:int) -> int:
-        msg = "Сизга янги вазифа яратилди #%s"%(task_id)
+    def Task_create(self, reciver:str, deadline:str, creator:str, task_id:int) -> int:
+        msg = "Сизга %s санагача %s томонидан янги вазифа яратилди, вазифа рақами: #%s. "%(deadline, creator, task_id)
+        return self.Send(reciver,msg)
+    def Task_edit(self, reciver:str, moderator:str, status:bool, task_id:int) -> int:
+        stat_msg = "Вазифа якунланди." if status else ""
+        msg = "%s сизнинг #%s вазифангизни тарихини янгилади.%s"%(moderator, task_id, stat_msg)
         return self.Send(reciver,msg)
 
 sms = SMS(app)

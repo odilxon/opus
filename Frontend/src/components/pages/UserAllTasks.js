@@ -8,8 +8,9 @@ import {
   GetUserDateClickUrl,
   globalURL,
   TaskAddUrl,
+  TaskEditUrl,
 } from '../../service';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import {
@@ -28,9 +29,12 @@ const UserAllTasks = () => {
   const [addFile, setaddFile] = useState(null);
   const [taskId, setTaskId] = useState('');
   const [clickDesc, setClickDesc] = useState(false);
+  const [clickEdit, setClickEdit] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
   const [selectValue, setSelectValue] = useState([]);
+  const [editedName, setEditedName] = useState('');
+  const [statuss, setStatuss] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -148,7 +152,115 @@ const UserAllTasks = () => {
     setTaskId(id);
     setClickDesc(true);
   };
+  const handleClickEdit = (id) => {
+    setTaskId(id);
+    setClickEdit(true);
+    // let thisTask = userAction.clickDate.filter(
+    //   (element) => element.id === setTaskId
+    // );
+    // setEditedName(thisTask.desc);
+  };
 
+  const editEvent = async (e) => {
+    e.preventDefault();
+
+    var bodyFormData = new FormData();
+    bodyFormData.append('desc', editedName);
+    bodyFormData.append('end_date', end);
+    bodyFormData.append('status', statuss);
+
+    // if (addFile) {
+    //   if (addFile.length < 10) {
+    //     for (let i = 0; i < addFile.length; i++) {
+    //       bodyFormData.append(`file${[]}`, addFile[i]);
+    //     }
+    //   } else {
+    //     return toast.warning('Fayllar keragidan ortib ketdi', {
+    //       position: 'bottom-right',
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //   }
+    // }
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
+      let users = [];
+      // eslint-disable-next-line array-callback-return
+      selectValue.map((e) => {
+        users.push(e.value);
+      });
+
+      users.push(localStorage.getItem('clickedUserId'));
+      users.forEach((e) => bodyFormData.append(`users${[]}`, e));
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
+        },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
+          FetchDateInfos();
+          navigate('/taskUsers');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
+        },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          // dispatch(HandleClickDateUser(response.data));
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
+          FetchDateInfos();
+          navigate('/taskUsers');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
+  };
   const addDesc = async (e) => {
     e.preventDefault();
 
@@ -436,12 +548,25 @@ const UserAllTasks = () => {
                         )}
                       </td>
                       <td className="text-center">
-                        <button
-                          onClick={() => handleClickPlus(e.id)}
-                          className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                        >
-                          <AiOutlinePlus />
-                        </button>
+                        <div className="row">
+                          <div className="col-md-6 p-1">
+                            <button
+                              onClick={() => handleClickPlus(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlinePlus />
+                            </button>
+                          </div>
+
+                          <div className="col-md-6 p-1">
+                            <button
+                              onClick={() => handleClickEdit(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlineEdit />
+                            </button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -470,7 +595,7 @@ const UserAllTasks = () => {
                 className="form-control form-control-lg form-control-solid "
                 type="text"
                 name="name"
-                placeholder={t('modal.eventNameplc')}
+                placeholder="new desc"
                 value={nameAd}
                 onChange={(e) => setNamead(e.target.value)}
               />
@@ -496,7 +621,7 @@ const UserAllTasks = () => {
 
               <input
                 className="form-control form-control-lg form-control-solid "
-                type="date"
+                type="datetime-local"
                 name="end_time"
                 placeholder={t('modal.endplc')}
                 value={end}
@@ -606,6 +731,90 @@ const UserAllTasks = () => {
             {t('myacc.back')}
           </Button>
           <Button onClick={addDesc} variant="opus">
+            {t('myacc.save')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit bosganda */}
+      <Modal show={clickEdit} onHide={() => setClickEdit(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('modal.editEvent')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={editEvent} className="p-3">
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">Edit task</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="text"
+                name="name"
+                placeholder="edit task name"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    foydalanuvchi biriktirish
+                  </label>
+                </div>
+                <MySelect />
+              </div>
+            ) : null}
+
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">Status</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="text"
+                name="status"
+                placeholder="Status"
+                value={statuss}
+                onChange={(e) => setStatuss(e.target.value)}
+              />
+            </div>
+
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">{t('tasks.end')}</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="datetime-local"
+                name="end_time"
+                placeholder={t('modal.endplc')}
+                value={end}
+                onChange={(e) => setEndTime(e.target.value)}
+                min={localStorage.getItem('ckickedDate')}
+              />
+            </div>
+
+            <div className="py-2">
+              <label
+                className="addFile"
+                title={t('modal.fileAdd')}
+                htmlFor="file"
+                onChange={(e) => setaddFile(e.target.files)}
+              >
+                <input multiple id="file" type="file" name="file" />
+              </label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="sec"
+            onClick={() => setClickEdit(false)}
+          >
+            {t('myacc.back')}
+          </Button>
+          <Button onClick={editEvent} variant="opus">
             {t('myacc.save')}
           </Button>
         </Modal.Footer>
