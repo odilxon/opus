@@ -7,7 +7,7 @@ def Drop_DB():
     db.drop_all()
 
 def admins():
-    u = User(name='admin', email='radmin@admin.uz', role="admin")
+    u = User(name='admin', email='admin@admin.uz', role="admin")
     u.set_password('admin')
     db.session.add(u)
     db.session.commit()

@@ -1,8 +1,10 @@
 from sqlalchemy.sql.expression import desc
+from sqlalchemy import cast
+from sqlalchemy.util.langhelpers import _update_argspec_defaults_into_env
 from core import *
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from sqlalchemy import or_,and_
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, validate_arguments
 import os
 @app.route("/login",methods=['POST'])
 def login_a():
@@ -37,12 +39,11 @@ def useradd(c):
     u_department = request.form.get('department')
     u_rank = request.form.get('rank')
     u_password = request.form.get('password')
-    u_phone = request.form.get('phone')
+    phones = request.form.getlist('phone')
 
     user = User(
         name = u_name,
         email = u_email,
-        phone = u_phone,
         role = u_role,
         image = u_image,
         department = u_department,
@@ -52,6 +53,15 @@ def useradd(c):
     user.set_password(u_password)
     db.session.add(user)
     db.session.commit()
+
+    for phone in phones:
+        new_um = User_Meta(
+            key = 'phone',
+            value = phone,
+            user_id = user.id
+        )
+        db.session.add(new_um)
+        db.session.commit()
 
     return jsonify({"msg": "Success"}), 200
 
@@ -72,9 +82,27 @@ def userdata(c):
         u_email = request.form.get('email')
         if u_email:
             u.email = u_email
-        u_phone = request.form.get('phone')
-        if u_phone:
-            u.phone = u_phone
+        phones = request.form.getlist('phone')
+        u_m = User_Meta.query.filter(User_Meta.user_id==u.id).all()
+        if len(phones) >= len(u_m):
+            for i in range(0, len(phones)):
+                if phones[i] and i < len(u_m):
+                    u_m[i].value = phones[i]
+                else:
+                    new_um = User_Meta(
+                    key = 'phone',
+                    value = phones[i],
+                    user_id = u.id
+                    )
+                    db.session.add(new_um)
+                    db.session.commit()
+        else:
+            for i in range(0, len(u_m)):
+                if phones[i]:
+                    u_m[i].value = phones[i]
+                else:
+                    db.session.delete(u_m[i])
+                    db.session.commit()
         u_role = request.form.get('role')
         if u_role:
             u.role = u_role
@@ -120,6 +148,11 @@ def userdata(c):
             f['tasks']['pending'] += 1
         else:
             f['tasks']['completed'] += 1
+
+    u_m = User_Meta.query.filter(User_Meta.user_id==c.id).all()
+    f['phones'] = []
+    for meta in u_m:
+        f['phones'].append(meta.value)
 
     return f,200
 
@@ -169,7 +202,7 @@ def user_tasks(c):
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)
     if date:
         # date = "-".join(date.split("-")[::-1]) # 2012-02-31 -> 31-02-2012
-        ff = and_(ff,Task.start_date == date ).self_group()
+        ff = and_(ff, cast(Task.start_date, Date) == date ).self_group()
     
     foradmin = False
     if adminAll and c.role == 'admin':
@@ -200,6 +233,28 @@ def user_tasks(c):
         ret_data.append(T)
     return jsonify(ret_data)
 
+@app.route("/user/task/edit", methods=['POST'])
+@token_required
+def task_edit(c):
+    deadline = request.form.get('end_date')
+    desc = request.form.get('desc')
+    status = request.form.get('status')
+    task_id = request.args.get('taskId')
+
+    task = Task.query.get(task_id)
+    if deadline:
+        task.end_date = deadline
+    if desc:
+        task.desc = desc
+    if status:
+        task.status = status
+
+    task.edited_time = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({"msg": "Success"}), 200
+
 @app.route("/user/c_data", methods=['GET'])
 @token_required
 def calendar_data(c):
@@ -218,8 +273,8 @@ def calendar_data(c):
     ret_data = {}
     for task in tasks:
         if str(task.start_date) not in ret_data:
-            ret_data[str(task.start_date)] = {"Sana" : str(task.start_date), "Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0}
-        ret_data[str(task.start_date)]['Bajarilmagan' if task.status == 1 else ('Bajarilmoqda' if task.status == 2 else 'Bajarildi')] += 1
+            ret_data[str(task.start_date)] = {"Sana" : str(task.start_date), "Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0, "Tasdiqlandi" : 0, "Kech_topshirildi" : 0 }
+        ret_data[str(task.start_date)]['Bajarilmagan' if task.status == 1 else ('Bajarilmoqda' if task.status == 2 else ('Bajarildi' if task.status == 3 else ('Tasdiqlandi' if task.status == 4 else 'Kech_topshirildi')))] += 1
     return jsonify(ret_data)
     
 @app.route("/user/task/add", methods=['POST'])
@@ -234,7 +289,7 @@ def task_add(c):
     task = Task(
         owner_id = user_id,
         start_date = start,
-        end_table = end,
+        end_date = end,
         desc = description,
         status = stat
     )
@@ -270,7 +325,10 @@ def task_add(c):
             print('Submitted: %s'%filename)
     users = User.query.filter(User.id.in_(users)).all()
     for user in users:
-        sms.Task_create(user.phone,task.end_table,task.owner.name,task.id)
+        metas = User_Meta.query.filter(User_Meta.user_id==user.id).all()
+        for meta in metas:
+            sms.Task_create(meta.value,task.end_date,task.owner.name,task.id)
+        metas = []
     return user_tasks(), 200
 
 @app.route("/user/task/add_event", methods=['POST'])
@@ -296,18 +354,51 @@ def history_add(c):
     for meta in t_m:
         if meta.key == 'user_id':
             u = User.query.filter(User.id == int(meta.value)).first()
-            print('PHONE', u)
             users.append(u)
 
     status = False
     if stat == 'true':
         t.status = 3
         status = True
+        t.finished_time = datetime.now()
     else:
         t.status = 2
 
     db.session.commit()
 
+    if 'file' in request.files:
+        ffs = request.files.getlist('file')
+        for file in ffs:
+            if file:
+                filename = HASH_FILE(file.filename)
+                print(filename)
+                filename = os.path.join(app.config['UPLOAD_FOLDER'],"files", filename)
+                file.save(filename)
+
+            t_h = Attachment(
+                type = 'task_history',
+                type_id = history.id,
+                path = filename
+            )
+            db.session.add(t_h)
+            db.session.commit()
+
     for user in users:
-        sms.Task_edit(user.phone, c.name, status, task)
+        metas = User_Meta.query.filter(User_Meta.user_id==user.id).all()
+        for meta in metas:
+            sms.Task_edit(meta.value, c.name, status, task)
+        metas = []
     return user_tasks(), 200
+
+@app.route("/user/task/validate", methods=['GET'])
+@token_required
+def task_validate(c):
+    if c.role == 'admin':
+        task = request.args.get('taskId')
+        t = Task.query.get(task)
+        if t.status == 3:
+            t.status = 4
+            if t.finished_time > t.end_date:
+                t.status = 5
+            db.session.commit()
+    return jsonify({"msg": "Success"}), 200

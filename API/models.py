@@ -20,13 +20,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True)
-    phone = db.Column(db.String(100),nullable=True)  # +998932446330
     role = db.Column(db.String(100), nullable=True)
     image = db.Column(db.String(500), nullable=True)
     department = db.Column(db.String(500), nullable=True)
     rank = db.Column(db.String(500), nullable=True)
     password = db.Column(db.String(500))
-    tasks = db.relationship("Task_History", backref='user')
+    tasks = db.relationship("Task_History", backref='tasks')
+    metas = db.relationship("User_Meta", backref='users')
     owner_ids = db.relationship("Task", backref='owner')
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -37,7 +37,6 @@ class User(db.Model):
             "id" : self.id,
             "name" : self.name,
             "email" : self.email,
-            "phone" : self.phone,
             "role" : self.role,
             "image" : self.image,
             "department" : self.department,
@@ -46,12 +45,27 @@ class User(db.Model):
     def __repr__(self):
         return "%s"%self.name
 
+class User_Meta(db.Model):
+    __tablename__ = 'user_meta'
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String, nullable=False)
+    value = db.Column(db.String(100),nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    def format(self):
+        return {
+            "id" : self.id,
+            "key" : self.key,
+            "value" : self.value
+        }
+
 class Task(db.Model):
     __tablename__ = 'task'
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
-    end_table = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+    edited_time = db.Column(db.DateTime, nullable=True)
+    finished_time = db.Column(db.DateTime, nullable=True)
     desc = db.Column(db.String, nullable=False)
     status = db.Column(db.Integer, nullable=False)
     task_metas = db.relationship("Task_Meta", backref='task')
@@ -60,7 +74,7 @@ class Task(db.Model):
         return {
             "id" : self.id,
             "start_date" : str(self.start_date),
-            "end_date" : str(self.end_table),
+            "end_date" : str(self.end_date),
             "desc" : self.desc,
             "status" : self.status,
             "owner_id" : self.owner_id,
@@ -89,8 +103,8 @@ class Task_History(db.Model):
     def format(self):
         return {
             "id" : self.id,
-            "user_name" : self.user.name,
-            "user_depart" : self.user.department,
+            "user_name" : self.tasks.name,
+            "user_depart" : self.tasks.department,
             "desc" : self.desc,
             "timestamp" : self.timestamp.timestamp()
         }
