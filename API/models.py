@@ -27,7 +27,7 @@ class User(db.Model):
     rank = db.Column(db.String(500), nullable=True)
     password = db.Column(db.String(500))
     tasks = db.relationship("Task_History", backref='user')
-    owner_ids = db.relationship("Task", backref='user')
+    owner_ids = db.relationship("Task", backref='owner')
     def set_password(self, password):
         self.password = generate_password_hash(password)
     def check_password(self, password):

@@ -37,10 +37,12 @@ def useradd(c):
     u_department = request.form.get('department')
     u_rank = request.form.get('rank')
     u_password = request.form.get('password')
+    u_phone = request.form.get('phone')
 
     user = User(
         name = u_name,
         email = u_email,
+        phone = u_phone,
         role = u_role,
         image = u_image,
         department = u_department,
@@ -70,6 +72,9 @@ def userdata(c):
         u_email = request.form.get('email')
         if u_email:
             u.email = u_email
+        u_phone = request.form.get('phone')
+        if u_phone:
+            u.phone = u_phone
         u_role = request.form.get('role')
         if u_role:
             u.role = u_role
@@ -153,7 +158,8 @@ def user_tasks(c):
         user = request.args.get('userId')
     else:
         user = c.id
-
+    if request.args.get('clicked'):
+        user = request.args.get('clicked')
 
     if user:
         ff = or_(
@@ -172,12 +178,12 @@ def user_tasks(c):
     else:
         tasks = tasks.filter(ff).order_by(Task.start_date.desc()).all()
     
-    def fetchUsers(task):
+    def fetchUsers(T, task):
         admin_id = c.id
         ids = []
-        if task['owner_id'] != c.id:
-            ids.append(int(task['owner_id']))
-        for us in task['linked']:
+        if task.owner.role != 'admin':
+            ids.append(int(T['owner_id']))
+        for us in T['linked']:
             ids.append(int(us['value']))
         users = [x[0] for x in db.session.query(User.name).filter(User.id.in_(ids)).all()] # [('name',), ('sd',)]
         return users
@@ -190,8 +196,7 @@ def user_tasks(c):
         T['attachments'] = [x.format() for x in Attachment.query.filter(Attachment.type=='task', Attachment.type_id==task.id).all()]
         T['history'] = [ x.format() for x in Task_History.query.filter(Task_History.task_id == task.id).all()]
         T['isAdmin'] = True if db.session.query(User).filter(User.id == task.owner_id).first().role == 'admin' else False
-        if foradmin:
-            T['users'] = fetchUsers(T)
+        T['users'] = fetchUsers(T, task)
         ret_data.append(T)
     return jsonify(ret_data)
 
@@ -236,8 +241,8 @@ def task_add(c):
 
     db.session.add(task)
     db.session.commit()
+    users = request.form.getlist('users')
     if c.role == 'admin':
-        users = request.form.getlist('users')
         for user in users:
             new_tm = Task_Meta(
                 key = 'user_id',
@@ -263,7 +268,9 @@ def task_add(c):
             db.session.add(t_m)
             db.session.commit()
             print('Submitted: %s'%filename)
-
+    users = User.query.filter(User.id.in_(users)).all()
+    for user in users:
+        sms.Task_create(user.phone,task.id)
     return user_tasks(), 200
 
 @app.route("/user/task/add_event", methods=['POST'])
