@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -332,7 +333,7 @@ const TasksList = () => {
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
-      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .filter((e) => e.id !== localStorage.getItem('clickedUserId'))
       .map((e) => {
         const obj = {
           value: e.id,
@@ -444,6 +445,7 @@ const TasksList = () => {
                               href={globalURL + e.path}
                               target="_blank"
                               download
+                              rel="noreferrer"
                             >
                               <span title={e.key}>
                                 <FileIcon

@@ -1,11 +1,10 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  AddEvent,
   CalendarInfos,
   HandleClickDate,
   HandleClickDateUser,
@@ -13,82 +12,80 @@ import {
 import uzLocale from '@fullcalendar/core/locales/ru';
 // import { AiOutlinePlus } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
-import { CdataUrl, GetUserDateClickUrl, TaskAddUrl } from '../../service';
+import { CdataUrl, GetUserDateClickUrl } from '../../service';
 import { useTranslation } from 'react-i18next';
 
 const Calendar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
-  const [name, setName] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [end, setEndTime] = useState('');
+  // const [show, setShow] = useState(false);
+  // const [name, setName] = useState('');
+  // const [startTime, setStartTime] = useState('');
+  // const [end, setEndTime] = useState('');
   const elements = [];
 
   const dataRed = useSelector((state) => state);
   const calInf = dataRed.userAction.calendarInfos;
 
-  const handleClose = () => setShow(false);
+  // const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
   const { t } = useTranslation();
 
-  const addEvent = async (e) => {
-    e.preventDefault();
+  // const addEvent = async (e) => {
+  //   e.preventDefault();
 
-    const dataEvent = {
-      evenetName: name,
-      start_time: startTime,
-      end_time: end,
-    };
+  //   const dataEvent = {
+  //     evenetName: name,
+  //     start_time: startTime,
+  //     end_time: end,
+  //   };
 
-    if (!name || !end || !startTime) {
-      return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
-        position: 'bottom-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
+  //   if (!name || !end || !startTime) {
+  //     return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
+  //       position: 'bottom-right',
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //   }
 
-    await axios({
-      method: 'post',
-      url: TaskAddUrl,
-      data: dataEvent,
-      headers: {
-        'x-access-token': localStorage.getItem('userToken'),
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        dispatch(AddEvent(dataEvent));
-        setName('');
-        setEndTime('');
-        setStartTime('');
-        if (dataEvent) {
-          navigate('/calendar');
-        }
-      })
-      .catch((err) => {
-        console.log('Err:', err);
-        return toast.error("Noto'g'ri", {
-          position: 'bottom-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      });
+  //   await axios({
+  //     method: 'post',
+  //     url: TaskAddUrl,
+  //     data: dataEvent,
+  //     headers: {
+  //       'x-access-token': localStorage.getItem('userToken'),
+  //     },
+  //   })
+  //     .then((response) => {
+  //       console.log(response);
+  //       dispatch(AddEvent(dataEvent));
+  //       setName('');
+  //       setEndTime('');
+  //       setStartTime('');
+  //       if (dataEvent) {
+  //         navigate('/calendar');
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log('Err:', err);
+  //       return toast.error("Noto'g'ri", {
+  //         position: 'bottom-right',
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //       });
+  //     });
 
-    setShow(false);
-  };
+  //   setShow(false);
+  // };
 
   const handleDateClick = async (dateClickInfo) => {
     dispatch(HandleClickDate(dateClickInfo.dateStr));

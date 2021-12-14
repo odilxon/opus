@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,6 +71,7 @@ const UserAllTasks = () => {
     }
     if (localStorage.getItem('role') === 'adminClicked') {
       let users = [];
+      // eslint-disable-next-line array-callback-return
       selectValue.map((e) => {
         users.push(e.value);
       });
@@ -297,7 +299,7 @@ const UserAllTasks = () => {
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
-      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .filter((e) => e.id !== localStorage.getItem('clickedUserId'))
       .map((e) => {
         const obj = {
           value: e.id,
@@ -352,10 +354,7 @@ const UserAllTasks = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
-
-                    {/* {localStorage.getItem('role') == 'admin' ? ( */}
                     <th scope="col"> {t('tasks.linked')}</th>
-                    {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -371,7 +370,6 @@ const UserAllTasks = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {/* {localStorage.getItem('role') === 'admin' ? ( */}
                       <td>
                         {e.users.map((e, i) => (
                           <div key={i} className="badge bg-secondary">
@@ -379,7 +377,6 @@ const UserAllTasks = () => {
                           </div>
                         ))}
                       </td>
-                      {/* ) : null} */}
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (
@@ -388,6 +385,7 @@ const UserAllTasks = () => {
                               href={globalURL + e.path}
                               target="_blank"
                               download
+                              rel="noreferrer"
                             >
                               <span title={e.key}>
                                 <FileIcon

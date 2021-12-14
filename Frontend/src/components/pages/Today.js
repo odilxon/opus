@@ -1,9 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   HandleClickDateUser,
   HandleHistory,
@@ -11,7 +10,6 @@ import {
 import { ADDEventUrl, GetUserDateClickUrl, globalURL } from '../../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { defaultStyles, FileIcon } from 'react-file-icon';
-import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
@@ -230,6 +228,7 @@ const Today = () => {
     localStorage.setItem('ckickedDate', TodayDate());
     localStorage.setItem('compare', compareDate());
     FetchDateInfos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -249,10 +248,7 @@ const Today = () => {
                 <tr>
                   <th scope="col">№</th>
                   <th scope="col"> {t('tasks.desc')}</th>
-                  {/* {localStorage.getItem('role') === 'admin' ||
-                  localStorage.getItem('role') === 'adminClicked' ? ( */}
                   <th scope="col"> {t('tasks.linked')}</th>
-                  {/* ) : null} */}
                   <th scope="col">{t('tasks.files')}</th>
                   <th scope="col">{t('tasks.start')}</th>
                   <th scope="col">{t('tasks.end')}</th>
@@ -268,8 +264,6 @@ const Today = () => {
                       {e.id}
                     </th>
                     <td>{e.desc}</td>
-                    {/* {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? ( */}
                     <td>
                       {e.users
                         ? e.users.map((user, i) => (
@@ -279,7 +273,6 @@ const Today = () => {
                           ))
                         : null}
                     </td>
-                    {/* ) : null} */}
                     <td className="iconDiv">
                       {e.attachments.length > 0 ? (
                         e.attachments.map((e, i) => (
@@ -288,6 +281,7 @@ const Today = () => {
                             href={globalURL + e.path}
                             target="_blank"
                             download
+                            rel="noreferrer"
                           >
                             <span title={e.key}>
                               <FileIcon

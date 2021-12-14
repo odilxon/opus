@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AdminCard from '../AdminCard';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AccountImg from '../../assets/images/account.png';
 import { Container, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,6 @@ const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // const [role, setRole] = useState('');
   const [deport, setDeport] = useState('');
   const [rank, setRank] = useState('');
   const [password, setPassword] = useState('');
@@ -57,7 +56,6 @@ const AdminPage = () => {
         setName('');
         setPassword('');
         setRank('');
-        // setRole('');
         setEmail('');
         setDeport('');
         setCheckPass('');
@@ -104,6 +102,7 @@ const AdminPage = () => {
     if (localStorage.getItem('role') !== 'admin') {
       navigate('/calendar');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container>

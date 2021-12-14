@@ -2,13 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
-import {
-  ADDEventUrl,
-  GetUserDateClickUrl,
-  globalURL,
-  TaskAddUrl,
-} from '../../service';
+import { ADDEventUrl, GetUserDateClickUrl, globalURL } from '../../service';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -170,11 +164,11 @@ const AllTasksToday = () => {
       return false;
     }
   };
-  const backCard = () => {
-    localStorage.removeItem('clickedUserId');
-    localStorage.setItem('role', 'admin');
-    navigate('/admin');
-  };
+  // const backCard = () => {
+  //   localStorage.removeItem('clickedUserId');
+  //   localStorage.setItem('role', 'admin');
+  //   navigate('/admin');
+  // };
   const FetchDateInfos = async () => {
     await axios({
       method: 'get',
@@ -208,6 +202,7 @@ const AllTasksToday = () => {
   useEffect(() => {
     FetchDateInfos();
     localStorage.setItem('compare', compareDate());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -220,16 +215,6 @@ const AllTasksToday = () => {
             </div>
 
             <div className="col-md-6 text-end">{userAction.clickedDate}</div>
-            {/* <div className="col-md-3">
-              {localStorage.getItem('clickedUserId') ? (
-                <button
-                  onClick={backCard}
-                  className="btn btn-opus d-flex justify-content-center ms-auto align-items-center "
-                >
-                  {t('calendar.qaytish')}
-                </button>
-              ) : null}
-            </div> */}
           </div>
           {userAction.clickDate.length > 0 ? (
             <div className="table-responsive">
@@ -239,10 +224,8 @@ const AllTasksToday = () => {
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
 
-                    {/* {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? ( */}
                     <th scope="col"> {t('tasks.linked')}</th>
-                    {/* ) : null} */}
+
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -258,8 +241,7 @@ const AllTasksToday = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {/* {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? ( */}
+
                       <td>
                         {e.users
                           ? e.users.map((user, i) => (
@@ -269,7 +251,6 @@ const AllTasksToday = () => {
                             ))
                           : null}
                       </td>
-                      {/* ) : null} */}
 
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
@@ -279,6 +260,7 @@ const AllTasksToday = () => {
                               href={globalURL + e.path}
                               target="_blank"
                               download
+                              rel="noreferrer"
                             >
                               <span title={e.key}>
                                 <FileIcon

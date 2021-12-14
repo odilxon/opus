@@ -8,19 +8,15 @@ import { GiAchievement } from 'react-icons/gi';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { GetUserDateClickUrl, GetUserInfoUrl, globalURL } from '../../service';
+import { GetUserInfoUrl, globalURL } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  HandleClickDateUser,
-  UserInfosLogIn,
-} from '../../redux/actions/UserAction';
+import { UserInfosLogIn } from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
 import Today from './Today';
-import AllTasksToday from './AllTasksToday';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
-  const [fullName, setFullName] = useState('');
+  // const [fullName, setFullName] = useState('');
   // const [picteruUser, setPictureUser] = useState('');
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
@@ -171,7 +167,6 @@ const MyProfil = () => {
         localStorage.setItem('myId', data.id);
 
         setName(data.name);
-        setFullName(data.name);
         setTel(data.department);
         setRankAcc(data.rank);
       })
@@ -182,7 +177,6 @@ const MyProfil = () => {
 
   const backHandle = () => {
     setName('');
-    setFullName('');
     setTel('');
     setEditProfil(false);
   };
