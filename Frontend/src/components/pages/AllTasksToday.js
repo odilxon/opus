@@ -353,16 +353,6 @@ const AllTasksToday = () => {
                             ? 'Kechikdi'
                             : t('calendar.no')}
                         </div>
-                        {e.status === 3 ? (
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              value={adminCheck}
-                              onChange={() => handleChack(e.id)}
-                            />
-                            {'  '} Tasdiqlash
-                          </label>
-                        ) : null}
                       </td>
 
                       <td className="history text-center ">
@@ -387,6 +377,17 @@ const AllTasksToday = () => {
                         >
                           <AiOutlinePlus />
                         </button>
+                        {/* 
+                        {e.status === 3 ? (
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              value={adminCheck}
+                              onChange={() => handleChack(e.id)}
+                            />
+                            {'  '} Tasdiqlash
+                          </label>
+                        ) : null} */}
                       </td>
                     </tr>
                   ))}
