@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { AiOutlineDelete } from 'react-icons/ai';
+import LoaderPage from '../LoaderPage';
 
 const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
