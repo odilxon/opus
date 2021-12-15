@@ -23,6 +23,7 @@ import { defaultStyles, FileIcon } from 'react-file-icon';
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
+import LoaderPage from './LoaderPage';
 // import DataTable from 'react-data-table-component';
 
 const TasksList = () => {
@@ -39,6 +40,7 @@ const TasksList = () => {
   const [clickEdit, setClickEdit] = useState(false);
   const [editedName, setEditedName] = useState('');
   const [statuss, setStatuss] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,6 +65,8 @@ const TasksList = () => {
 
   const addEvent = async (e) => {
     e.preventDefault();
+
+    setLoader(true);
     var bodyFormData = new FormData();
 
     bodyFormData.append('desc', nameAd);
@@ -164,6 +168,9 @@ const TasksList = () => {
     }
 
     setShow(false);
+    setaddFile([]);
+
+    setLoader(false);
   };
 
   const handleClickEdit = (id) => {
@@ -182,7 +189,7 @@ const TasksList = () => {
 
   const addDesc = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     var bodyFormData = new FormData();
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
@@ -271,6 +278,8 @@ const TasksList = () => {
           });
         });
     }
+    setaddFile([]);
+    setLoader(false);
   };
 
   const converTime = (a) => {
@@ -327,7 +336,7 @@ const TasksList = () => {
 
   const editEvent = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     var bodyFormData = new FormData();
     bodyFormData.append('desc', editedName);
     bodyFormData.append('end_date', end);
@@ -424,9 +433,11 @@ const TasksList = () => {
           });
         });
     }
+    setLoader(false);
   };
 
   const FetchDateInfos = async () => {
+    setLoader(true);
     if (localStorage.getItem('role') === 'adminClicked') {
       await axios({
         method: 'get',
@@ -466,8 +477,10 @@ const TasksList = () => {
           console.log('Err:', err);
         });
     }
+    setLoader(false);
   };
   const handleChack = async (id) => {
+    setLoader(true);
     await axios({
       method: 'get',
       url: AdminChekUrl,
@@ -487,6 +500,8 @@ const TasksList = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
+
+    setLoader(false);
   };
   const options = [];
   if (userAction.allUsers.length > 0) {
@@ -991,6 +1006,8 @@ const TasksList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {loader ? <LoaderPage /> : null}
     </>
   );
 };

@@ -21,6 +21,7 @@ import {
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
+import LoaderPage from '../LoaderPage';
 
 const UserAllTasks = () => {
   const [end, setEndTime] = useState('');
@@ -36,6 +37,7 @@ const UserAllTasks = () => {
   const [selectValue, setSelectValue] = useState([]);
   const [editedName, setEditedName] = useState('');
   const [statuss, setStatuss] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,6 +54,7 @@ const UserAllTasks = () => {
 
   const addEvent = async (e) => {
     e.preventDefault();
+    setLoader(true);
     var bodyFormData = new FormData();
 
     bodyFormData.append('desc', nameAd);
@@ -145,7 +148,8 @@ const UserAllTasks = () => {
           });
         });
     }
-
+    setaddFile([]);
+    setLoader(false);
     setShow(false);
   };
 
@@ -186,7 +190,7 @@ const UserAllTasks = () => {
 
   const editEvent = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     var bodyFormData = new FormData();
     bodyFormData.append('desc', editedName);
     bodyFormData.append('end_date', end);
@@ -283,10 +287,12 @@ const UserAllTasks = () => {
           });
         });
     }
+    setaddFile([]);
+    setLoader(false);
   };
   const addDesc = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     var bodyFormData = new FormData();
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
@@ -375,6 +381,9 @@ const UserAllTasks = () => {
           });
         });
     }
+
+    setaddFile([]);
+    setLoader(false);
   };
 
   const converTime = (a) => {
@@ -430,6 +439,7 @@ const UserAllTasks = () => {
   };
 
   const FetchDateInfos = async () => {
+    setLoader(true);
     await axios({
       method: 'get',
       url: GetUserDateClickUrl,
@@ -450,6 +460,7 @@ const UserAllTasks = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
+    setLoader(false);
   };
 
   const options = [];
@@ -926,6 +937,8 @@ const UserAllTasks = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {loader ? <LoaderPage /> : null}
     </>
   );
 };

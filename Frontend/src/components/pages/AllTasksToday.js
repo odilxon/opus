@@ -19,6 +19,7 @@ import {
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
+import LoaderPage from '../LoaderPage';
 
 const AllTasksToday = () => {
   const [clickHist, setClickHist] = useState(false);
@@ -32,6 +33,7 @@ const AllTasksToday = () => {
   const [editedName, setEditedName] = useState('');
   const [statuss, setStatuss] = useState(false);
   const [end, setEndTime] = useState('');
+  const [loader, setLoader] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ const AllTasksToday = () => {
 
   const addDesc = async (e) => {
     e.preventDefault();
+    setLoader(true);
 
     var bodyFormData = new FormData();
     bodyFormData.append('task_id', taskId);
@@ -140,6 +143,8 @@ const AllTasksToday = () => {
           });
         });
     }
+    setaddFile([]);
+    setLoader(false);
   };
 
   const converTime = (a) => {
@@ -247,7 +252,6 @@ const AllTasksToday = () => {
   const handleClickEdit = (id) => {
     setTaskId(id);
 
-    setTaskId(id);
     setClickEdit(true);
     let thisTask = userAction.clickDate.filter((element) => element.id === id);
     setEditedName(thisTask[0].desc);
@@ -257,7 +261,7 @@ const AllTasksToday = () => {
 
   const editEvent = async (e) => {
     e.preventDefault();
-
+    setLoader(true);
     var bodyFormData = new FormData();
     bodyFormData.append('desc', editedName);
     bodyFormData.append('end_date', end);
@@ -354,6 +358,8 @@ const AllTasksToday = () => {
           });
         });
     }
+
+    setLoader(false);
   };
 
   const options = [];
@@ -763,6 +769,8 @@ const AllTasksToday = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {loader ? <LoaderPage /> : null}
     </>
   );
 };

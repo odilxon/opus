@@ -14,6 +14,7 @@ import { UserInfosLogIn } from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
 import Today from './Today';
 import CheckedList from './CheckedList';
+import LoaderPage from '../LoaderPage';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -22,6 +23,8 @@ const MyProfil = () => {
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
   const [rankAcc, setRankAcc] = useState('');
+  const [loader, setLoader] = useState(false);
+
   // const [telNum, setTelNum] = useState('');
   // const [telNum2, setTelNum2] = useState('');
 
@@ -44,6 +47,7 @@ const MyProfil = () => {
   // }
 
   const ChangeImage = async (e) => {
+    setLoader(true);
     const file = e.target.files[0];
     var bodyFormData = new FormData();
     bodyFormData.append('image', file);
@@ -76,9 +80,11 @@ const MyProfil = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
+    setLoader(false);
   };
 
   const submitEdit = async (e) => {
+    setLoader(true);
     e.preventDefault();
     var bodyFormData = new FormData();
     bodyFormData.append('name', name);
@@ -155,9 +161,12 @@ const MyProfil = () => {
           progress: undefined,
         });
       });
+
+    setLoader(false);
   };
 
   const getUserInfo = async () => {
+    setLoader(true);
     await axios({
       method: 'get',
       url: GetUserInfoUrl,
@@ -204,6 +213,7 @@ const MyProfil = () => {
       .catch((err) => {
         console.log('Err:', err);
       });
+    setLoader(false);
   };
 
   const handleChange = (e, index) => {
@@ -580,6 +590,7 @@ const MyProfil = () => {
           </div>
         </div>
       </div>
+      {loader ? <LoaderPage /> : null}
     </div>
   );
 };
