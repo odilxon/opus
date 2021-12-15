@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserInfosLogIn } from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
 import Today from './Today';
+import CheckedList from './CheckedList';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
@@ -354,6 +355,7 @@ const MyProfil = () => {
           </div>
         </div>
       </div>
+      {/* {localStorage.getItem('role') !== 'admin' ? <Today /> : <CheckedList />} */}
       {localStorage.getItem('role') !== 'admin' ? <Today /> : null}
 
       <div className="profilDetails bg-white rounded shadow-sm py-3 my-3">

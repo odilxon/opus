@@ -305,7 +305,11 @@ const Today = () => {
                             ? 'badge bg-warning'
                             : e.status === 1
                             ? 'badge bg-danger text-white'
-                            : 'badge bg-success text-white'
+                            : e.status === 3
+                            ? 'badge bg-info text-white'
+                            : e.status === 4
+                            ? 'badge bg-success text-white'
+                            : 'badge bg-dark text-white'
                         }
                       >
                         {e.status === 2
@@ -314,6 +318,10 @@ const Today = () => {
                           ? t('calendar.bjdm')
                           : e.status === 3
                           ? t('calendar.bjd')
+                          : e.status === 4
+                          ? 'Tasdiqlandi'
+                          : e.status === 5
+                          ? 'Kechikdi'
                           : t('calendar.no')}
                       </div>
                     </td>

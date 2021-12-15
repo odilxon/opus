@@ -7,8 +7,9 @@ import {
   AdminChekUrl,
   GetUserDateClickUrl,
   globalURL,
+  TaskEditUrl,
 } from '../../service';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import {
@@ -17,6 +18,7 @@ import {
 } from '../../redux/actions/UserAction';
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { useTranslation } from 'react-i18next';
+import { MultiSelect } from 'react-multi-select-component';
 
 const AllTasksToday = () => {
   const [clickHist, setClickHist] = useState(false);
@@ -24,8 +26,12 @@ const AllTasksToday = () => {
   const [clickDesc, setClickDesc] = useState(false);
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
-  const [adminCheck, setAdminCheck] = useState(false);
   const [addFile, setaddFile] = useState(null);
+  const [clickEdit, setClickEdit] = useState(false);
+  const [selectValue, setSelectValue] = useState([]);
+  const [editedName, setEditedName] = useState('');
+  const [statuss, setStatuss] = useState(false);
+  const [end, setEndTime] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -217,29 +223,160 @@ const AllTasksToday = () => {
   };
 
   const handleChack = async (id) => {
-    if (adminCheck) {
-      await axios({
-        method: 'get',
-        url: AdminChekUrl,
-        params: {
-          taskId: id,
-        },
+    await axios({
+      method: 'get',
+      url: AdminChekUrl,
+      params: {
+        taskId: id,
+      },
 
-        headers: {
-          'x-access-token': localStorage.getItem('userToken'),
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        console.log(data);
+        FetchDateInfos();
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
+
+  const handleClickEdit = (id) => {
+    setTaskId(id);
+
+    let thisTask = userAction.clickDate.filter((element) => element.id === id);
+    setEditedName(thisTask[0].desc);
+    setClickEdit(true);
+  };
+
+  const editEvent = async (e) => {
+    e.preventDefault();
+
+    var bodyFormData = new FormData();
+    bodyFormData.append('desc', editedName);
+    bodyFormData.append('end_date', end);
+    bodyFormData.append('status', statuss);
+
+    // if (addFile) {
+    //   if (addFile.length < 10) {
+    //     for (let i = 0; i < addFile.length; i++) {
+    //       bodyFormData.append(`file${[]}`, addFile[i]);
+    //     }
+    //   } else {
+    //     return toast.warning('Fayllar keragidan ortib ketdi', {
+    //       position: 'bottom-right',
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //   }
+    // }
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
+      let users = [];
+      // eslint-disable-next-line array-callback-return
+      selectValue.map((e) => {
+        users.push(e.value);
+      });
+
+      users.push(localStorage.getItem('clickedUserId'));
+      users.forEach((e) => bodyFormData.append(`users${[]}`, e));
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
         },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
       })
         .then((response) => {
-          const { data } = response;
-          console.log(data);
+          console.log(response.data);
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
           FetchDateInfos();
+          navigate('/taskUsers');
         })
         .catch((err) => {
           console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
+        },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          // dispatch(HandleClickDateUser(response.data));
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
+          FetchDateInfos();
+          navigate('/taskUsers');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         });
     }
-    setAdminCheck(true);
   };
+
+  const options = [];
+  if (userAction.allUsers.length > 0) {
+    userAction.allUsers
+      .filter((e) => e.id !== localStorage.getItem('clickedUserId'))
+      .map((e) => {
+        const obj = {
+          value: e.id,
+          label: e.name,
+        };
+        options.push(obj);
+      });
+  }
+
+  const MySelect = () => (
+    <>
+      <MultiSelect
+        options={options}
+        value={selectValue}
+        onChange={setSelectValue}
+        labelledBy="Foydalanuvchi tanlash"
+        autoBlur={false}
+      />
+    </>
+  );
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {
@@ -338,7 +475,7 @@ const AllTasksToday = () => {
                               ? 'badge bg-info text-white'
                               : e.status === 4
                               ? 'badge bg-success text-white'
-                              : 'badge bg-info text-white'
+                              : 'badge bg-dark text-white'
                           }
                         >
                           {e.status === 2
@@ -371,23 +508,54 @@ const AllTasksToday = () => {
                       </td>
 
                       <td className="text-center">
-                        <button
-                          onClick={() => handleClickPlus(e.id)}
-                          className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                        >
-                          <AiOutlinePlus />
-                        </button>
-                        {/* 
-                        {e.status === 3 ? (
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              value={adminCheck}
-                              onChange={() => handleChack(e.id)}
-                            />
-                            {'  '} Tasdiqlash
-                          </label>
-                        ) : null} */}
+                        <div className="row">
+                          <div className="col-md-4 m-1">
+                            <button
+                              onClick={() => handleClickPlus(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlinePlus />
+                            </button>
+                          </div>
+                          {localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked' ? (
+                            <>
+                              {e.status === 3 ? (
+                                <div className="col-md-4 m-1">
+                                  <button
+                                    onClick={() => handleChack(e.id)}
+                                    className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                                  >
+                                    <AiOutlineCheck />
+                                  </button>
+                                </div>
+                              ) : null}
+                            </>
+                          ) : null}
+                          {localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked' ||
+                          !e.isAdmin ? (
+                            <>
+                              <div className="col-md-4 m-1">
+                                <button
+                                  onClick={() => handleClickEdit(e.id)}
+                                  className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                                >
+                                  <AiOutlineEdit />
+                                </button>
+                              </div>
+                            </>
+                          ) : null}
+
+                          {/* <div className="col-md-4 m-1">
+                            <button
+                              onClick={() => handleClickEdit(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlineEdit />
+                            </button>
+                          </div> */}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -514,6 +682,89 @@ const AllTasksToday = () => {
             {t('myacc.back')}
           </Button>
           <Button onClick={addDesc} variant="opus">
+            {t('myacc.save')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit bosganda */}
+      <Modal show={clickEdit} onHide={() => setClickEdit(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('modal.editEvent')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={editEvent} className="p-3">
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">Edit task</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="text"
+                name="name"
+                placeholder="edit task name"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    foydalanuvchi biriktirish
+                  </label>
+                </div>
+                <MySelect />
+              </div>
+            ) : null}
+
+            <div className=" d-flex align-items-center py-2 ">
+              <label className="form-label  text-dark">
+                <input
+                  type="checkbox"
+                  checked={statuss}
+                  name="status"
+                  onChange={(e) => setStatuss(!statuss)}
+                />
+                {'   '} {t('modal.checkBox')}
+              </label>
+            </div>
+
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">{t('tasks.end')}</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="datetime-local"
+                name="end_time"
+                placeholder={t('modal.endplc')}
+                value={end}
+                onChange={(e) => setEndTime(e.target.value)}
+                min={localStorage.getItem('ckickedDate')}
+              />
+            </div>
+
+            <div className="py-2">
+              <label
+                className="addFile"
+                title={t('modal.fileAdd')}
+                htmlFor="file"
+                onChange={(e) => setaddFile(e.target.files)}
+              >
+                <input multiple id="file" type="file" name="file" />
+              </label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="sec"
+            onClick={() => setClickEdit(false)}
+          >
+            {t('myacc.back')}
+          </Button>
+          <Button onClick={editEvent} variant="opus">
             {t('myacc.save')}
           </Button>
         </Modal.Footer>
