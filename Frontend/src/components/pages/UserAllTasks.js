@@ -626,7 +626,7 @@ const UserAllTasks = () => {
                           ) : null}
                           {localStorage.getItem('role') === 'admin' ||
                           localStorage.getItem('role') === 'adminClicked' ||
-                          localStorage.getItem('myId') === e.owner_id ? (
+                          !e.isAdmin ? (
                             <>
                               <div className="col-md-4 m-1">
                                 <button
