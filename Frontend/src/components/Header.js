@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import OutsideClickHandler from 'react-outside-click-handler';
 import AccountImg from '../assets/images/account.png';
 import Logo from '../assets/images/logo.svg';
@@ -21,14 +21,12 @@ const Header = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const userInfo = useSelector((state) => state);
   const { userAction } = userInfo;
   const signOut = () => {
     localStorage.clear();
     navigate('/');
   };
-  // let infLocalS = JSON.parse(localStorage.getItem('userInfos'));
 
   const getUserInfo = async () => {
     await axios({
@@ -40,7 +38,6 @@ const Header = () => {
     })
       .then((response) => {
         const { data } = response;
-        // console.log(data);
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -52,7 +49,6 @@ const Header = () => {
           completed: data.tasks.completed,
           pending: data.tasks.pending,
         };
-        // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
       })
       .catch((err) => {
@@ -71,6 +67,7 @@ const Header = () => {
     if (localStorage.getItem('userToken')) {
       getUserInfo();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,7 +104,6 @@ const Header = () => {
                       ? `menu-link active`
                       : 'menu-link'
                   }
-                  // to="/calendar"
                   to={
                     localStorage.getItem('role') === 'admin'
                       ? '/admin'

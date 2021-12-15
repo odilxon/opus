@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineModeEdit } from 'react-icons/md';
-import { AiOutlineMail } from 'react-icons/ai';
+import { AiOutlineDelete, AiOutlineMail } from 'react-icons/ai';
 import AccountImg from '../../assets/images/account.png';
 import { FaTasks, FaCalendarCheck, FaUserClock } from 'react-icons/fa';
 import { BiBuildings } from 'react-icons/bi';
@@ -8,24 +8,23 @@ import { GiAchievement } from 'react-icons/gi';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { GetUserDateClickUrl, GetUserInfoUrl, globalURL } from '../../service';
+import { GetUserInfoUrl, globalURL } from '../../service';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  HandleClickDateUser,
-  UserInfosLogIn,
-} from '../../redux/actions/UserAction';
+import { UserInfosLogIn } from '../../redux/actions/UserAction';
 import { useTranslation } from 'react-i18next';
 import Today from './Today';
-import AllTasksToday from './AllTasksToday';
 
 const MyProfil = () => {
   const [name, setName] = useState('');
-  const [fullName, setFullName] = useState('');
+  // const [fullName, setFullName] = useState('');
   // const [picteruUser, setPictureUser] = useState('');
   const [tel, setTel] = useState('');
   const [editProfil, setEditProfil] = useState(false);
   const [rankAcc, setRankAcc] = useState('');
-  const [telNum, setTelNum] = useState('');
+  // const [telNum, setTelNum] = useState('');
+  // const [telNum2, setTelNum2] = useState('');
+
+  const [inputList, setInputList] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +33,14 @@ const MyProfil = () => {
   const { t } = useTranslation();
 
   // console.log(userAction);
+  // if (userInfos.phone) {
+  //   userInfos.phone.map((e) => {
+  //     const obj = {
+  //       tel: e,
+  //     };
+  //     console.log(obj);
+  //   });
+  // }
 
   const ChangeImage = async (e) => {
     const file = e.target.files[0];
@@ -76,8 +83,13 @@ const MyProfil = () => {
     bodyFormData.append('name', name);
     bodyFormData.append('department', tel);
     bodyFormData.append('rank', rankAcc);
-    bodyFormData.append('phone', `+998${telNum}`);
 
+    inputList.forEach((phone) =>
+      bodyFormData.append(`phone${[]}`, `+998${phone.tel}`)
+    );
+
+    // bodyFormData.append(`phone${[]}`, [`+998${telNum}`, `+998${telNum2}`]);
+    // console.log(telNum);
     if (!name || !tel) {
       return toast.warning("Iltimos to'liq ma'lumot kiriting!", {
         position: 'bottom-right',
@@ -104,20 +116,21 @@ const MyProfil = () => {
         setTel('');
         setRankAcc('');
         const { data } = response;
-        const dataLocal = {
-          department: data.department,
-          email: data.email,
-          id: data.id,
-          image: `${data.image ? globalURL + data.image : 'no'}`,
-          name: data.name,
-          rank: data.rank,
-          role: data.role,
-          completed: data.tasks.completed,
-          pending: data.tasks.pending,
-        };
-        dispatch(UserInfosLogIn(dataLocal));
+        // const dataLocal = {
+        //   department: data.department,
+        //   email: data.email,
+        //   id: data.id,
+        //   image: `${data.image ? globalURL + data.image : 'no'}`,
+        //   name: data.name,
+        //   rank: data.rank,
+        //   role: data.role,
+        //   completed: data.tasks.completed,
+        //   pending: data.tasks.pending,
+        // };
+        // dispatch(UserInfosLogIn(dataLocal));
         setEditProfil(false);
-
+        navigate('/myAccount');
+        getUserInfo();
         return toast.success('Amal bajarildi', {
           position: 'bottom-right',
           autoClose: 5000,
@@ -153,7 +166,7 @@ const MyProfil = () => {
     })
       .then((response) => {
         const { data } = response;
-        // console.log(data);
+        console.log(data);
         const dataLocal = {
           department: data.department,
           email: data.email,
@@ -164,6 +177,7 @@ const MyProfil = () => {
           role: data.role,
           completed: data.tasks.completed,
           pending: data.tasks.pending,
+          phone: data.phones,
         };
         // localStorage.setItem('userInfos', JSON.stringify(dataLocal));
         dispatch(UserInfosLogIn(dataLocal));
@@ -171,22 +185,68 @@ const MyProfil = () => {
         localStorage.setItem('myId', data.id);
 
         setName(data.name);
-        setFullName(data.name);
         setTel(data.department);
         setRankAcc(data.rank);
+        console.log(data.phones);
+
+        // function fb(lis, item) {
+        //   return lis.push({ tel: item });
+        // }
+        setInputList([]);
+        data.phones.map((e) =>
+          setInputList((inputList) => [...inputList, { tel: e.slice(4, 15) }])
+        );
+        //setInputList([...inputList, { tel: '+998993286330' }]);
+        //setInputList(data.phones);
+        console.log(inputList);
       })
       .catch((err) => {
         console.log('Err:', err);
       });
   };
 
+  const handleChange = (e, index) => {
+    const { value } = e.target;
+    const list = [...inputList];
+    console.log(value);
+    console.log(index);
+    list[index]['tel'] = value;
+    console.log(list);
+    setInputList(list);
+  };
+
+  // handle click event of the Remove button
+  const handleRemoveClick = (index) => {
+    const list = [...inputList];
+    list.splice(index, 1);
+    setInputList(list);
+  };
+
+  const handleAddClick = () => {
+    if (inputList.length < 6) {
+      setInputList([...inputList, { tel: '' }]);
+    } else {
+      console.log(inputList);
+      return (
+        toast.error("5 tadan ko'p raqam kiritb bo'lmaydi"),
+        {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
+  };
+
   const backHandle = () => {
     setName('');
-    setFullName('');
     setTel('');
     setEditProfil(false);
   };
-
   useEffect(() => {
     getUserInfo();
   }, []);
@@ -426,34 +486,89 @@ const MyProfil = () => {
                     </label>
                   </div>
 
-                  <div className="col-lg-8 image-input">
-                    <div className="row mt-lg-3">
-                      <div className=" py-2 ">
-                        <div className="row">
-                          <div className="col-4 col-md-3 px-1">
-                            <input
-                              className="form-control form-control-lg form-control-solid "
-                              type="text"
-                              name="tel"
-                              value={'+998'}
-                              aria-label="Disabled input"
-                              disabled={true}
-                              readOnly
-                            />
-                          </div>
-                          <div className="col-8 col-md-9 px-1">
-                            <input
-                              className="form-control form-control-lg form-control-solid "
-                              type="number"
-                              name="tel"
-                              placeholder={t('admin.telplc')}
-                              value={telNum}
-                              onChange={(e) => setTelNum(e.target.value)}
-                              required
-                            />
+                  <div className="col-lg-8 image-input ">
+                    <div className="elements px-2">
+                      {inputList.length > 0
+                        ? inputList.map((e, i) => (
+                            <div key={i} className="row mt-lg-3">
+                              <div className=" py-2 ">
+                                <div className="row">
+                                  <div className="col-4 col-md-3 px-1">
+                                    <input
+                                      className="form-control form-control-lg form-control-solid "
+                                      type="text"
+                                      name="tel"
+                                      value={'+998'}
+                                      aria-label="Disabled input"
+                                      disabled={true}
+                                      readOnly
+                                    />
+                                  </div>
+                                  <div className="col-4 col-md-7 px-1">
+                                    <input
+                                      className="form-control form-control-lg form-control-solid "
+                                      type="number"
+                                      name="tel"
+                                      placeholder={e.tel}
+                                      value={e.tel}
+                                      data-ids={i}
+                                      onChange={(e) => handleChange(e, i)}
+                                      required
+                                    />
+                                  </div>
+                                  <div className="col-2 col-md-2 text-center">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveClick(i)}
+                                      className="btn outline btn-outline-opus "
+                                    >
+                                      <AiOutlineDelete />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        : null}
+
+                      {/* <div className="row mt-lg-3">
+                        <div className=" py-2 ">
+                          <div className="row">
+                            <div className="col-4 col-md-3 px-1">
+                              <input
+                                className="form-control form-control-lg form-control-solid "
+                                type="text"
+                                name="tel"
+                                value={'+998'}
+                                aria-label="Disabled input"
+                                disabled={true}
+                                readOnly
+                              />
+                            </div>
+                            <div className="col-8 col-md-9 px-1">
+                              <input
+                                className="form-control form-control-lg form-control-solid "
+                                type="number"
+                                name="tel"
+                                placeholder={t('admin.telplc')}
+                                value={telNum2}
+                                onChange={(e) => setTelNum2(e.target.value)}
+                                required
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+                    </div>
+
+                    <div className="col-12 text-end">
+                      <button
+                        type="button"
+                        onClick={handleAddClick}
+                        className="btn btn-opus my-2"
+                      >
+                        yangi raqam
+                      </button>
                     </div>
                   </div>
                 </div>

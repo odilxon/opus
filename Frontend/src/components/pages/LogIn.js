@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogInUser } from '../../redux/actions/UserAction';
 import { toast } from 'react-toastify';
@@ -92,6 +92,7 @@ const LogIn = () => {
         progress: undefined,
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AdminCard from '../AdminCard';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AccountImg from '../../assets/images/account.png';
 import { Container, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,18 +9,19 @@ import { AllUSerUrl, globalURL, UserAddUrl } from '../../service';
 import axios from 'axios';
 
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const AdminPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // const [role, setRole] = useState('');
   const [deport, setDeport] = useState('');
   const [rank, setRank] = useState('');
   const [password, setPassword] = useState('');
   const [checkPass, setCheckPass] = useState(false);
-  const [telNum, setTelNum] = useState('');
-
+  // const [telNum, setTelNum] = useState('');
+  const [inputList, setInputList] = useState([{ tel: '' }]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -42,7 +43,9 @@ const AdminPage = () => {
     bodyFormData.append('department', deport);
     bodyFormData.append('rank', rank);
     bodyFormData.append('password', password);
-    bodyFormData.append('phone', `+998${telNum}`);
+    inputList.forEach((phone) =>
+      bodyFormData.append(`phone${[]}`, `+998${phone.tel}`)
+    );
     await axios({
       method: 'post',
       url: UserAddUrl,
@@ -57,7 +60,6 @@ const AdminPage = () => {
         setName('');
         setPassword('');
         setRank('');
-        // setRole('');
         setEmail('');
         setDeport('');
         setCheckPass('');
@@ -78,6 +80,42 @@ const AdminPage = () => {
     setDeport('');
     setCheckPass('');
     setShowModal(false);
+  };
+
+  const handleAddClick = () => {
+    if (inputList.length < 6) {
+      setInputList([...inputList, { tel: '' }]);
+    } else {
+      console.log(inputList);
+      return (
+        toast.error("5 tadan ko'p raqam kiritb bo'lmaydi"),
+        {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
+  };
+
+  const handleRemoveClick = (index) => {
+    const list = [...inputList];
+    list.splice(index, 1);
+    setInputList(list);
+  };
+
+  const handleChange = (e, index) => {
+    const { value } = e.target;
+    const list = [...inputList];
+    console.log(value);
+    console.log(index);
+    list[index]['tel'] = value;
+    console.log(list);
+    setInputList(list);
   };
 
   const getAllUser = async () => {
@@ -104,6 +142,7 @@ const AdminPage = () => {
     if (localStorage.getItem('role') !== 'admin') {
       navigate('/calendar');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container>
@@ -196,7 +235,90 @@ const AdminPage = () => {
                   {t('admin.tel')}
                 </label>
                 <div className="row">
-                  <div className="col-4 col-md-3 px-1">
+                  <div className="elements px-2">
+                    {inputList.length > 0
+                      ? inputList.map((e, i) => (
+                          <div key={i} className="row mt-lg-3">
+                            <div className=" py-2 ">
+                              <div className="row">
+                                <div className="col-4 col-md-3 px-1">
+                                  <input
+                                    className="form-control form-control-lg form-control-solid "
+                                    type="text"
+                                    name="tel"
+                                    value={'+998'}
+                                    aria-label="Disabled input"
+                                    disabled={true}
+                                    readOnly
+                                  />
+                                </div>
+                                <div className="col-4 col-md-7 px-1">
+                                  <input
+                                    className="form-control form-control-lg form-control-solid "
+                                    type="number"
+                                    name="tel"
+                                    placeholder={e.tel}
+                                    value={e.tel}
+                                    data-ids={i}
+                                    onChange={(e) => handleChange(e, i)}
+                                    required
+                                  />
+                                </div>
+                                <div className="col-2 col-md-2 text-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveClick(i)}
+                                    className="btn outline btn-outline-opus "
+                                  >
+                                    <AiOutlineDelete />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      : null}
+
+                    {/* <div className="row mt-lg-3">
+                        <div className=" py-2 ">
+                          <div className="row">
+                            <div className="col-4 col-md-3 px-1">
+                              <input
+                                className="form-control form-control-lg form-control-solid "
+                                type="text"
+                                name="tel"
+                                value={'+998'}
+                                aria-label="Disabled input"
+                                disabled={true}
+                                readOnly
+                              />
+                            </div>
+                            <div className="col-8 col-md-9 px-1">
+                              <input
+                                className="form-control form-control-lg form-control-solid "
+                                type="number"
+                                name="tel"
+                                placeholder={t('admin.telplc')}
+                                value={telNum2}
+                                onChange={(e) => setTelNum2(e.target.value)}
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div> */}
+                  </div>
+
+                  <div className="col-12 text-end">
+                    <button
+                      type="button"
+                      onClick={handleAddClick}
+                      className="btn btn-opus my-2"
+                    >
+                      yangi raqam
+                    </button>
+                  </div>
+                  {/* <div className="col-4 col-md-3 px-1">
                     <input
                       className="form-control form-control-lg form-control-solid "
                       type="text"
@@ -217,7 +339,7 @@ const AdminPage = () => {
                       onChange={(e) => setTelNum(e.target.value)}
                       required
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
