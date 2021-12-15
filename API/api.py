@@ -273,15 +273,15 @@ def calendar_data(c):
     ff = or_(
         Task.owner_id == int(user), and_(Task_Meta.key == 'user_id',Task_Meta.value == str(user)).self_group()
         ).self_group()
-    tasks = db.session.query(Task)\
+    tasks = db.session.query(Task, cast(Task.start_date, Date))\
         .outerjoin(Task_Meta, Task_Meta.task_id == Task.id)\
         .filter(ff)
     tasks = tasks.all()
     ret_data = {}
-    for task in tasks:
-        if str(task.start_date) not in ret_data:
-            ret_data[str(task.start_date)] = {"Sana" : str(task.start_date), "Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0, "Tasdiqlandi" : 0, "Kech_topshirildi" : 0 }
-        ret_data[str(task.start_date)]['Bajarilmagan' if task.status == 1 else ('Bajarilmoqda' if task.status == 2 else ('Bajarildi' if task.status == 3 else ('Tasdiqlandi' if task.status == 4 else 'Kech_topshirildi')))] += 1
+    for task, date in tasks:
+        if str(date) not in ret_data:
+            ret_data[str(date)] = {"Sana" : str(date), "Bajarilmagan" : 0, "Bajarilmoqda" : 0, "Bajarildi" : 0, "Tasdiqlandi" : 0, "Kech_topshirildi" : 0 }
+        ret_data[str(date)]['Bajarilmagan' if task.status == 1 else ('Bajarilmoqda' if task.status == 2 else ('Bajarildi' if task.status == 3 else ('Tasdiqlandi' if task.status == 4 else 'Kech_topshirildi')))] += 1
     return jsonify(ret_data)
     
 @app.route("/user/task/add", methods=['POST'])
