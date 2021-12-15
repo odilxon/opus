@@ -319,9 +319,9 @@ const Today = () => {
                           : e.status === 3
                           ? t('calendar.bjd')
                           : e.status === 4
-                          ? 'Tasdiqlandi'
+                          ? t('calendar.tasdiq')
                           : e.status === 5
-                          ? 'Kechikdi'
+                          ? t('calendar.dead')
                           : t('calendar.no')}
                       </div>
                     </td>

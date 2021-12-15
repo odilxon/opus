@@ -511,7 +511,7 @@ const MyProfil = () => {
                                       className="form-control form-control-lg form-control-solid "
                                       type="number"
                                       name="tel"
-                                      placeholder={e.tel}
+                                      placeholder={t('admin.telplc')}
                                       value={e.tel}
                                       data-ids={i}
                                       onChange={(e) => handleChange(e, i)}
@@ -532,35 +532,6 @@ const MyProfil = () => {
                             </div>
                           ))
                         : null}
-
-                      {/* <div className="row mt-lg-3">
-                        <div className=" py-2 ">
-                          <div className="row">
-                            <div className="col-4 col-md-3 px-1">
-                              <input
-                                className="form-control form-control-lg form-control-solid "
-                                type="text"
-                                name="tel"
-                                value={'+998'}
-                                aria-label="Disabled input"
-                                disabled={true}
-                                readOnly
-                              />
-                            </div>
-                            <div className="col-8 col-md-9 px-1">
-                              <input
-                                className="form-control form-control-lg form-control-solid "
-                                type="number"
-                                name="tel"
-                                placeholder={t('admin.telplc')}
-                                value={telNum2}
-                                onChange={(e) => setTelNum2(e.target.value)}
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
                     </div>
 
                     <div className="col-12 text-end">
@@ -569,7 +540,7 @@ const MyProfil = () => {
                         onClick={handleAddClick}
                         className="btn btn-opus my-2"
                       >
-                        yangi raqam
+                        {t('admin.newNumber')}
                       </button>
                     </div>
                   </div>

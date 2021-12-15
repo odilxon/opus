@@ -926,7 +926,7 @@ const TasksList = () => {
         <Modal.Body>
           <form onSubmit={editEvent} className="p-3">
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Edit task</label>
+              <label className="form-label  text-dark"> {t('editTask')}</label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
@@ -942,7 +942,7 @@ const TasksList = () => {
               <div className=" py-2 ">
                 <div>
                   <label className="form-label  text-dark">
-                    foydalanuvchi biriktirish
+                    {t('adduserTask')}
                   </label>
                 </div>
                 <MySelect />

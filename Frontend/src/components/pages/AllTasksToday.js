@@ -247,9 +247,12 @@ const AllTasksToday = () => {
   const handleClickEdit = (id) => {
     setTaskId(id);
 
+    setTaskId(id);
+    setClickEdit(true);
     let thisTask = userAction.clickDate.filter((element) => element.id === id);
     setEditedName(thisTask[0].desc);
     setClickEdit(true);
+    setEndTime(thisTask[0].end_date);
   };
 
   const editEvent = async (e) => {
@@ -485,9 +488,9 @@ const AllTasksToday = () => {
                             : e.status === 3
                             ? t('calendar.bjd')
                             : e.status === 4
-                            ? 'Tasdiqlandi'
+                            ? t('calendar.tasdiq')
                             : e.status === 5
-                            ? 'Kechikdi'
+                            ? t('calendar.dead')
                             : t('calendar.no')}
                         </div>
                       </td>
@@ -546,15 +549,6 @@ const AllTasksToday = () => {
                               </div>
                             </>
                           ) : null}
-
-                          {/* <div className="col-md-4 m-1">
-                            <button
-                              onClick={() => handleClickEdit(e.id)}
-                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                            >
-                              <AiOutlineEdit />
-                            </button>
-                          </div> */}
                         </div>
                       </td>
                     </tr>
@@ -581,7 +575,7 @@ const AllTasksToday = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col">{t('tasks.desc')}</th>
-                    <th scope="col">files</th>
+                    <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('modal.name')}</th>
                     <th scope="col">{t('modal.depart')}</th>
                     <th scope="col">{t('modal.time')}</th>
@@ -695,7 +689,7 @@ const AllTasksToday = () => {
         <Modal.Body>
           <form onSubmit={editEvent} className="p-3">
             <div className=" py-2 ">
-              <label className="form-label  text-dark">Edit task</label>
+              <label className="form-label  text-dark">{t('editTask')}</label>
 
               <input
                 className="form-control form-control-lg form-control-solid "
@@ -711,7 +705,7 @@ const AllTasksToday = () => {
               <div className=" py-2 ">
                 <div>
                   <label className="form-label  text-dark">
-                    foydalanuvchi biriktirish
+                    {t('adduserTask')}
                   </label>
                 </div>
                 <MySelect />

@@ -222,7 +222,7 @@ const Calendar = () => {
 
     if (e.Tasdiqlandi > 0) {
       elements.push({
-        title: `Тасдиқланди: ${e.Tasdiqlandi} `,
+        title: `${t('calendar.tasdiq')}: ${e.Tasdiqlandi} `,
         // title: `${e.Tasdiqlandi}`,
         date: d,
         backgroundColor: '#299e85',
@@ -232,7 +232,7 @@ const Calendar = () => {
     }
     if (e.Kech_topshirildi > 0) {
       elements.push({
-        title: `Кеч топширилди: ${e.Kech_topshirildi} `,
+        title: `${t('calendar.dead')}:: ${e.Kech_topshirildi} `,
         // title: `${e.Kech_topshirildi}`,
         date: d,
         backgroundColor: '#121212',
