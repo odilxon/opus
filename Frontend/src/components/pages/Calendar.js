@@ -144,6 +144,7 @@ const Calendar = () => {
         const arr = [];
         const { data } = response;
         Object.keys(data).map((e) => arr.push(data[e]));
+        
         dispatch(CalendarInfos(arr));
       })
       .catch((err) => {
@@ -167,6 +168,7 @@ const Calendar = () => {
         const arr = [];
         const { data } = response;
         Object.keys(data).map((e) => arr.push(data[e]));
+        console.log(arr)
         dispatch(CalendarInfos(arr));
       })
       .catch((err) => {
@@ -185,11 +187,13 @@ const Calendar = () => {
   };
 
   calInf.map((e) => {
+    let d = e.Sana.split(" ")[0];
+    
     if (e.Bajarildi > 0) {
       elements.push({
         title: ` ${e.Bajarildi}`,
         // title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
-        date: e.Sana,
+        date: d,
         backgroundColor: '#03A9F4',
         textColor: '#ffff',
         borderColor: '#1a8770',
@@ -199,54 +203,45 @@ const Calendar = () => {
       elements.push({
         title: `${e.Bajarilmoqda}`,
         // title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
-        date: e.Sana,
+        date: d,
         backgroundColor: 'rgb(249,235,91)',
         textColor: '#664d03',
         borderColor: 'rgb(253,216,62)',
       });
     }
-    if (e.Bajarilmagan) {
+    if (e.Bajarilmagan > 0) {
       elements.push({
         // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
         title: `${e.Bajarilmagan}`,
-        date: e.Sana,
+        date: d,
         backgroundColor: 'rgb(233,101,113)',
         textColor: '#ffff',
         borderColor: 'rgb(227,71,85)',
       });
     }
-    if (e.Bajarilmagan) {
-      elements.push({
-        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
-        title: `${e.Bajarilmagan}`,
-        date: e.Sana,
-        backgroundColor: 'rgb(233,101,113)',
-        textColor: '#ffff',
-        borderColor: 'rgb(227,71,85)',
-      });
-    }
-    if (e.Tasdiqlandi) {
+    
+    if (e.Tasdiqlandi > 0) {
       elements.push({
         // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
         title: `${e.Tasdiqlandi}`,
-        date: e.Sana,
+        date: d,
         backgroundColor: '#299e85',
         textColor: '#ffff',
         borderColor: '#1a8770',
       });
     }
-    if (e.Kech_topshirildi) {
+    if (e.Kech_topshirildi > 0) {
       elements.push({
         // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
         title: `${e.Kech_topshirildi}`,
-        date: e.Sana,
+        date: d,
         backgroundColor: 'red',
         textColor: '#ffff',
         borderColor: 'red',
       });
     }
   });
-  console.log(elements);
+  console.log(calInf);
 
   useEffect(() => {
     if (!localStorage.getItem('userToken')) {

@@ -1,4 +1,4 @@
-export const globalURL = 'http://192.168.42.200:5000/';
+export const globalURL = 'http://192.168.43.165:5000/';
 export const LoginUrl = `${globalURL}login`;
 export const GetUserInfoUrl = `${globalURL}user`;
 export const AllUSerUrl = `${globalURL}user/users`;
