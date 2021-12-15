@@ -98,7 +98,7 @@ def userdata(c):
                     db.session.commit()
         else:
             for i in range(0, len(u_m)):
-                if phones[i]:
+                if u_m[i] and i < len(phones):
                     u_m[i].value = phones[i]
                 else:
                     db.session.delete(u_m[i])
@@ -250,8 +250,11 @@ def task_edit(c):
         task.end_date = deadline
     if desc:
         task.desc = desc
-    if status:
-        task.status = status
+    if status == 'true':
+        task.status = 3
+        task.finished_time = datetime.now()
+    else:
+        task.status = 2
 
     task.edited_time = datetime.now()
 
