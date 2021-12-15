@@ -144,7 +144,7 @@ const Calendar = () => {
         const arr = [];
         const { data } = response;
         Object.keys(data).map((e) => arr.push(data[e]));
-        
+
         dispatch(CalendarInfos(arr));
       })
       .catch((err) => {
@@ -168,7 +168,7 @@ const Calendar = () => {
         const arr = [];
         const { data } = response;
         Object.keys(data).map((e) => arr.push(data[e]));
-        console.log(arr)
+        console.log(arr);
         dispatch(CalendarInfos(arr));
       })
       .catch((err) => {
@@ -187,22 +187,22 @@ const Calendar = () => {
   };
 
   calInf.map((e) => {
-    let d = e.Sana.split(" ")[0];
-    
+    let d = e.Sana.split(' ')[0];
+
     if (e.Bajarildi > 0) {
       elements.push({
-        title: ` ${e.Bajarildi}`,
-        // title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
+        // title: ` ${e.Bajarildi}`,
+        title: `${t('calendar.bjd')}: ${e.Bajarildi} `,
         date: d,
         backgroundColor: '#03A9F4',
         textColor: '#ffff',
-        borderColor: '#1a8770',
+        borderColor: '#03A9F4',
       });
     }
     if (e.Bajarilmoqda > 0) {
       elements.push({
-        title: `${e.Bajarilmoqda}`,
-        // title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
+        // title: `${e.Bajarilmoqda}`,
+        title: `${t('calendar.bjdti')}: ${e.Bajarilmoqda} `,
         date: d,
         backgroundColor: 'rgb(249,235,91)',
         textColor: '#664d03',
@@ -211,19 +211,19 @@ const Calendar = () => {
     }
     if (e.Bajarilmagan > 0) {
       elements.push({
-        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
-        title: `${e.Bajarilmagan}`,
+        title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
+        // title: `${e.Bajarilmagan}`,
         date: d,
         backgroundColor: 'rgb(233,101,113)',
         textColor: '#ffff',
         borderColor: 'rgb(227,71,85)',
       });
     }
-    
+
     if (e.Tasdiqlandi > 0) {
       elements.push({
-        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
-        title: `${e.Tasdiqlandi}`,
+        title: `Тасдиқланди: ${e.Tasdiqlandi} `,
+        // title: `${e.Tasdiqlandi}`,
         date: d,
         backgroundColor: '#299e85',
         textColor: '#ffff',
@@ -232,12 +232,12 @@ const Calendar = () => {
     }
     if (e.Kech_topshirildi > 0) {
       elements.push({
-        // title: `${t('calendar.bjdm')}: ${e.Bajarilmagan} `,
-        title: `${e.Kech_topshirildi}`,
+        title: `Кеч топширилди: ${e.Kech_topshirildi} `,
+        // title: `${e.Kech_topshirildi}`,
         date: d,
-        backgroundColor: 'red',
+        backgroundColor: '#121212',
         textColor: '#ffff',
-        borderColor: 'red',
+        borderColor: '#222222',
       });
     }
   });

@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   ADDEventUrl,
+  AdminChekUrl,
   GetUserDateClickUrl,
   globalURL,
   TaskAddUrl,
+  TaskEditUrl,
 } from '../service';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineEdit, AiOutlinePlus } from 'react-icons/ai';
 import { Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import {
@@ -34,6 +36,9 @@ const TasksList = () => {
   const [descName, setDescName] = useState('');
   const [checkDesc, setCheckDesc] = useState(false);
   const [selectValue, setSelectValue] = useState([]);
+  const [clickEdit, setClickEdit] = useState(false);
+  const [editedName, setEditedName] = useState('');
+  const [statuss, setStatuss] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -161,6 +166,15 @@ const TasksList = () => {
     setShow(false);
   };
 
+  const handleClickEdit = (id) => {
+    setTaskId(id);
+    setClickEdit(true);
+    // let thisTask = userAction.clickDate.filter(
+    //   (element) => element.id === setTaskId
+    // );
+    // setEditedName(thisTask.desc);
+  };
+
   const handleClickPlus = (id) => {
     setTaskId(id);
     setClickDesc(true);
@@ -173,7 +187,23 @@ const TasksList = () => {
     bodyFormData.append('task_id', taskId);
     bodyFormData.append('desc', descName);
     bodyFormData.append('status', checkDesc);
-
+    if (addFile) {
+      if (addFile.length < 10) {
+        for (let i = 0; i < addFile.length; i++) {
+          bodyFormData.append(`file${[]}`, addFile[i]);
+        }
+      } else {
+        return toast.warning('Fayllar keragidan ortib ketdi', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }
     if (
       localStorage.getItem('role') === 'adminClicked' ||
       localStorage.getItem('role') === 'admin'
@@ -295,6 +325,107 @@ const TasksList = () => {
     }
   };
 
+  const editEvent = async (e) => {
+    e.preventDefault();
+
+    var bodyFormData = new FormData();
+    bodyFormData.append('desc', editedName);
+    bodyFormData.append('end_date', end);
+    bodyFormData.append('status', statuss);
+
+    // if (addFile) {
+    //   if (addFile.length < 10) {
+    //     for (let i = 0; i < addFile.length; i++) {
+    //       bodyFormData.append(`file${[]}`, addFile[i]);
+    //     }
+    //   } else {
+    //     return toast.warning('Fayllar keragidan ortib ketdi', {
+    //       position: 'bottom-right',
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //     });
+    //   }
+    // }
+    if (
+      localStorage.getItem('role') === 'adminClicked' ||
+      localStorage.getItem('role') === 'admin'
+    ) {
+      let users = [];
+      // eslint-disable-next-line array-callback-return
+      selectValue.map((e) => {
+        users.push(e.value);
+      });
+
+      users.push(localStorage.getItem('clickedUserId'));
+      users.forEach((e) => bodyFormData.append(`users${[]}`, e));
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
+        },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          console.log(response.data);
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
+          FetchDateInfos();
+          navigate('/taskUsers');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    } else {
+      await axios({
+        method: 'post',
+        params: {
+          taskId: taskId,
+        },
+        url: TaskEditUrl,
+        data: bodyFormData,
+        headers: { 'x-access-token': localStorage.getItem('userToken') },
+      })
+        .then((response) => {
+          // dispatch(HandleClickDateUser(response.data));
+          setEditedName('');
+          setEndTime('');
+          setSelectValue([]);
+          setClickEdit(false);
+          FetchDateInfos();
+          navigate('/taskUsers');
+        })
+        .catch((err) => {
+          console.log('Err:', err);
+          return toast.error(t('tasks.alertwarn'), {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+    }
+  };
+
   const FetchDateInfos = async () => {
     if (localStorage.getItem('role') === 'adminClicked') {
       await axios({
@@ -336,7 +467,27 @@ const TasksList = () => {
         });
     }
   };
+  const handleChack = async (id) => {
+    await axios({
+      method: 'get',
+      url: AdminChekUrl,
+      params: {
+        taskId: id,
+      },
 
+      headers: {
+        'x-access-token': localStorage.getItem('userToken'),
+      },
+    })
+      .then((response) => {
+        const { data } = response;
+        console.log(data);
+        FetchDateInfos();
+      })
+      .catch((err) => {
+        console.log('Err:', err);
+      });
+  };
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
@@ -470,7 +621,11 @@ const TasksList = () => {
                               ? 'badge bg-warning'
                               : e.status === 1
                               ? 'badge bg-danger text-white'
-                              : 'badge bg-success text-white'
+                              : e.status === 3
+                              ? 'badge bg-info text-white'
+                              : e.status === 4
+                              ? 'badge bg-success text-white'
+                              : 'badge bg-dark text-white'
                           }
                         >
                           {e.status === 2
@@ -479,6 +634,10 @@ const TasksList = () => {
                             ? t('calendar.bjdm')
                             : e.status === 3
                             ? t('calendar.bjd')
+                            : e.status === 4
+                            ? 'Tasdiqlandi'
+                            : e.status === 5
+                            ? 'Kechikdi'
                             : t('calendar.no')}
                         </div>
                       </td>
@@ -496,13 +655,64 @@ const TasksList = () => {
                           <p>{t('tasks.infoNo')}</p>
                         )}
                       </td>
-                      <td className="text-center">
+                      {/* <td className="text-center">
                         <button
                           onClick={() => handleClickPlus(e.id)}
                           className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
                         >
                           <AiOutlinePlus />
                         </button>
+                      </td> */}
+
+                      <td className="text-center">
+                        <div className="row">
+                          <div className="col-md-4 m-1">
+                            <button
+                              onClick={() => handleClickPlus(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlinePlus />
+                            </button>
+                          </div>
+                          {localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked' ? (
+                            <>
+                              {e.status === 3 ? (
+                                <div className="col-md-4 m-1">
+                                  <button
+                                    onClick={() => handleChack(e.id)}
+                                    className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                                  >
+                                    <AiOutlineCheck />
+                                  </button>
+                                </div>
+                              ) : null}
+                            </>
+                          ) : null}
+                          {localStorage.getItem('role') === 'admin' ||
+                          localStorage.getItem('role') === 'adminClicked' ||
+                          localStorage.getItem('myId') === e.owner_id ? (
+                            <>
+                              <div className="col-md-4 m-1">
+                                <button
+                                  onClick={() => handleClickEdit(e.id)}
+                                  className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                                >
+                                  <AiOutlineEdit />
+                                </button>
+                              </div>
+                            </>
+                          ) : null}
+
+                          {/* <div className="col-md-4 m-1">
+                            <button
+                              onClick={() => handleClickEdit(e.id)}
+                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                            >
+                              <AiOutlineEdit />
+                            </button>
+                          </div> */}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -602,6 +812,7 @@ const TasksList = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col">{t('tasks.desc')}</th>
+                    <th scope="col">files</th>
                     <th scope="col">{t('modal.name')}</th>
                     <th scope="col">{t('modal.depart')}</th>
                     <th scope="col">{t('modal.time')}</th>
@@ -612,6 +823,30 @@ const TasksList = () => {
                     <tr key={i}>
                       <th scope="row">{i + 1}</th>
                       <td>{e.desc}</td>
+
+                      <td className="iconDiv">
+                        {e.attachment.length > 0 ? (
+                          e.attachment.map((e, i) => (
+                            <a
+                              key={i}
+                              href={globalURL + e.path}
+                              target="_blank"
+                              download
+                              rel="noreferrer"
+                            >
+                              <span title={e.key}>
+                                <FileIcon
+                                  extension={e.ext}
+                                  {...defaultStyles[e.ext]}
+                                />
+                              </span>
+                            </a>
+                          ))
+                        ) : (
+                          <p>{t('tasks.fileNo')}</p>
+                        )}
+                      </td>
+
                       <td>{e.user_name}</td>
                       <td>{e.user_depart}</td>
                       <td className="date">{converTime(e.timestamp)}</td>
@@ -655,6 +890,17 @@ const TasksList = () => {
                 />
                 {'   '} {t('modal.checkBox')}
               </label>
+
+              <div className="py-2">
+                <label
+                  className="addFile"
+                  title={t('modal.fileAdd')}
+                  htmlFor="pic"
+                  onChange={(e) => setaddFile(e.target.files)}
+                >
+                  <input multiple id="file" type="file" name="file" />
+                </label>
+              </div>
             </div>
           </form>
         </Modal.Body>
@@ -667,6 +913,89 @@ const TasksList = () => {
             {t('myacc.back')}
           </Button>
           <Button onClick={addDesc} variant="opus">
+            {t('myacc.save')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit bosganda */}
+      <Modal show={clickEdit} onHide={() => setClickEdit(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('modal.editEvent')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={editEvent} className="p-3">
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">Edit task</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="text"
+                name="name"
+                placeholder="edit task name"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            </div>
+
+            {localStorage.getItem('role') === 'adminClicked' ? (
+              <div className=" py-2 ">
+                <div>
+                  <label className="form-label  text-dark">
+                    foydalanuvchi biriktirish
+                  </label>
+                </div>
+                <MySelect />
+              </div>
+            ) : null}
+
+            <div className=" d-flex align-items-center py-2 ">
+              <label className="form-label  text-dark">
+                <input
+                  type="checkbox"
+                  checked={statuss}
+                  name="status"
+                  onChange={(e) => setStatuss(!statuss)}
+                />
+                {'   '} {t('modal.checkBox')}
+              </label>
+            </div>
+
+            <div className=" py-2 ">
+              <label className="form-label  text-dark">{t('tasks.end')}</label>
+
+              <input
+                className="form-control form-control-lg form-control-solid "
+                type="datetime-local"
+                name="end_time"
+                placeholder={t('modal.endplc')}
+                value={end}
+                onChange={(e) => setEndTime(e.target.value)}
+                min={localStorage.getItem('ckickedDate')}
+              />
+            </div>
+
+            <div className="py-2">
+              <label
+                className="addFile"
+                title={t('modal.fileAdd')}
+                htmlFor="file"
+                onChange={(e) => setaddFile(e.target.files)}
+              >
+                <input multiple id="file" type="file" name="file" />
+              </label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="sec"
+            onClick={() => setClickEdit(false)}
+          >
+            {t('myacc.back')}
+          </Button>
+          <Button onClick={editEvent} variant="opus">
             {t('myacc.save')}
           </Button>
         </Modal.Footer>

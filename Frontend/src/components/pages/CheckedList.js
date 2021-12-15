@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,8 +20,7 @@ import {
 import { defaultStyles, FileIcon } from 'react-file-icon';
 import { useTranslation } from 'react-i18next';
 import { MultiSelect } from 'react-multi-select-component';
-
-const UserAllTasks = () => {
+const CheckedList = () => {
   const [end, setEndTime] = useState('');
   const [show, setShow] = useState(false);
   const [nameAd, setNamead] = useState('');
@@ -36,6 +34,7 @@ const UserAllTasks = () => {
   const [selectValue, setSelectValue] = useState([]);
   const [editedName, setEditedName] = useState('');
   const [statuss, setStatuss] = useState(false);
+  const [waitlists, setWaitlists] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -377,6 +376,11 @@ const UserAllTasks = () => {
     }
   };
 
+  if (userAction.clickDate) {
+    let list = userAction.clickDate.filter((e) => e.status === 3);
+    setWaitlists(list);
+  }
+
   const converTime = (a) => {
     const date = new Date(a * 1000);
     const year = date.getFullYear();
@@ -490,174 +494,172 @@ const UserAllTasks = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="bg-white shadow-sm my-md-2 p-4 rounded">
-          <div className="row align-items-center">
-            <div className="col-md-6 text-start">
-              <h1 className="pt-2 pb-4">{t('tasks.alltaskslist')}</h1>
-            </div>
-
-            <div className="col-md-3 text-end">{userAction.clickedDate}</div>
-
-            {localStorage.getItem('compare') === 'true' ? (
-              <div className="col-md-3 text-end"></div>
-            ) : null}
+      <div className="bg-white shadow-sm my-md-2 p-4 rounded">
+        <div className="row align-items-center">
+          <div className="col-md-6 text-start">
+            <h1 className="pt-2 pb-4">Maqullanishi kutilayotganlar</h1>
           </div>
-          {userAction.clickDate.length > 0 ? (
-            <div className="table-responsive">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">№</th>
-                    <th scope="col"> {t('tasks.desc')}</th>
-                    <th scope="col"> {t('tasks.linked')}</th>
-                    <th scope="col">{t('tasks.files')}</th>
-                    <th scope="col">{t('tasks.start')}</th>
-                    <th scope="col">{t('tasks.end')}</th>
-                    <th scope="col">{t('tasks.status')}</th>
-                    <th scope="col">{t('tasks.hist')}</th>
-                    <th scope="col">{t('tasks.plus')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userAction.clickDate.map((e, index) => (
-                    <tr key={index}>
-                      <th scope="row" className={e.isAdmin ? 'rib' : null}>
-                        {e.id}
-                      </th>
-                      <td>{e.desc}</td>
-                      <td>
-                        {e.users.map((e, i) => (
-                          <div key={i} className="badge bg-secondary">
-                            {e}
-                          </div>
-                        ))}
-                      </td>
-                      <td className="iconDiv">
-                        {e.attachments.length > 0 ? (
-                          e.attachments.map((e, i) => (
-                            <a
-                              key={i}
-                              href={globalURL + e.path}
-                              target="_blank"
-                              download
-                              rel="noreferrer"
-                            >
-                              <span title={e.key}>
-                                <FileIcon
-                                  extension={e.ext}
-                                  {...defaultStyles[e.ext]}
-                                />
-                              </span>
-                            </a>
-                          ))
-                        ) : (
-                          <p>{t('tasks.fileNo')}</p>
-                        )}
-                      </td>
-                      <td>{e.start_date}</td>
-                      <td>{e.end_date}</td>
 
-                      <td className="sts">
-                        <div
-                          className={
-                            e.status === 2
-                              ? 'badge bg-warning'
-                              : e.status === 1
-                              ? 'badge bg-danger text-white'
-                              : e.status === 3
-                              ? 'badge bg-info text-white'
-                              : e.status === 4
-                              ? 'badge bg-success text-white'
-                              : 'badge bg-dark text-white'
-                          }
-                        >
-                          {e.status === 2
-                            ? t('calendar.bjdti')
-                            : e.status === 1
-                            ? t('calendar.bjdm')
-                            : e.status === 3
-                            ? t('calendar.bjd')
-                            : e.status === 4
-                            ? 'Tasdiqlandi'
-                            : e.status === 5
-                            ? 'Kechikdi'
-                            : t('calendar.no')}
+          <div className="col-md-3 text-end">{userAction.clickedDate}</div>
+
+          {localStorage.getItem('compare') === 'true' ? (
+            <div className="col-md-3 text-end"></div>
+          ) : null}
+        </div>
+        {waitlists.length > 0 ? (
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">№</th>
+                  <th scope="col"> {t('tasks.desc')}</th>
+                  <th scope="col"> {t('tasks.linked')}</th>
+                  <th scope="col">{t('tasks.files')}</th>
+                  <th scope="col">{t('tasks.start')}</th>
+                  <th scope="col">{t('tasks.end')}</th>
+                  <th scope="col">{t('tasks.status')}</th>
+                  <th scope="col">{t('tasks.hist')}</th>
+                  <th scope="col">{t('tasks.plus')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {waitlists.map((e, index) => (
+                  <tr key={index}>
+                    <th scope="row" className={e.isAdmin ? 'rib' : null}>
+                      {e.id}
+                    </th>
+                    <td>{e.desc}</td>
+                    <td>
+                      {e.users.map((e, i) => (
+                        <div key={i} className="badge bg-secondary">
+                          {e}
                         </div>
-                      </td>
-                      <td className="history text-center ">
-                        {e.history.length > 0 ? (
+                      ))}
+                    </td>
+                    <td className="iconDiv">
+                      {e.attachments.length > 0 ? (
+                        e.attachments.map((e, i) => (
+                          <a
+                            key={i}
+                            href={globalURL + e.path}
+                            target="_blank"
+                            download
+                            rel="noreferrer"
+                          >
+                            <span title={e.key}>
+                              <FileIcon
+                                extension={e.ext}
+                                {...defaultStyles[e.ext]}
+                              />
+                            </span>
+                          </a>
+                        ))
+                      ) : (
+                        <p>{t('tasks.fileNo')}</p>
+                      )}
+                    </td>
+                    <td>{e.start_date}</td>
+                    <td>{e.end_date}</td>
+
+                    <td className="sts">
+                      <div
+                        className={
+                          e.status === 2
+                            ? 'badge bg-warning'
+                            : e.status === 1
+                            ? 'badge bg-danger text-white'
+                            : e.status === 3
+                            ? 'badge bg-info text-white'
+                            : e.status === 4
+                            ? 'badge bg-success text-white'
+                            : 'badge bg-dark text-white'
+                        }
+                      >
+                        {e.status === 2
+                          ? t('calendar.bjdti')
+                          : e.status === 1
+                          ? t('calendar.bjdm')
+                          : e.status === 3
+                          ? t('calendar.bjd')
+                          : e.status === 4
+                          ? 'Tasdiqlandi'
+                          : e.status === 5
+                          ? 'Kechikdi'
+                          : t('calendar.no')}
+                      </div>
+                    </td>
+                    <td className="history text-center ">
+                      {e.history.length > 0 ? (
+                        <>
+                          <button
+                            onClick={() => handleClickHist(e.history)}
+                            className="btn btn-link btn-hist"
+                          >
+                            {e.history[e.history.length - 1].desc}
+                          </button>
+                        </>
+                      ) : (
+                        <p>{t('tasks.infoNo')}</p>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      <div className="row">
+                        <div className="col-md-4 m-1">
+                          <button
+                            onClick={() => handleClickPlus(e.id)}
+                            className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                          >
+                            <AiOutlinePlus />
+                          </button>
+                        </div>
+                        {localStorage.getItem('role') === 'admin' ||
+                        localStorage.getItem('role') === 'adminClicked' ? (
                           <>
-                            <button
-                              onClick={() => handleClickHist(e.history)}
-                              className="btn btn-link btn-hist"
-                            >
-                              {e.history[e.history.length - 1].desc}
-                            </button>
-                          </>
-                        ) : (
-                          <p>{t('tasks.infoNo')}</p>
-                        )}
-                      </td>
-                      <td className="text-center">
-                        <div className="row">
-                          <div className="col-md-4 m-1">
-                            <button
-                              onClick={() => handleClickPlus(e.id)}
-                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                            >
-                              <AiOutlinePlus />
-                            </button>
-                          </div>
-                          {localStorage.getItem('role') === 'admin' ||
-                          localStorage.getItem('role') === 'adminClicked' ? (
-                            <>
-                              {e.status === 3 ? (
-                                <div className="col-md-4 m-1">
-                                  <button
-                                    onClick={() => handleChack(e.id)}
-                                    className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                                  >
-                                    <AiOutlineCheck />
-                                  </button>
-                                </div>
-                              ) : null}
-                            </>
-                          ) : null}
-                          {localStorage.getItem('role') === 'admin' ||
-                          localStorage.getItem('role') === 'adminClicked' ||
-                          localStorage.getItem('myId') === e.owner_id ? (
-                            <>
+                            {e.status === 3 ? (
                               <div className="col-md-4 m-1">
                                 <button
-                                  onClick={() => handleClickEdit(e.id)}
+                                  onClick={() => handleChack(e.id)}
                                   className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
                                 >
-                                  <AiOutlineEdit />
+                                  <AiOutlineCheck />
                                 </button>
                               </div>
-                            </>
-                          ) : null}
+                            ) : null}
+                          </>
+                        ) : null}
+                        {localStorage.getItem('role') === 'admin' ||
+                        localStorage.getItem('role') === 'adminClicked' ||
+                        !e.isAdmin ? (
+                          <>
+                            <div className="col-md-4 m-1">
+                              <button
+                                onClick={() => handleClickEdit(e.id)}
+                                className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                              >
+                                <AiOutlineEdit />
+                              </button>
+                            </div>
+                          </>
+                        ) : null}
 
-                          {/* <div className="col-md-4 m-1">
-                            <button
-                              onClick={() => handleClickEdit(e.id)}
-                              className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
-                            >
-                              <AiOutlineEdit />
-                            </button>
-                          </div> */}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <h2 className="text-center py-2 h4">{t('tasks.noGetInfo')}</h2>
-          )}
-        </div>
+                        {/* <div className="col-md-4 m-1">
+                              <button
+                                onClick={() => handleClickEdit(e.id)}
+                                className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
+                              >
+                                <AiOutlineEdit />
+                              </button>
+                            </div> */}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <h2 className="text-center py-2 h4">{t('tasks.noGetInfo')}</h2>
+        )}
       </div>
 
       {/* add eventni bosganda  */}
@@ -940,4 +942,4 @@ const UserAllTasks = () => {
   );
 };
 
-export default UserAllTasks;
+export default CheckedList;
