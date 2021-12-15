@@ -511,8 +511,8 @@ const AllTasksToday = () => {
                       </td>
 
                       <td className="text-center">
-                        <div className="row">
-                          <div className="col-md-4 m-1">
+                        <div className="row flex-md-wrap">
+                          <div className="col-12 m-1">
                             <button
                               onClick={() => handleClickPlus(e.id)}
                               className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
@@ -524,7 +524,7 @@ const AllTasksToday = () => {
                           localStorage.getItem('role') === 'adminClicked' ? (
                             <>
                               {e.status === 3 ? (
-                                <div className="col-md-4 m-1">
+                                <div className="col-12 m-1">
                                   <button
                                     onClick={() => handleChack(e.id)}
                                     className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
@@ -539,7 +539,7 @@ const AllTasksToday = () => {
                           localStorage.getItem('role') === 'adminClicked' ||
                           !e.isAdmin ? (
                             <>
-                              <div className="col-md-4 m-1">
+                              <div className="col-12 m-1">
                                 <button
                                   onClick={() => handleClickEdit(e.id)}
                                   className="btn btn-outline-opus d-flex justify-content-between align-items-center mx-auto"
