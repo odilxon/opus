@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,12 +49,19 @@ const TasksList = () => {
     setClickHist(true);
   };
 
+  const timeNow = () => {
+    let today = new Date(),
+      time =
+        today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    return time;
+  };
+
   const addEvent = async (e) => {
     e.preventDefault();
     var bodyFormData = new FormData();
 
     bodyFormData.append('desc', nameAd);
-    bodyFormData.append('start_date', userAction.clickedDate);
+    bodyFormData.append('start_date', `${userAction.clickedDate} ${timeNow()}`);
     bodyFormData.append('end_date', end);
     if (addFile) {
       if (addFile.length < 10) {
@@ -332,7 +340,7 @@ const TasksList = () => {
   const options = [];
   if (userAction.allUsers.length > 0) {
     userAction.allUsers
-      .filter((e) => e.id != localStorage.getItem('clickedUserId'))
+      .filter((e) => e.id !== localStorage.getItem('clickedUserId'))
       .map((e) => {
         const obj = {
           value: e.id,
@@ -405,10 +413,7 @@ const TasksList = () => {
                   <tr>
                     <th scope="col">№</th>
                     <th scope="col"> {t('tasks.desc')}</th>
-                    {/* {localStorage.getItem('role') === 'admin' ||
-                    localStorage.getItem('role') === 'adminClicked' ? ( */}
                     <th scope="col"> {t('tasks.linked')}</th>
-                    {/* ) : null} */}
                     <th scope="col">{t('tasks.files')}</th>
                     <th scope="col">{t('tasks.start')}</th>
                     <th scope="col">{t('tasks.end')}</th>
@@ -424,8 +429,6 @@ const TasksList = () => {
                         {e.id}
                       </th>
                       <td>{e.desc}</td>
-                      {/* {localStorage.getItem('role') === 'admin' ||
-                      localStorage.getItem('role') === 'adminClicked' ? ( */}
                       <td>
                         {e.users
                           ? e.users.map((user, i) => (
@@ -435,7 +438,6 @@ const TasksList = () => {
                             ))
                           : null}
                       </td>
-                      {/* ) : null} */}
                       <td className="iconDiv">
                         {e.attachments.length > 0 ? (
                           e.attachments.map((e, i) => (
@@ -444,6 +446,7 @@ const TasksList = () => {
                               href={globalURL + e.path}
                               target="_blank"
                               download
+                              rel="noreferrer"
                             >
                               <span title={e.key}>
                                 <FileIcon
@@ -554,7 +557,7 @@ const TasksList = () => {
 
               <input
                 className="form-control form-control-lg form-control-solid "
-                type="date"
+                type="datetime-local"
                 name="end_time"
                 placeholder={t('modal.endplc')}
                 value={end}

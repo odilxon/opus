@@ -11,7 +11,6 @@ import TasksList from './components/TasksList';
 import './i18next';
 import AdminPage from './components/pages/AdminPage';
 import ERRPage from './components/pages/ERRPage';
-import Today from './components/pages/Today';
 import AllTasksToday from './components/pages/AllTasksToday';
 import UserAllTasks from './components/pages/UserAllTasks';
 function App() {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavDropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import 'flag-icon-css/css/flag-icon.min.css';
@@ -6,7 +6,7 @@ import 'flag-icon-css/css/flag-icon.min.css';
 const LabguageSite = () => {
   const { t, i18n } = useTranslation();
 
-  const [uzLang, setUzLang] = useState('uz');
+  // const [uzLang, setUzLang] = useState('uz');
 
   function handleClick(lang) {
     i18n.changeLanguage(lang);
